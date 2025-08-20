@@ -1,4 +1,3 @@
-import { Context } from 'hono'
 import path from 'path'
 
 /**

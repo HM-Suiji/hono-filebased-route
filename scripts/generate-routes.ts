@@ -12,7 +12,7 @@ async function generateRoutesFile() {
 	const routeDefinitions: string[] = []
 	const methods = ['GET', 'POST']
 
-	importStatements.push(`import { Hono , Context } from 'hono';`)
+	importStatements.push(`import { Hono } from 'hono';`)
 
 	let counter = 0
 	for (const file of files) {
@@ -31,15 +31,19 @@ async function generateRoutesFile() {
 		const tempHonoVar = `honoApp${moduleName}`
 		routeDefinitions.push(`  const ${tempHonoVar} = new Hono();`)
 
-		methods.forEach((method) => {
-			routeDefinitions.push(
-				`  if (typeof (${moduleName} as any).${method} === 'function') {`
-			)
-			routeDefinitions.push(
-				`    ${tempHonoVar}.${method.toLowerCase()}('/', (${moduleName} as any).${method} as (c: Context) => any);`
-			)
-			routeDefinitions.push(`  }`)
-		})
+		for await (const method of methods) {
+			const module = await import(file)
+			if (typeof module[method] === 'function') {
+				console.log(`Found ${method} in ${file}`)
+
+				routeDefinitions.push(
+					`  ${tempHonoVar}.${method.toLowerCase()}('/', ${moduleName}.${method});`
+				)
+
+				console.log(routeDefinitions)
+			}
+		}
+
 
 		console.log(routePath)
 

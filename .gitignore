@@ -2,4 +2,13 @@
 node_modules/
 
 # generated files
-src/generated-routes.ts
+generated-routes.ts
+
+# turbo
+.turbo/
+
+# trae
+.trae/
+
+# build
+dist/

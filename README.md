@@ -1,6 +1,6 @@
 # Hono File-Based Routing
 
-一个基于 Hono 框架的文件路由系统，使用 Bun 运行时，支持类似 Next.js 的文件路由模式。
+一个基于 Hono 框架的文件路由系统，使用 Bun 运行时和 Turborepo 管理的 monorepo 项目，支持类似 Next.js 的文件路由模式。
 
 ## 特性
 
@@ -10,8 +10,12 @@
 - 📁 **动态路由**: 支持动态参数和通配符路由
 - 🎯 **类型安全**: 完整的 TypeScript 支持
 - 🛠️ **自动生成**: 路由配置自动生成，无需手动维护
+- 📦 **Monorepo**: 使用 Turborepo 管理多包项目
+- ⚡ **构建缓存**: 智能缓存和并行构建优化
 
 ## 路由规则
+
+### 基本路由实例
 
 | 文件路径 | 路由路径 | 说明 |
 |---------|---------|------|
@@ -37,9 +41,35 @@ bun install
 
 ## 使用方法
 
+### Turborepo 命令
+
+本项目使用 Turborepo 进行 monorepo 管理，支持以下命令：
+
+```bash
+# 构建所有包
+bun run build
+
+# 启动所有开发服务
+bun run dev
+
+# 运行所有测试
+bun run test
+
+# 类型检查
+bun run type-check
+
+# 清理构建产物
+bun run clean
+```
+
 ### 开发模式
 
 ```bash
+# 使用 Turborepo 启动开发服务器
+bun run dev
+
+# 或者直接启动示例项目
+cd examples/basic-example
 bun run dev
 ```
 
@@ -48,18 +78,29 @@ bun run dev
 ### 生产模式
 
 ```bash
+# 先构建所有包
+bun run build
+
+# 启动示例应用
+cd examples/basic-example
 bun run start
 ```
 
 ### 构建项目
 
 ```bash
+# 构建所有包（使用 Turborepo 缓存和并行构建）
+bun run build
+
+# 或者构建单个包
+cd packages/core
 bun run build
 ```
 
 ### 手动生成路由
 
 ```bash
+cd examples/basic-example
 bun run generate-routes
 ```
 
@@ -67,22 +108,44 @@ bun run generate-routes
 
 ```txt
 hono-filebased-route/
-├── src/
-│   ├── routes/              # 路由文件目录
-│   │   ├── index.ts         # 根路由 (/)
-│   │   ├── about.ts         # 关于页面 (/about)
-│   │   ├── users/
-│   │   │   ├── index.ts     # 用户列表 (/users)
-│   │   │   └── [id].ts      # 用户详情 (/users/:id)
-│   │   └── articles/
-│   │       └── [...slug].ts # 文章页面 (/articles/*)
-│   ├── main.ts              # 应用入口
-│   ├── generated-routes.ts  # 自动生成的路由配置
-│   └── load-routes-utils.ts # 路由工具函数
-├── scripts/
-│   └── generate-routes.ts   # 路由生成脚本
-├── package.json
-└── tsconfig.json
+├── packages/                        # 核心包目录
+│   ├── core/                        # 核心路由功能包
+│   │   ├── src/                     # 源代码目录
+│   │   ├── dist/                    # 构建输出目录
+│   │   ├── scripts/
+│   │   │   └── generate-routes.ts   # 路由生成脚本
+│   │   ├── utils/
+│   │   │   └── load-routes-utils.ts # 路由工具脚本
+│   │   ├── package.json             # @hono-filebased-route/core
+│   │   └── tsconfig.json
+│   └── vite-plugin/                 # Vite 插件包
+│       ├── src/                     # 源代码目录
+│       ├── dist/                    # 构建输出目录
+│       ├── package.json             # @hono-filebased-route/vite-plugin
+│       └── tsconfig.json
+├── examples/                        # 示例项目目录
+│   └── basic-example/               # 基础使用示例
+│       ├── src/
+│       │   ├── routes/              # 路由文件目录
+│       │   │   ├── index.ts         # 根路由 (/)
+│       │   │   ├── about.ts         # 关于页面 (/about)
+│       │   │   ├── users/
+│       │   │   │   ├── index.ts     # 用户列表 (/users)
+│       │   │   │   └── [id].ts      # 用户详情 (/users/:id)
+│       │   │   └── articles/
+│       │   │       └── [...slug].ts # 文章页面 (/articles/*)
+│       │   ├── main.ts              # 应用入口
+│       │   └── generated-routes.ts  # 自动生成的路由配置
+│       ├── scripts/
+│       │   └── generate-routes.ts   # 路由生成脚本
+│       ├── package.json             # @hono-filebased-route/basic-example
+│       └── tsconfig.json
+├── .trae/                           # 项目文档目录
+│   └── documents/                   # 设计和规划文档
+├── turborepo.json                   # Turborepo 配置文件
+├── package.json                     # 根工作区配置
+├── tsconfig.json                    # TypeScript 基础配置
+└── bun.lockb                        # Bun 锁定文件
 ```
 
 ## 创建路由
@@ -139,16 +202,30 @@ export function GET(c: Context, slug: string[]) {
 
 ## 开发脚本
 
+### 根目录脚本（Turborepo）
+
+- `bun run build`: 构建所有包（支持缓存和并行构建）
+- `bun run dev`: 启动所有开发服务
+- `bun run test`: 运行所有测试
+- `bun run lint`: 代码检查
+- `bun run type-check`: TypeScript 类型检查
+- `bun run clean`: 清理所有构建产物
+- `bun run test:basic`: 快速启动基础示例
+
+### 包级别脚本
+
+- `bun run build`: 构建当前包
 - `bun run dev`: 开发模式（包含热重载）
-- `bun run start`: 生产模式启动
-- `bun run build`: 构建项目
-- `bun run generate-routes`: 生成路由配置
+- `bun run clean`: 清理构建产物
+- `bun run generate-routes`: 生成路由配置（仅示例项目）
 
 ## 技术栈
 
 - **[Hono](https://hono.dev/)**: 轻量级 Web 框架
 - **[Bun](https://bun.sh/)**: 快速的 JavaScript 运行时
+- **[Turborepo](https://turbo.build/)**: 高性能 monorepo 构建系统
 - **TypeScript**: 类型安全的 JavaScript
+- **Workspace**: Bun 工作区管理
 
 ## 许可证
 

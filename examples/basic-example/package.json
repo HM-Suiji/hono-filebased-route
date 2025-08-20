@@ -1,0 +1,22 @@
+{
+  "name": "@hono-filebased-route/basic-example",
+  "version": "0.2.0",
+  "private": true,
+  "scripts": {
+    "generate-routes": "bun run scripts/generate-routes.ts",
+    "predev": "bun run generate-routes",
+    "dev": "bun --hot --watch src/main.ts",
+    "prestart": "bun run generate-routes",
+    "start": "bun src/main.ts",
+    "build": "bun run generate-routes && bun tsc",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@hono-filebased-route/core": "workspace:*",
+    "hono": "^4.9.2"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "typescript": "^5.0.0"
+  }
+}

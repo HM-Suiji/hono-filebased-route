@@ -1,0 +1,17 @@
+{
+  "name": "@hono-filebased-route/core",
+  "version": "0.2.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "hono": "^4.9.2"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  }
+}

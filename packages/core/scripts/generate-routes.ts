@@ -1,10 +1,10 @@
-import { getFiles, getRoutePath } from '../src/load-routes-utils'
+import { getFiles, getRoutePath } from '../utils/load-routes-utils'
 import path from 'path'
 
 const ROUTES_DIR = './src/routes'
 const OUTPUT_FILE = './src/generated-routes.ts'
 
-async function generateRoutesFile() {
+export async function generateRoutesFile() {
 	const absoluteRoutesDir = path.resolve(ROUTES_DIR)
 	const files = await getFiles(absoluteRoutesDir)
 
@@ -77,4 +77,3 @@ ${routeDefinitions.join('\n')}
 	)
 }
 
-generateRoutesFile().catch(console.error)

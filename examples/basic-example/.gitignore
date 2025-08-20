@@ -1,0 +1,5 @@
+# deps
+node_modules/
+
+# generated files
+src/generated-routes.ts

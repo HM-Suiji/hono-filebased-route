@@ -1,0 +1,21 @@
+{
+  "name": "@hono-filebased-route/vite-plugin",
+  "version": "0.2.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@hono-filebased-route/core": "workspace:*"
+  },
+  "devDependencies": {
+    "vite": "^4.0.0",
+    "typescript": "^5.0.0"
+  },
+  "peerDependencies": {
+    "vite": "^4.0.0"
+  }
+}

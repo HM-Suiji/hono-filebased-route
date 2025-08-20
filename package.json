@@ -1,18 +1,27 @@
 {
   "name": "hono-filebased-route",
   "version": "0.2.0",
+  "private": true,
+  "workspaces": [
+    "packages/*",
+    "examples/*"
+  ],
   "scripts": {
-    "generate-routes": "bun run scripts/generate-routes.ts",
-    "predev": "bun run generate-routes",
-    "dev": "bun --hot --watch src/main.ts",
-    "prestart": "bun run generate-routes",
-    "start": "bun src/main.ts",
-    "build": "bun run generate-routes && bun tsc"
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "test": "turbo run test",
+    "lint": "turbo run lint",
+    "type-check": "turbo run type-check",
+    "clean": "turbo run clean",
+    "test:basic": "cd examples/basic-example && bun dev"
   },
   "dependencies": {
     "hono": "^4.9.2"
   },
   "devDependencies": {
-    "@types/bun": "latest"
-  }
+    "@types/bun": "latest",
+    "turbo": "^2.5.6",
+    "typescript": "^5.0.0"
+  },
+  "packageManager": "bun@1.0.0"
 }

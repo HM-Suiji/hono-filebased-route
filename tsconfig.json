@@ -7,16 +7,25 @@
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "skipLibCheck": true,
-    "rootDir": "./src",
-    "outDir": "./dist",
-    "moduleDetection": "force"
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "moduleDetection": "force",
+    "baseUrl": ".",
+    "paths": {
+      "@hono-filebased-route/core": ["./packages/core/src"],
+      "@hono-filebased-route/vite-plugin": ["./packages/vite-plugin/src"]
+    }
   },
-  "include": [
-    "src/**/*.ts",
-    "scripts/**/*.ts"
+  "references": [
+    { "path": "./packages/core" },
+    { "path": "./packages/vite-plugin" },
+    { "path": "./examples/basic-example" }
   ],
+  "include": [],
   "exclude": [
     "node_modules",
-    "src/generated-routes.ts"
+    "dist",
+    "build"
   ]
 }

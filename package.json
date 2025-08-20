@@ -1,6 +1,6 @@
 {
   "name": "hono-filebased-route",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "scripts": {
     "generate-routes": "bun run scripts/generate-routes.ts",
     "predev": "bun run generate-routes",

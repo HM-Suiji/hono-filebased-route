@@ -65,6 +65,7 @@ bun run generate-routes
 
 ## 项目结构
 
+```txt
 hono-filebased-route/
 ├── src/
 │   ├── routes/              # 路由文件目录
@@ -82,6 +83,7 @@ hono-filebased-route/
 │   └── generate-routes.ts   # 路由生成脚本
 ├── package.json
 └── tsconfig.json
+```
 
 ## 创建路由
 
@@ -116,13 +118,14 @@ export function GET(c: Context) {
 
 ### 通配符路由
 
-使用 `[...param]` 创建通配符路由：
+使用 `[...slug]` 创建通配符路由：
+
+该项目通过 `c.req.path` 填充 `slug` 参数，自动为 `GET/POST` 函数提供第二个参数。
 
 ```typescript
 import { Context } from 'hono'
 
-export function GET(c: Context) {
-  const slug = c.req.param('*')
+export function GET(c: Context, slug: string[]) {
   return c.json({ slug })
 }
 ```

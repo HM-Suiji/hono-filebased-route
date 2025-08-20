@@ -34,13 +34,15 @@ async function generateRoutesFile() {
 		for await (const method of methods) {
 			const module = await import(file)
 			if (typeof module[method] === 'function') {
-				console.log(`Found ${method} in ${file}`)
-
-				routeDefinitions.push(
+				if (routePath.endsWith('/*')) {
+					const len = routePath.replace(/\/\*$/g, '').length + 1
+					routeDefinitions.push(
+						`  ${tempHonoVar}.${method.toLowerCase()}('/', async (c) => ${moduleName}.${method}(c, c.req.path.substring(${len}).split('/')));`
+					)
+				}
+				else routeDefinitions.push(
 					`  ${tempHonoVar}.${method.toLowerCase()}('/', ${moduleName}.${method});`
 				)
-
-				console.log(routeDefinitions)
 			}
 		}
 

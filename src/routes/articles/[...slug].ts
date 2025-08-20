@@ -1,9 +1,6 @@
 import { Context } from 'hono'
 
-export function GET(c: Context) {
-	const fullPath = c.req.path
-	const baseRoute = '/articles'
-	const slug = fullPath.substring(baseRoute.length)
-
+export function GET(c: Context, slug: string[]) {
+	console.log(slug)
 	return c.text(`Accessing article slug: ${slug || '/ (root of articles)'}`)
 }

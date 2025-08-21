@@ -1,11 +1,10 @@
 # Hono File-Based Routing
 
-一个基于 Hono 框架的文件路由系统，使用 Bun 运行时和 Turborepo 管理的 monorepo 项目，支持类似 Next.js 的文件路由模式。
+一个基于 Hono 框架的文件路由系统，使用 Turborepo 管理的 monorepo 项目，支持类似 Next.js 的文件路由模式。
 
 ## 特性
 
 - 🚀 **文件路由系统**: 基于文件结构自动生成路由
-- ⚡ **Bun 运行时**: 快速的 JavaScript 运行时
 - 🔥 **热重载**: 开发时自动重新加载
 - 📁 **动态路由**: 支持动态参数和通配符路由
 - 🎯 **类型安全**: 完整的 TypeScript 支持
@@ -27,15 +26,15 @@
 
 ## 安装
 
-确保已安装 Bun:
-
-```bash
-curl -fsSL https://bun.sh/install | bash
-```
-
 安装项目依赖:
 
 ```bash
+npm install
+# or
+yarn install
+# or
+pnpm install
+# or
 bun install
 ```
 
@@ -47,30 +46,30 @@ bun install
 
 ```bash
 # 构建所有包
-bun run build
+pnpm run build
 
 # 启动所有开发服务
-bun run dev
+pnpm run dev
 
 # 运行所有测试
-bun run test
+pnpm run test
 
 # 类型检查
-bun run type-check
+pnpm run type-check
 
 # 清理构建产物
-bun run clean
+pnpm run clean
 ```
 
 ### 开发模式
 
 ```bash
 # 使用 Turborepo 启动开发服务器
-bun run dev
+pnpm run dev
 
 # 或者直接启动示例项目
 cd examples/basic-example
-bun run dev
+pnpm run dev
 ```
 
 这将启动开发服务器，支持热重载，访问 <http://localhost:3000>
@@ -79,29 +78,29 @@ bun run dev
 
 ```bash
 # 先构建所有包
-bun run build
+pnpm run build
 
 # 启动示例应用
 cd examples/basic-example
-bun run start
+pnpm run start
 ```
 
 ### 构建项目
 
 ```bash
 # 构建所有包（使用 Turborepo 缓存和并行构建）
-bun run build
+pnpm run build
 
 # 或者构建单个包
 cd packages/core
-bun run build
+pnpm run build
 ```
 
 ### 手动生成路由
 
 ```bash
 cd examples/basic-example
-bun run generate-routes
+pnpm run generate-routes
 ```
 
 ## 项目结构
@@ -145,7 +144,7 @@ hono-filebased-route/
 ├── turborepo.json                   # Turborepo 配置文件
 ├── package.json                     # 根工作区配置
 ├── tsconfig.json                    # TypeScript 基础配置
-└── bun.lockb                        # Bun 锁定文件
+└── pnpm.lockb                        # pnpm 锁定文件
 ```
 
 ## 创建路由
@@ -204,28 +203,28 @@ export function GET(c: Context, slug: string[]) {
 
 ### 根目录脚本（Turborepo）
 
-- `bun run build`: 构建所有包（支持缓存和并行构建）
-- `bun run dev`: 启动所有开发服务
-- `bun run test`: 运行所有测试
-- `bun run lint`: 代码检查
-- `bun run type-check`: TypeScript 类型检查
-- `bun run clean`: 清理所有构建产物
-- `bun run test:basic`: 快速启动基础示例
+- `pnpm run build`: 构建所有包（支持缓存和并行构建）
+- `pnpm run dev`: 启动所有开发服务
+- `pnpm run test`: 运行所有测试
+- `pnpm run lint`: 代码检查
+- `pnpm run type-check`: TypeScript 类型检查
+- `pnpm run clean`: 清理所有构建产物
+- `pnpm run test:basic`: 快速启动基础示例
 
 ### 包级别脚本
 
-- `bun run build`: 构建当前包
-- `bun run dev`: 开发模式（包含热重载）
-- `bun run clean`: 清理构建产物
-- `bun run generate-routes`: 生成路由配置（仅示例项目）
+- `pnpm run build`: 构建当前包
+- `pnpm run dev`: 开发模式（包含热重载）
+- `pnpm run clean`: 清理构建产物
+- `pnpm run generate-routes`: 生成路由配置（仅示例项目）
 
 ## 技术栈
 
 - **[Hono](https://hono.dev/)**: 轻量级 Web 框架
-- **[Bun](https://bun.sh/)**: 快速的 JavaScript 运行时
+- **[pnpm](https://pnpm.sh/)**: 快速的 JavaScript 运行时
 - **[Turborepo](https://turbo.build/)**: 高性能 monorepo 构建系统
 - **TypeScript**: 类型安全的 JavaScript
-- **Workspace**: Bun 工作区管理
+- **Workspace**: pnpm 工作区管理
 
 ## 许可证
 

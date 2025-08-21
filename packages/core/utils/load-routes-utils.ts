@@ -1,20 +1,20 @@
 import path from 'path'
+import fg from 'fast-glob'
 
 /**
- * 遍历指定目录并获取所有文件路径（使用 Bun.Glob）
+ * 遍历指定目录并获取所有文件路径
  * @param dir 要遍历的目录
  * @returns 目录内所有文件绝对路径的数组
  */
 export async function getFiles(dir: string): Promise<string[]> {
 	const absoluteDir = path.resolve(dir)
-	const pattern = path.join(absoluteDir, '**', '*.{ts,js}')
+	const pattern = path.join(absoluteDir, '**', '*.{ts,js}').replace(/\\/g, '/')
 
-	const glob = new Bun.Glob(pattern)
-	const files: string[] = []
+	const files = await fg(pattern, {
+		absolute: true,
+		onlyFiles: true
+	})
 
-	for await (const file of glob.scan()) {
-		files.push(file)
-	}
 	return files
 }
 

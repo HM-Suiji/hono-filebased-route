@@ -1,9 +1,9 @@
 import { Context } from 'hono'
 
 export function GET(c: Context) {
-	return c.html(`
+  return c.html(`
     <h1>Welcome to Hono File-Based Routing!</h1>
-    <p>Using Bun + Hono + Next.js Route Handlers + Generated Routes</p>
+    <p>Using Hono + Next.js Route Handlers + Generated Routes</p>
     <ul>
       <li><a href="/about">About Us</a></li>
       <li><a href="/users">List Users</a></li>
@@ -14,5 +14,5 @@ export function GET(c: Context) {
 }
 
 export function POST(c: Context) {
-	return c.text('POST request to root received!')
+  return c.text('POST request to root received!')
 }

@@ -7,7 +7,8 @@
   },
   "include": [
     "utils/**/*.ts",
-    "scripts/**/*.ts"
+    "scripts/**/*.ts",
+    "index.ts"
   ],
   "exclude": [
     "node_modules",

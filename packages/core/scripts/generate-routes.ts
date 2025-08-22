@@ -6,8 +6,12 @@ import { pathToFileURL } from 'url'
 const ROUTES_DIR = './src/routes'
 const OUTPUT_FILE = './src/generated-routes.ts'
 
-export async function generateRoutesFile() {
-	const absoluteRoutesDir = path.resolve(ROUTES_DIR)
+export async function generateRoutesFile(
+	dir: string = ROUTES_DIR,
+	output: string = OUTPUT_FILE
+) {
+	console.log('Generating routes file...', dir, output)
+	const absoluteRoutesDir = path.resolve(dir)
 	const files = await getFiles(absoluteRoutesDir)
 
 	const importStatements: string[] = []
@@ -22,10 +26,9 @@ export async function generateRoutesFile() {
 			.replace(/\\/g, '/')
 			.replace(/\/index$/, '')
 		const relativePath = path
-			.relative(path.dirname(OUTPUT_FILE), file)
+			.relative(path.dirname(output), file)
 			.replace(/\.(ts)$/, '')
 			.replace(/\\/g, '/')
-		console.log(`Processing file: ${file} with route path: ${relativePath}`)
 		const moduleName = `routeModule${counter++}`
 
 		importStatements.push(`import * as ${moduleName} from './${relativePath}';`)
@@ -42,15 +45,12 @@ export async function generateRoutesFile() {
 					routeDefinitions.push(
 						`  ${tempHonoVar}.${method.toLowerCase()}('/', async (c) => ${moduleName}.${method}(c, c.req.path.substring(${len}).split('/')));`
 					)
-				}
-				else routeDefinitions.push(
-					`  ${tempHonoVar}.${method.toLowerCase()}('/', ${moduleName}.${method});`
-				)
+				} else
+					routeDefinitions.push(
+						`  ${tempHonoVar}.${method.toLowerCase()}('/', ${moduleName}.${method});`
+					)
 			}
 		}
-
-
-		console.log(routePath)
 
 		if (routePath === '/') {
 			routeDefinitions.push(`  mainApp.route('${routePath}', ${tempHonoVar});`)
@@ -73,10 +73,7 @@ ${routeDefinitions.join('\n')}
 }
 `
 
-	await writeFile(OUTPUT_FILE, fileContent.trimStart())
+	await writeFile(output, fileContent.trimStart())
 
-	console.log(
-		`Generated routes file: ${OUTPUT_FILE} with ${files.length} routes.`
-	)
+	console.log(`Generated routes file: ${output} with ${files.length} routes.`)
 }
-

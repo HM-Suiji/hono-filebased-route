@@ -1,6 +1,6 @@
 {
   "name": "@hono-filebased-route/core",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "type": "module",
   "description": "A core utility for file-based routing in Hono applications.",
   "author": "HM Suiji <hmsuiji@gmail.com>",

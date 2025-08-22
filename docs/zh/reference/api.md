@@ -13,12 +13,15 @@
 遍历指定目录并获取所有文件路径。
 
 **参数：**
+
 - `dir` (string): 要遍历的目录
 
 **返回值：**
+
 - `Promise<string[]>`: 目录内所有文件绝对路径的数组
 
 **示例：**
+
 ```typescript
 import { getFiles } from '@hono-filebased-route/core'
 
@@ -28,6 +31,7 @@ console.log(files)
 ```
 
 **使用说明：**
+
 - 仅包含 TypeScript (`.ts`) 和 JavaScript (`.js`) 文件
 - 返回绝对路径
 - 使用 fast-glob 进行高效的文件系统遍历
@@ -39,37 +43,56 @@ console.log(files)
 将文件路径转换为遵循基于文件路由约定的 Hono 路由路径。
 
 **参数：**
+
 - `filePath` (string): 文件的绝对路径
 - `baseDir` (string): 路由目录根的绝对路径
 
 **返回值：**
+
 - `string`: 转换后的 Hono 路由路径
 
 **示例：**
+
 ```typescript
 import { getRoutePath } from '@hono-filebased-route/core'
 
 // 基础路由
-const route1 = getRoutePath('/project/src/routes/about.ts', '/project/src/routes')
+const route1 = getRoutePath(
+	'/project/src/routes/about.ts',
+	'/project/src/routes'
+)
 console.log(route1) // '/about'
 
 // 动态参数
-const route2 = getRoutePath('/project/src/routes/users/[id].ts', '/project/src/routes')
+const route2 = getRoutePath(
+	'/project/src/routes/users/[id].ts',
+	'/project/src/routes'
+)
 console.log(route2) // '/users/:id'
 
 // 捕获所有路由
-const route3 = getRoutePath('/project/src/routes/api/[...path].ts', '/project/src/routes')
+const route3 = getRoutePath(
+	'/project/src/routes/api/[...path].ts',
+	'/project/src/routes'
+)
 console.log(route3) // '/api/*'
 
 // 索引路由
-const route4 = getRoutePath('/project/src/routes/index.ts', '/project/src/routes')
+const route4 = getRoutePath(
+	'/project/src/routes/index.ts',
+	'/project/src/routes'
+)
 console.log(route4) // '/'
 
-const route5 = getRoutePath('/project/src/routes/blog/index.ts', '/project/src/routes')
+const route5 = getRoutePath(
+	'/project/src/routes/blog/index.ts',
+	'/project/src/routes'
+)
 console.log(route5) // '/blog'
 ```
 
 **路由转换规则：**
+
 - `[param]` → `:param` (动态参数)
 - `[...param]` → `*` (捕获所有路由)
 - `index.ts` → `/` (根路由)
@@ -83,12 +106,15 @@ console.log(route5) // '/blog'
 生成一个 TypeScript 文件，该文件将所有基于文件的路由注册到 Hono 应用程序中。
 
 **参数：**
+
 - 无（使用预定义常量进行配置）
 
 **返回值：**
+
 - `Promise<void>`: 在路由文件生成完成时解析
 
 **示例：**
+
 ```typescript
 import { generateRoutesFile } from '@hono-filebased-route/core'
 
@@ -102,26 +128,28 @@ await generateRoutesFile()
 ```
 
 **配置：**
+
 - **路由目录**: `./src/routes` (硬编码)
 - **输出文件**: `./src/generated-routes.ts` (硬编码)
 - **支持的方法**: `GET`, `POST` (硬编码)
 
 **生成的文件结构：**
+
 ```typescript
 // 此文件由脚本自动生成，请勿编辑。
 
-import { Hono } from 'hono';
-import * as routeModule0 from './routes/index';
-import * as routeModule1 from './routes/users/[id]';
+import { Hono } from 'hono'
+import * as routeModule0 from './routes/index'
+import * as routeModule1 from './routes/users/[id]'
 
 export function registerGeneratedRoutes(mainApp: Hono) {
-  const honoApprouteModule0 = new Hono();
-  honoApprouteModule0.get('/', routeModule0.GET);
-  mainApp.route('/', honoApprouteModule0);
-  
-  const honoApprouteModule1 = new Hono();
-  honoApprouteModule1.get('/', routeModule1.GET);
-  mainApp.route('/users/:id', honoApprouteModule1);
+	const honoApprouteModule0 = new Hono()
+	honoApprouteModule0.get('/', routeModule0.GET)
+	mainApp.route('/', honoApprouteModule0)
+
+	const honoApprouteModule1 = new Hono()
+	honoApprouteModule1.get('/', routeModule1.GET)
+	mainApp.route('/users/:id', honoApprouteModule1)
 }
 ```
 
@@ -129,17 +157,20 @@ export function registerGeneratedRoutes(mainApp: Hono) {
 
 ### `registerGeneratedRoutes(mainApp: Hono): void`
 
-*注意：此函数由 `generateRoutesFile()` 生成并从生成的路由文件中导出。*
+_注意：此函数由 `generateRoutesFile()` 生成并从生成的路由文件中导出。_
 
 将所有生成的基于文件的路由注册到主 Hono 应用程序中。
 
 **参数：**
+
 - `mainApp` (Hono): 主 Hono 应用程序实例
 
 **返回值：**
+
 - `void`
 
 **示例：**
+
 ```typescript
 import { Hono } from 'hono'
 import { registerGeneratedRoutes } from './generated-routes'
@@ -188,43 +219,46 @@ import type { Context } from 'hono'
 
 // GET 处理器
 export const GET = async (c: Context) => {
-  const id = c.req.param('id')
-  return c.json({ user: { id, name: `User ${id}` } })
+	const id = c.req.param('id')
+	return c.json({ user: { id, name: `User ${id}` } })
 }
 
 // POST 处理器
 export const POST = async (c: Context) => {
-  const id = c.req.param('id')
-  const body = await c.req.json()
-  return c.json({ message: 'User updated', id, data: body })
+	const id = c.req.param('id')
+	const body = await c.req.json()
+	return c.json({ message: 'User updated', id, data: body })
 }
 ```
 
 ### 支持的 HTTP 方法
 
 当前支持的 HTTP 方法：
+
 - `GET`
 - `POST`
 
-*注意：未来版本可能会添加对其他方法（PUT、DELETE、PATCH 等）的支持。*
+_注意：未来版本可能会添加对其他方法（PUT、DELETE、PATCH 等）的支持。_
 
 ### 动态路由
 
 #### 单个参数
+
 ```typescript
 // routes/users/[id].ts
 export const GET = async (c: Context) => {
-  const id = c.req.param('id') // 访问动态参数
-  return c.json({ userId: id })
+	const id = c.req.param('id') // 访问动态参数
+	return c.json({ userId: id })
 }
 ```
 
 #### 捕获所有路由
+
 ```typescript
 // routes/api/[...path].ts
 export const GET = async (c: Context, pathSegments: string[]) => {
-  // pathSegments 包含剩余的路径部分
-  return c.json({ path: pathSegments })
+	// pathSegments 包含剩余的路径部分
+	return c.json({ path: pathSegments })
 }
 ```
 
@@ -239,19 +273,22 @@ import type { Context } from 'hono'
 type RouteHandler = (c: Context) => Response | Promise<Response>
 
 // 捕获所有路由处理器
-type CatchAllHandler = (c: Context, pathSegments: string[]) => Response | Promise<Response>
+type CatchAllHandler = (
+	c: Context,
+	pathSegments: string[]
+) => Response | Promise<Response>
 ```
 
 ### 配置类型
 
 ```typescript
 interface RouteConfig {
-  /** 包含路由文件的目录 */
-  routesDir: string
-  /** 生成路由的输出文件 */
-  outputFile: string
-  /** 支持的 HTTP 方法 */
-  methods: string[]
+	/** 包含路由文件的目录 */
+	routesDir: string
+	/** 生成路由的输出文件 */
+	outputFile: string
+	/** 支持的 HTTP 方法 */
+	methods: string[]
 }
 ```
 
@@ -260,24 +297,26 @@ interface RouteConfig {
 ### 常见错误
 
 #### 文件系统错误
+
 ```typescript
 try {
-  await generateRoutesFile()
+	await generateRoutesFile()
 } catch (error) {
-  if (error.code === 'ENOENT') {
-    console.error('未找到路由目录')
-  } else if (error.code === 'EACCES') {
-    console.error('访问路由目录权限被拒绝')
-  }
+	if (error.code === 'ENOENT') {
+		console.error('未找到路由目录')
+	} else if (error.code === 'EACCES') {
+		console.error('访问路由目录权限被拒绝')
+	}
 }
 ```
 
 #### 路由注册错误
+
 ```typescript
 // 无效的路由文件（缺少导出）
 // routes/invalid.ts - 这将被跳过
-export default function() {
-  return '这不会被注册'
+export default function () {
+	return '这不会被注册'
 }
 
 // 有效的路由文件
@@ -320,18 +359,18 @@ routes/
 import type { Context } from 'hono'
 
 export const GET = async (c: Context) => {
-  try {
-    const data = await fetchData()
-    return c.json(data)
-  } catch (error) {
-    return c.json({ error: 'Internal server error' }, 500)
-  }
+	try {
+		const data = await fetchData()
+		return c.json(data)
+	} catch (error) {
+		return c.json({ error: 'Internal server error' }, 500)
+	}
 }
 
 // ❌ 避免 - 没有错误处理
 export const GET = async (c: Context) => {
-  const data = await fetchData() // 可能抛出异常
-  return c.json(data)
+	const data = await fetchData() // 可能抛出异常
+	return c.json(data)
 }
 ```
 
@@ -340,15 +379,15 @@ export const GET = async (c: Context) => {
 ```json
 // package.json
 {
-  "scripts": {
-    "generate-routes": "bun run scripts/generate-routes.ts",
-    "predev": "bun run generate-routes",
-    "dev": "bun --hot --watch src/main.ts",
-    "prestart": "bun run generate-routes",
-    "start": "bun src/main.ts",
-    "prebuild": "bun run generate-routes",
-    "build": "tsc"
-  }
+	"scripts": {
+		"generate-routes": "bun run scripts/generate-routes.ts",
+		"predev": "bun run generate-routes",
+		"dev": "bun --hot --watch src/main.ts",
+		"prestart": "bun run generate-routes",
+		"start": "bun src/main.ts",
+		"prebuild": "bun run generate-routes",
+		"build": "tsc"
+	}
 }
 ```
 
@@ -357,6 +396,7 @@ export const GET = async (c: Context) => {
 ### 从手动路由注册迁移
 
 **之前：**
+
 ```typescript
 // manual-routes.ts
 import { Hono } from 'hono'
@@ -373,20 +413,21 @@ export default app
 ```
 
 **之后：**
+
 ```typescript
 // src/routes/users/[id].ts
 export const GET = async (c) => {
-  // getUserById 逻辑在这里
+	// getUserById 逻辑在这里
 }
 
 // src/routes/users/index.ts
 export const POST = async (c) => {
-  // createUser 逻辑在这里
+	// createUser 逻辑在这里
 }
 
 // src/routes/posts/index.ts
 export const GET = async (c) => {
-  // getPosts 逻辑在这里
+	// getPosts 逻辑在这里
 }
 
 // src/main.ts
@@ -421,6 +462,7 @@ export default app
 ### 常见问题
 
 #### 路由未生成
+
 ```bash
 # 检查路由目录是否存在
 ls -la src/routes
@@ -433,17 +475,21 @@ npx tsc --noEmit
 ```
 
 #### 路由处理器不工作
+
 ```typescript
 // ✅ 正确的导出
 export const GET = (c) => c.text('Hello')
 
 // ❌ 错误 - 将被忽略
 export default (c) => c.text('Hello')
-export function GET(c) { return c.text('Hello') }
+export function GET(c) {
+	return c.text('Hello')
+}
 const GET = (c) => c.text('Hello')
 ```
 
 #### 构建错误
+
 ```bash
 # 重新生成路由文件
 npm run generate-routes
@@ -455,7 +501,7 @@ npx tsc --build --clean
 
 ## 下一步
 
-- [配置参考](./configuration.md) - 详细的配置选项
-- [类型定义](./types.md) - 完整的类型定义
-- [示例](../examples/basic.md) - 实际使用示例
-- [最佳实践](../guide/best-practices.md) - 推荐的模式和实践
+- [配置参考](/zh/reference/configuration.md) - 详细的配置选项
+- [类型定义](/zh/reference/types.md) - 完整的类型定义
+- [示例](/zh/examples/basic.md) - 实际使用示例
+- [最佳实践](/zh/examples/best-practices.md) - 推荐的模式和实践

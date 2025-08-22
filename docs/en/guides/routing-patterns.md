@@ -24,11 +24,11 @@ routes/
 import type { Context } from 'hono'
 
 export const GET = (c: Context) => {
-  return c.json({
-    page: 'about',
-    title: 'About Us',
-    content: 'Learn more about our company...'
-  })
+	return c.json({
+		page: 'about',
+		title: 'About Us',
+		content: 'Learn more about our company...',
+	})
 }
 ```
 
@@ -57,25 +57,25 @@ routes/
 import type { Context } from 'hono'
 
 export const GET = (c: Context) => {
-  return c.json({
-    status: 'healthy',
-    timestamp: new Date().toISOString(),
-    uptime: process.uptime()
-  })
+	return c.json({
+		status: 'healthy',
+		timestamp: new Date().toISOString(),
+		uptime: process.uptime(),
+	})
 }
 
 // routes/admin/dashboard.ts
 import type { Context } from 'hono'
 
 export const GET = (c: Context) => {
-  return c.json({
-    page: 'admin-dashboard',
-    stats: {
-      users: 1250,
-      posts: 3400,
-      comments: 8900
-    }
-  })
+	return c.json({
+		page: 'admin-dashboard',
+		stats: {
+			users: 1250,
+			posts: 3400,
+			comments: 8900,
+		},
+	})
 }
 ```
 
@@ -103,38 +103,38 @@ routes/
 import type { Context } from 'hono'
 
 export const GET = (c: Context) => {
-  const id = c.req.param('id')
-  
-  // Validate ID
-  if (!id || isNaN(Number(id))) {
-    return c.json({ error: 'Invalid user ID' }, 400)
-  }
-  
-  return c.json({
-    user: {
-      id: Number(id),
-      name: `User ${id}`,
-      email: `user${id}@example.com`
-    }
-  })
+	const id = c.req.param('id')
+
+	// Validate ID
+	if (!id || isNaN(Number(id))) {
+		return c.json({ error: 'Invalid user ID' }, 400)
+	}
+
+	return c.json({
+		user: {
+			id: Number(id),
+			name: `User ${id}`,
+			email: `user${id}@example.com`,
+		},
+	})
 }
 
 export const PUT = async (c: Context) => {
-  const id = c.req.param('id')
-  const body = await c.req.json()
-  
-  return c.json({
-    message: `User ${id} updated`,
-    data: body
-  })
+	const id = c.req.param('id')
+	const body = await c.req.json()
+
+	return c.json({
+		message: `User ${id} updated`,
+		data: body,
+	})
 }
 
 export const DELETE = (c: Context) => {
-  const id = c.req.param('id')
-  
-  return c.json({
-    message: `User ${id} deleted`
-  })
+	const id = c.req.param('id')
+
+	return c.json({
+		message: `User ${id} deleted`,
+	})
 }
 ```
 
@@ -162,33 +162,31 @@ routes/
 import type { Context } from 'hono'
 
 export const GET = (c: Context) => {
-  const userId = c.req.param('id')
-  const postId = c.req.param('postId')
-  
-  return c.json({
-    post: {
-      id: postId,
-      userId: userId,
-      title: `Post ${postId} by User ${userId}`,
-      content: 'Post content here...'
-    }
-  })
+	const userId = c.req.param('id')
+	const postId = c.req.param('postId')
+
+	return c.json({
+		post: {
+			id: postId,
+			userId: userId,
+			title: `Post ${postId} by User ${userId}`,
+			content: 'Post content here...',
+		},
+	})
 }
 
 // routes/categories/[category]/[subcategory].ts
 import type { Context } from 'hono'
 
 export const GET = (c: Context) => {
-  const category = c.req.param('category')
-  const subcategory = c.req.param('subcategory')
-  
-  return c.json({
-    category,
-    subcategory,
-    items: [
-      { id: 1, name: `Item in ${category}/${subcategory}` }
-    ]
-  })
+	const category = c.req.param('category')
+	const subcategory = c.req.param('subcategory')
+
+	return c.json({
+		category,
+		subcategory,
+		items: [{ id: 1, name: `Item in ${category}/${subcategory}` }],
+	})
 }
 ```
 
@@ -216,47 +214,47 @@ routes/
 import type { Context } from 'hono'
 
 export const GET = (c: Context) => {
-  const path = c.req.param('path')
-  
-  // path will be the entire remaining path
-  // e.g., /files/documents/2023/report.pdf → path = "documents/2023/report.pdf"
-  
-  return c.json({
-    requestedPath: path,
-    segments: path.split('/'),
-    message: `Accessing file at: ${path}`
-  })
+	const path = c.req.param('path')
+
+	// path will be the entire remaining path
+	// e.g., /files/documents/2023/report.pdf → path = "documents/2023/report.pdf"
+
+	return c.json({
+		requestedPath: path,
+		segments: path.split('/'),
+		message: `Accessing file at: ${path}`,
+	})
 }
 
 // routes/docs/[...slug].ts
 import type { Context } from 'hono'
 
 export const GET = (c: Context) => {
-  const slug = c.req.param('slug')
-  const segments = slug.split('/')
-  
-  // Handle different documentation paths
-  if (segments[0] === 'api') {
-    return c.json({
-      type: 'api-docs',
-      path: slug,
-      content: `API documentation for: ${segments.slice(1).join('/')}`
-    })
-  }
-  
-  if (segments[0] === 'guide') {
-    return c.json({
-      type: 'guide',
-      path: slug,
-      content: `Guide content for: ${segments.slice(1).join('/')}`
-    })
-  }
-  
-  return c.json({
-    type: 'general-docs',
-    path: slug,
-    content: `Documentation for: ${slug}`
-  })
+	const slug = c.req.param('slug')
+	const segments = slug.split('/')
+
+	// Handle different documentation paths
+	if (segments[0] === 'api') {
+		return c.json({
+			type: 'api-docs',
+			path: slug,
+			content: `API documentation for: ${segments.slice(1).join('/')}`,
+		})
+	}
+
+	if (segments[0] === 'guide') {
+		return c.json({
+			type: 'guide',
+			path: slug,
+			content: `Guide content for: ${segments.slice(1).join('/')}`,
+		})
+	}
+
+	return c.json({
+		type: 'general-docs',
+		path: slug,
+		content: `Documentation for: ${slug}`,
+	})
 }
 ```
 
@@ -267,47 +265,43 @@ export const GET = (c: Context) => {
 import type { Context } from 'hono'
 
 export const GET = async (c: Context) => {
-  const route = c.req.param('route')
-  const queryString = c.req.url.split('?')[1] || ''
-  
-  // Proxy to external API
-  const externalUrl = `https://api.external.com/${route}${queryString ? '?' + queryString : ''}`
-  
-  try {
-    const response = await fetch(externalUrl)
-    const data = await response.json()
-    
-    return c.json(data, response.status)
-  } catch (error) {
-    return c.json(
-      { error: 'Failed to proxy request', route },
-      500
-    )
-  }
+	const route = c.req.param('route')
+	const queryString = c.req.url.split('?')[1] || ''
+
+	// Proxy to external API
+	const externalUrl = `https://api.external.com/${route}${
+		queryString ? '?' + queryString : ''
+	}`
+
+	try {
+		const response = await fetch(externalUrl)
+		const data = await response.json()
+
+		return c.json(data, response.status)
+	} catch (error) {
+		return c.json({ error: 'Failed to proxy request', route }, 500)
+	}
 }
 
 export const POST = async (c: Context) => {
-  const route = c.req.param('route')
-  const body = await c.req.json()
-  
-  // Proxy POST request
-  const externalUrl = `https://api.external.com/${route}`
-  
-  try {
-    const response = await fetch(externalUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body)
-    })
-    
-    const data = await response.json()
-    return c.json(data, response.status)
-  } catch (error) {
-    return c.json(
-      { error: 'Failed to proxy POST request', route },
-      500
-    )
-  }
+	const route = c.req.param('route')
+	const body = await c.req.json()
+
+	// Proxy POST request
+	const externalUrl = `https://api.external.com/${route}`
+
+	try {
+		const response = await fetch(externalUrl, {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify(body),
+		})
+
+		const data = await response.json()
+		return c.json(data, response.status)
+	} catch (error) {
+		return c.json({ error: 'Failed to proxy POST request', route }, 500)
+	}
 }
 ```
 
@@ -357,16 +351,19 @@ routes/
 ```
 
 For the URL `/users/new`:
+
 1. ✅ Matches `users/new.ts` (static route) - **Selected**
 2. ❌ Would also match `users/[id].ts` but static takes priority
 3. ❌ Would also match `users/[...path].ts` but static takes priority
 
 For the URL `/users/123`:
+
 1. ❌ No static route match
 2. ✅ Matches `users/[id].ts` (dynamic route) - **Selected**
 3. ❌ Would also match `users/[...path].ts` but dynamic takes priority
 
 For the URL `/users/123/posts/456`:
+
 1. ❌ No static route match
 2. ❌ No dynamic route match
 3. ✅ Matches `users/[...path].ts` (wildcard route) - **Selected**
@@ -389,24 +386,24 @@ routes/
 import type { Context } from 'hono'
 
 export const GET = (c: Context) => {
-  const query = c.req.query('q') || ''
-  
-  return c.json({
-    query,
-    results: query ? searchResults(query) : []
-  })
+	const query = c.req.query('q') || ''
+
+	return c.json({
+		query,
+		results: query ? searchResults(query) : [],
+	})
 }
 
 // routes/search/[query].ts
 import type { Context } from 'hono'
 
 export const GET = (c: Context) => {
-  const query = c.req.param('query')
-  
-  return c.json({
-    query,
-    results: searchResults(query)
-  })
+	const query = c.req.param('query')
+
+	return c.json({
+		query,
+		results: searchResults(query),
+	})
 }
 ```
 
@@ -443,23 +440,23 @@ import type { Context } from 'hono'
 
 // Authentication middleware
 const authenticate = (c: Context) => {
-  const token = c.req.header('Authorization')
-  if (!token) {
-    return c.json({ error: 'Authentication required' }, 401)
-  }
-  return null
+	const token = c.req.header('Authorization')
+	if (!token) {
+		return c.json({ error: 'Authentication required' }, 401)
+	}
+	return null
 }
 
 export const GET = (c: Context) => {
-  const authError = authenticate(c)
-  if (authError) return authError
-  
-  const route = c.req.param('route')
-  return c.json({
-    message: 'Protected resource accessed',
-    route,
-    user: 'authenticated-user'
-  })
+	const authError = authenticate(c)
+	if (authError) return authError
+
+	const route = c.req.param('route')
+	return c.json({
+		message: 'Protected resource accessed',
+		route,
+		user: 'authenticated-user',
+	})
 }
 ```
 
@@ -512,20 +509,20 @@ routes/
 ```typescript
 // Always validate parameters
 export const GET = (c: Context) => {
-  const id = c.req.param('id')
-  
-  // Validate ID format
-  if (!id || !/^\d+$/.test(id)) {
-    return c.json({ error: 'Invalid ID format' }, 400)
-  }
-  
-  const numericId = parseInt(id, 10)
-  if (numericId <= 0) {
-    return c.json({ error: 'ID must be positive' }, 400)
-  }
-  
-  // Continue with valid ID
-  return c.json({ user: { id: numericId } })
+	const id = c.req.param('id')
+
+	// Validate ID format
+	if (!id || !/^\d+$/.test(id)) {
+		return c.json({ error: 'Invalid ID format' }, 400)
+	}
+
+	const numericId = parseInt(id, 10)
+	if (numericId <= 0) {
+		return c.json({ error: 'ID must be positive' }, 400)
+	}
+
+	// Continue with valid ID
+	return c.json({ user: { id: numericId } })
 }
 ```
 
@@ -534,19 +531,19 @@ export const GET = (c: Context) => {
 ```typescript
 // routes/files/[...path].ts
 export const GET = (c: Context) => {
-  const path = c.req.param('path')
-  
-  // Validate path
-  if (!path || path.includes('..')) {
-    return c.json({ error: 'Invalid file path' }, 400)
-  }
-  
-  // Check file existence
-  if (!fileExists(path)) {
-    return c.json({ error: 'File not found' }, 404)
-  }
-  
-  return serveFile(path)
+	const path = c.req.param('path')
+
+	// Validate path
+	if (!path || path.includes('..')) {
+		return c.json({ error: 'Invalid file path' }, 400)
+	}
+
+	// Check file existence
+	if (!fileExists(path)) {
+		return c.json({ error: 'File not found' }, 404)
+	}
+
+	return serveFile(path)
 }
 ```
 
@@ -561,32 +558,32 @@ const app = new Hono()
 fileBasedRouting(app, { dir: './routes' })
 
 describe('Routing Patterns', () => {
-  // Static routes
-  test('static route /about', async () => {
-    const res = await app.request('/about')
-    expect(res.status).toBe(200)
-  })
-  
-  // Dynamic routes
-  test('dynamic route /users/:id', async () => {
-    const res = await app.request('/users/123')
-    const data = await res.json()
-    expect(data.user.id).toBe(123)
-  })
-  
-  // Wildcard routes
-  test('wildcard route /files/*', async () => {
-    const res = await app.request('/files/documents/report.pdf')
-    const data = await res.json()
-    expect(data.requestedPath).toBe('documents/report.pdf')
-  })
-  
-  // Route priority
-  test('static route takes priority over dynamic', async () => {
-    const res = await app.request('/users/new')
-    const data = await res.json()
-    expect(data.page).toBe('new-user-form') // from static route
-  })
+	// Static routes
+	test('static route /about', async () => {
+		const res = await app.request('/about')
+		expect(res.status).toBe(200)
+	})
+
+	// Dynamic routes
+	test('dynamic route /users/:id', async () => {
+		const res = await app.request('/users/123')
+		const data = await res.json()
+		expect(data.user.id).toBe(123)
+	})
+
+	// Wildcard routes
+	test('wildcard route /files/*', async () => {
+		const res = await app.request('/files/documents/report.pdf')
+		const data = await res.json()
+		expect(data.requestedPath).toBe('documents/report.pdf')
+	})
+
+	// Route priority
+	test('static route takes priority over dynamic', async () => {
+		const res = await app.request('/users/new')
+		const data = await res.json()
+		expect(data.page).toBe('new-user-form') // from static route
+	})
 })
 ```
 
@@ -594,8 +591,8 @@ describe('Routing Patterns', () => {
 
 Now that you understand routing patterns:
 
-1. Learn about [Dynamic Routes](/guide/dynamic-routes) for advanced parameter handling
-2. Explore [Advanced Features](/guide/advanced-features) for middleware and hooks
-3. Check out the [API Reference](/reference/) for complete documentation
+1. Learn about [Dynamic Routes](/guides/dynamic-routes) for advanced parameter handling
+2. Explore [Advanced Features](/guides/advanced-features) for middleware and hooks
+3. Check out the [API Reference](/reference/api) for complete documentation
 
 Ready to build complex routing structures? Let's continue! 🚀

@@ -40,11 +40,11 @@ mkdir routes
 import type { Context } from 'hono'
 
 export const GET = (c: Context) => {
-  return c.json({ message: '来自 hono-filebased-route 的问候！' })
+	return c.json({ message: '来自 hono-filebased-route 的问候！' })
 }
 
 export const POST = (c: Context) => {
-  return c.json({ message: '收到 POST 请求！' })
+	return c.json({ message: '收到 POST 请求！' })
 }
 ```
 
@@ -61,15 +61,15 @@ const app = new Hono()
 
 // 应用文件路由
 fileBasedRouting(app, {
-  dir: './routes'
+	dir: './routes',
 })
 
 const port = 3000
 console.log(`服务器运行在端口 ${port}`)
 
 serve({
-  fetch: app.fetch,
-  port
+	fetch: app.fetch,
+	port,
 })
 ```
 
@@ -79,11 +79,11 @@ serve({
 
 ```json
 {
-  "scripts": {
-    "dev": "bun run --watch index.ts",
-    "start": "bun run index.ts",
-    "build": "bun build index.ts --outdir ./dist"
-  }
+	"scripts": {
+		"dev": "bun run --watch index.ts",
+		"start": "bun run index.ts",
+		"build": "bun build index.ts --outdir ./dist"
+	}
 }
 ```
 
@@ -121,10 +121,10 @@ curl -X POST http://localhost:3000
 import type { Context } from 'hono'
 
 export const GET = (c: Context) => {
-  return c.json({ 
-    page: '关于',
-    description: '这是关于页面'
-  })
+	return c.json({
+		page: '关于',
+		description: '这是关于页面',
+	})
 }
 ```
 
@@ -138,11 +138,11 @@ export const GET = (c: Context) => {
 import type { Context } from 'hono'
 
 export const GET = (c: Context) => {
-  const id = c.req.param('id')
-  return c.json({ 
-    userId: id,
-    message: `用户资料，ID: ${id}`
-  })
+	const id = c.req.param('id')
+	return c.json({
+		userId: id,
+		message: `用户资料，ID: ${id}`,
+	})
 }
 ```
 
@@ -156,11 +156,11 @@ export const GET = (c: Context) => {
 import type { Context } from 'hono'
 
 export const GET = (c: Context) => {
-  const slug = c.req.param('slug')
-  return c.json({ 
-    slug: slug,
-    message: `博客文章: ${slug}`
-  })
+	const slug = c.req.param('slug')
+	return c.json({
+		slug: slug,
+		message: `博客文章: ${slug}`,
+	})
 }
 ```
 
@@ -187,17 +187,17 @@ my-hono-app/
 
 恭喜！你已经成功设置了 hono-filebased-route。接下来可以探索：
 
-- [基础用法指南](/zh/guide/basic-usage) - 了解更多路由创建方法
-- [路由模式](/zh/guide/routing-patterns) - 理解不同的路由模式
-- [动态路由](/zh/guide/dynamic-routes) - 掌握动态和通配符路由
+- [基础用法指南](/zh/guides/basic-usage) - 了解更多路由创建方法
+- [路由模式](/zh/guides/routing-patterns) - 理解不同的路由模式
+- [动态路由](/zh/guides/dynamic-routes) - 掌握动态和通配符路由
 - [API 参考](/zh/reference/api) - 探索所有可用的 API
 
 ## 需要帮助？
 
 如果遇到任何问题：
 
-1. 查看[故障排除指南](/zh/guide/advanced-features#故障排除)
-2. 查阅[示例](/zh/reference/examples)
+1. 查看[故障排除指南](/zh/guides/advanced-features#故障排除)
+2. 查阅[示例](/zh/examples/basic)
 3. 在 [GitHub](https://github.com/your-repo/hono-filebased-route) 上提交问题
 
 开始编码吧！🚀

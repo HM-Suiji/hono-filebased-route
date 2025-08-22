@@ -27,5 +27,15 @@ export const zhSidebar: DefaultTheme.Sidebar = {
 				{ text: '类型定义', link: `/zh/reference/types` },
 			],
 		},
+		{
+			text: '示例',
+			collapsed: false,
+			items: [
+				{ text: '基础示例', link: '/zh/examples/basic' },
+				{ text: '高级示例', link: '/zh/examples/advanced' },
+				{ text: '最佳实践', link: '/zh/examples/best-practices' },
+				{ text: '项目示例', link: '/zh/examples/projects' },
+			],
+		},
 	],
 }

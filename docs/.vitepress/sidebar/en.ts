@@ -27,5 +27,27 @@ export const enSidebar: DefaultTheme.Sidebar = {
 				{ text: 'Type', link: `/reference/types` },
 			],
 		},
+		{
+			text: 'Examples',
+			collapsed: false,
+			items: [
+				{
+					text: 'Basic Examples',
+					link: '/examples/basic',
+				},
+				{
+					text: 'Advanced Examples',
+					link: '/examples/advanced',
+				},
+				{
+					text: 'Best Practices',
+					link: '/examples/best-practices',
+				},
+				{
+					text: 'Project Examples',
+					link: '/examples/projects',
+				},
+			],
+		},
 	],
 }

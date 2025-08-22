@@ -50,7 +50,7 @@ const app = new Hono()
 
 // Apply file-based routing
 fileBasedRouting(app, {
-  dir: './routes' // Path to your routes directory
+	dir: './routes', // Path to your routes directory
 })
 
 export default app
@@ -72,7 +72,7 @@ Create `routes/index.ts`:
 import type { Context } from 'hono'
 
 export const GET = (c: Context) => {
-  return c.json({ message: 'Hello World!' })
+	return c.json({ message: 'Hello World!' })
 }
 ```
 
@@ -84,10 +84,10 @@ The `fileBasedRouting` function accepts a configuration object with the followin
 
 ```typescript
 fileBasedRouting(app, {
-  dir: './routes',           // Required: Routes directory path
-  verbose: false,           // Optional: Enable verbose logging
-  prefix: '/api',           // Optional: Add prefix to all routes
-  exclude: ['_helpers'],    // Optional: Exclude certain directories/files
+	dir: './routes', // Required: Routes directory path
+	verbose: false, // Optional: Enable verbose logging
+	prefix: '/api', // Optional: Add prefix to all routes
+	exclude: ['_helpers'], // Optional: Exclude certain directories/files
 })
 ```
 
@@ -95,23 +95,23 @@ fileBasedRouting(app, {
 
 ```typescript
 interface FileBasedRoutingOptions {
-  /** Path to the routes directory */
-  dir: string
-  
-  /** Enable verbose logging during route registration */
-  verbose?: boolean
-  
-  /** Prefix to add to all routes */
-  prefix?: string
-  
-  /** Array of file/directory names to exclude */
-  exclude?: string[]
-  
-  /** Custom file extensions to process (default: ['.ts', '.js']) */
-  extensions?: string[]
-  
-  /** Custom route transformation function */
-  transform?: (path: string) => string
+	/** Path to the routes directory */
+	dir: string
+
+	/** Enable verbose logging during route registration */
+	verbose?: boolean
+
+	/** Prefix to add to all routes */
+	prefix?: string
+
+	/** Array of file/directory names to exclude */
+	exclude?: string[]
+
+	/** Custom file extensions to process (default: ['.ts', '.js']) */
+	extensions?: string[]
+
+	/** Custom route transformation function */
+	transform?: (path: string) => string
 }
 ```
 
@@ -121,8 +121,8 @@ interface FileBasedRoutingOptions {
 
 ```typescript
 fileBasedRouting(app, {
-  dir: './routes',
-  prefix: '/api/v1'
+	dir: './routes',
+	prefix: '/api/v1',
 })
 
 // routes/users.ts becomes /api/v1/users
@@ -132,8 +132,8 @@ fileBasedRouting(app, {
 
 ```typescript
 fileBasedRouting(app, {
-  dir: './routes',
-  exclude: ['_helpers', '_utils', 'test']
+	dir: './routes',
+	exclude: ['_helpers', '_utils', 'test'],
 })
 
 // Files in _helpers/, _utils/, and test/ directories will be ignored
@@ -143,8 +143,8 @@ fileBasedRouting(app, {
 
 ```typescript
 fileBasedRouting(app, {
-  dir: './routes',
-  extensions: ['.ts', '.js', '.mjs']
+	dir: './routes',
+	extensions: ['.ts', '.js', '.mjs'],
 })
 ```
 
@@ -152,11 +152,11 @@ fileBasedRouting(app, {
 
 ```typescript
 fileBasedRouting(app, {
-  dir: './routes',
-  transform: (path: string) => {
-    // Convert kebab-case to camelCase in URLs
-    return path.replace(/-([a-z])/g, (_, letter) => letter.toUpperCase())
-  }
+	dir: './routes',
+	transform: (path: string) => {
+		// Convert kebab-case to camelCase in URLs
+		return path.replace(/-([a-z])/g, (_, letter) => letter.toUpperCase())
+	},
 })
 ```
 
@@ -164,8 +164,8 @@ fileBasedRouting(app, {
 
 ```typescript
 fileBasedRouting(app, {
-  dir: './routes',
-  verbose: true
+	dir: './routes',
+	verbose: true,
 })
 
 // Output:
@@ -221,9 +221,9 @@ project/
 import { fileBasedRouting } from 'hono-filebased-route'
 
 fileBasedRouting(app, {
-  dir: './routes',
-  verbose: true,           // Enable logging in development
-  exclude: ['test', '_dev']
+	dir: './routes',
+	verbose: true, // Enable logging in development
+	exclude: ['test', '_dev'],
 })
 ```
 
@@ -234,9 +234,9 @@ fileBasedRouting(app, {
 import { fileBasedRouting } from 'hono-filebased-route'
 
 fileBasedRouting(app, {
-  dir: './dist/routes',     // Use compiled routes
-  verbose: false,          // Disable logging in production
-  exclude: ['test', '_dev', '_internal']
+	dir: './dist/routes', // Use compiled routes
+	verbose: false, // Disable logging in production
+	exclude: ['test', '_dev', '_internal'],
 })
 ```
 
@@ -251,11 +251,11 @@ If you're using Vite, you might need to configure it to handle dynamic imports:
 import { defineConfig } from 'vite'
 
 export default defineConfig({
-  build: {
-    rollupOptions: {
-      external: ['hono-filebased-route']
-    }
-  }
+	build: {
+		rollupOptions: {
+			external: ['hono-filebased-route'],
+		},
+	},
 })
 ```
 
@@ -265,19 +265,16 @@ Ensure your `tsconfig.json` includes the routes directory:
 
 ```json
 {
-  "compilerOptions": {
-    "target": "ES2022",
-    "module": "ESNext",
-    "moduleResolution": "bundler",
-    "strict": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
-  },
-  "include": [
-    "src/**/*",
-    "routes/**/*"
-  ]
+	"compilerOptions": {
+		"target": "ES2022",
+		"module": "ESNext",
+		"moduleResolution": "bundler",
+		"strict": true,
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+		"forceConsistentCasingInFileNames": true
+	},
+	"include": ["src/**/*", "routes/**/*"]
 }
 ```
 
@@ -308,8 +305,8 @@ Enable debug mode to troubleshoot routing issues:
 
 ```typescript
 fileBasedRouting(app, {
-  dir: './routes',
-  verbose: true
+	dir: './routes',
+	verbose: true,
 })
 ```
 
@@ -317,9 +314,9 @@ fileBasedRouting(app, {
 
 Now that you have hono-filebased-route installed and configured:
 
-1. Learn about [Basic Usage](/guide/basic-usage)
-2. Explore [Routing Patterns](/guide/routing-patterns)
-3. Understand [Dynamic Routes](/guide/dynamic-routes)
-4. Check out [Advanced Features](/guide/advanced-features)
+1. Learn about [Basic Usage](/guides/basic-usage)
+2. Explore [Routing Patterns](/guides/routing-patterns)
+3. Understand [Dynamic Routes](/guides/dynamic-routes)
+4. Check out [Advanced Features](/guides/advanced-features)
 
 Ready to start building? Let's create some routes! 🚀

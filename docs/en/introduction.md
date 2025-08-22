@@ -111,7 +111,7 @@ hono-filebased-route is perfect for:
 
 ## Getting Started
 
-Ready to dive in? Check out our [Quick Start Guide](/quick-started) to get up and running in minutes, or explore the [Installation Guide](/guide/installation) for more detailed setup instructions.
+Ready to dive in? Check out our [Quick Start Guide](/quick-started) to get up and running in minutes, or explore the [Installation Guide](/guides/installation) for more detailed setup instructions.
 
 ## Community and Support
 

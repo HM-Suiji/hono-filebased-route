@@ -46,7 +46,7 @@ export const zhConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
 		darkModeSwitchLabel: '深浅模式',
 		footer: {
 			message: 'Released under the MIT License.',
-			copyright: `Copyright © ${dayjs().format('YYYY')} xxx有限公司`,
+			copyright: `Copyright © ${dayjs().format('YYYY')} HM Suiji`,
 		},
 		outline: {
 			level: [1, 6],

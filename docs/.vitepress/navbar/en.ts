@@ -8,5 +8,5 @@ export const enNav: DefaultTheme.NavItem[] = [
 		link: '/quick-started/',
 		activeMatch: '/quick-started/',
 	},
-	{ text: 'reference', link: '/reference/', activeMatch: '/reference/' },
+	{ text: 'reference', link: '/reference/api', activeMatch: '/reference/api' },
 ]

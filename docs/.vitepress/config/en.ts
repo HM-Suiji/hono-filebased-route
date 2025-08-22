@@ -9,9 +9,7 @@ export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
 		sidebar: enSidebar,
 		footer: {
 			message: 'Released under the MIT License.',
-			copyright: `Copyright © ${dayjs().format(
-				'YYYY'
-			)} xxx Information Technology Co., Ltd.`,
+			copyright: `Copyright © ${dayjs().format('YYYY')} HM Suiji`,
 		},
 		outline: {
 			level: [1, 6],

@@ -1,0 +1,28 @@
+<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="64.000000" height="64.000000" fill="none">
+	<defs>
+		<clipPath id="clipPath_0">
+			<rect width="74.000000" height="66.000000" x="12.000000" y="7.000000" fill="rgb(255,255,255)" />
+		</clipPath>
+		<clipPath id="clipPath_1">
+			<rect width="52.000004" height="62.117645" x="6.000000" y="1.176483" fill="rgb(255,255,255)" />
+		</clipPath>
+		<linearGradient id="paint_linear_0" x1="6" x2="6" y1="1.17648315" y2="63.2941284" gradientUnits="userSpaceOnUse">
+			<stop stop-color="rgb(255,136,68)" offset="0" stop-opacity="1" />
+			<stop stop-color="rgb(255,51,0)" offset="1" stop-opacity="1" />
+		</linearGradient>
+	</defs>
+	<rect id="容器 1" width="64.000000" height="64.000000" x="0.000000" y="0.000000" fill="rgb(255,255,255)" fill-opacity="0" />
+	<g id="File 1" customFrame="url(#clipPath_0)">
+		<rect id="File 1" width="74.000000" height="66.000000" x="12.000000" y="7.000000" />
+		<g id="logo (2) 1" customFrame="url(#clipPath_1)">
+			<rect id="logo (2) 1" width="52.000004" height="62.117645" x="6.000000" y="1.176483" />
+			<path id="矢量 4" d="M13.5263 17.0228L18.3158 22.7275C18.3158 22.7275 24.4737 11.3181 33.3684 1.17648C45 13.8536 58 31.6015 58 41.7431C58 54.4202 45 63.2941 32.6842 63.2941C17.6316 63.2941 6 52.5186 6 39.8415C6 36.0384 8.05263 24.6291 13.5263 17.0228Z" fill="url(#paint_linear_0)" fill-rule="nonzero" />
+			<path id="矢量 5" d="M32.6842 14.4874C64.8421 46.8139 42.2632 56.3217 32.6842 56.3217C25.1579 56.3217 -2.21053 49.3493 32.6842 14.4874Z" fill="rgb(255,153,85)" fill-rule="nonzero" />
+			<g id="组合 1">
+				<path id="矢量 1" d="M37.9141 52.5052L22 52.5052L22 27L42.8149 27L42.8149 48.0433L37.9141 52.5052Z" fill="rgb(121,134,203)" fill-rule="nonzero" />
+				<path id="矢量 2" d="M25.4704 41.6653L38.6519 41.6653L38.6519 42.9381L25.4704 42.9381L25.4704 41.6653ZM25.4704 36.567L38.6519 36.567L38.6519 37.8399L25.4704 37.8399L25.4704 36.567ZM25.4704 31.4619L38.6519 31.4619L38.6519 32.7416L25.4704 32.7416L25.4704 31.4619Z" fill="rgb(159,168,218)" fill-rule="nonzero" />
+				<path id="矢量 3" d="M38.4637 48.1955L42.6267 48.1955L38.4637 52.021L38.4637 48.1955Z" fill="rgb(92,107,192)" fill-rule="nonzero" />
+			</g>
+		</g>
+	</g>
+</svg>

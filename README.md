@@ -5,6 +5,7 @@
 ## 特性
 
 - 🚀 **文件路由系统**: 基于文件结构自动生成路由
+- ⚡ **Bun 运行时**: 快速的 JavaScript 运行时
 - 🔥 **热重载**: 开发时自动重新加载
 - 📁 **动态路由**: 支持动态参数和通配符路由
 - 🎯 **类型安全**: 完整的 TypeScript 支持
@@ -16,13 +17,13 @@
 
 ### 基本路由实例
 
-| 文件路径 | 路由路径 | 说明 |
-|---------|---------|------|
-| `src/routes/index.ts` | `/` | 根路由 |
-| `src/routes/about.ts` | `/about` | 静态路由 |
-| `src/routes/users/index.ts` | `/users` | 嵌套路由 |
-| `src/routes/users/[id].ts` | `/users/:id` | 动态参数路由 |
-| `src/routes/articles/[...slug].ts` | `/articles/*` | 通配符路由 |
+| 文件路径                           | 路由路径      | 说明         |
+| ---------------------------------- | ------------- | ------------ |
+| `src/routes/index.ts`              | `/`           | 根路由       |
+| `src/routes/about.ts`              | `/about`      | 静态路由     |
+| `src/routes/users/index.ts`        | `/users`      | 嵌套路由     |
+| `src/routes/users/[id].ts`         | `/users/:id`  | 动态参数路由 |
+| `src/routes/articles/[...slug].ts` | `/articles/*` | 通配符路由   |
 
 ## 安装
 
@@ -35,7 +36,7 @@ yarn install
 # or
 pnpm install
 # or
-bun install
+bun install # 建议
 ```
 
 ## 使用方法
@@ -46,30 +47,30 @@ bun install
 
 ```bash
 # 构建所有包
-pnpm run build
+bun run build
 
 # 启动所有开发服务
-pnpm run dev
+bun run dev
 
 # 运行所有测试
-pnpm run test
+bun run test
 
 # 类型检查
-pnpm run type-check
+bun run type-check
 
 # 清理构建产物
-pnpm run clean
+bun run clean
 ```
 
 ### 开发模式
 
 ```bash
 # 使用 Turborepo 启动开发服务器
-pnpm run dev
+bun run dev
 
 # 或者直接启动示例项目
 cd examples/basic-example
-pnpm run dev
+bun run dev
 ```
 
 这将启动开发服务器，支持热重载，访问 <http://localhost:3000>
@@ -78,29 +79,29 @@ pnpm run dev
 
 ```bash
 # 先构建所有包
-pnpm run build
+bun run build
 
 # 启动示例应用
 cd examples/basic-example
-pnpm run start
+bun run start
 ```
 
 ### 构建项目
 
 ```bash
 # 构建所有包（使用 Turborepo 缓存和并行构建）
-pnpm run build
+bun run build
 
 # 或者构建单个包
 cd packages/core
-pnpm run build
+bun run build
 ```
 
 ### 手动生成路由
 
 ```bash
 cd examples/basic-example
-pnpm run generate-routes
+bun run generate-routes
 ```
 
 ## 项目结构
@@ -144,7 +145,7 @@ hono-filebased-route/
 ├── turborepo.json                   # Turborepo 配置文件
 ├── package.json                     # 根工作区配置
 ├── tsconfig.json                    # TypeScript 基础配置
-└── pnpm.lockb                        # pnpm 锁定文件
+└── bun.lockb                        # bun 锁定文件
 ```
 
 ## 创建路由
@@ -156,12 +157,12 @@ import { Context } from 'hono'
 
 // GET 请求处理
 export function GET(c: Context) {
-  return c.json({ message: 'Hello from GET' })
+	return c.json({ message: 'Hello from GET' })
 }
 
 // POST 请求处理
 export function POST(c: Context) {
-  return c.json({ message: 'Hello from POST' })
+	return c.json({ message: 'Hello from POST' })
 }
 ```
 
@@ -173,8 +174,8 @@ export function POST(c: Context) {
 import { Context } from 'hono'
 
 export function GET(c: Context) {
-  const id = c.req.param('id')
-  return c.json({ userId: id })
+	const id = c.req.param('id')
+	return c.json({ userId: id })
 }
 ```
 
@@ -188,7 +189,7 @@ export function GET(c: Context) {
 import { Context } from 'hono'
 
 export function GET(c: Context, slug: string[]) {
-  return c.json({ slug })
+	return c.json({ slug })
 }
 ```
 
@@ -203,28 +204,28 @@ export function GET(c: Context, slug: string[]) {
 
 ### 根目录脚本（Turborepo）
 
-- `pnpm run build`: 构建所有包（支持缓存和并行构建）
-- `pnpm run dev`: 启动所有开发服务
-- `pnpm run test`: 运行所有测试
-- `pnpm run lint`: 代码检查
-- `pnpm run type-check`: TypeScript 类型检查
-- `pnpm run clean`: 清理所有构建产物
-- `pnpm run test:basic`: 快速启动基础示例
+- `turbo run build`: 构建所有包（支持缓存和并行构建）
+- `turbo run dev`: 启动所有开发服务
+- `turbo run test`: 运行所有测试
+- `turbo run lint`: 代码检查
+- `turbo run type-check`: TypeScript 类型检查
+- `turbo run clean`: 清理所有构建产物
+- `turbo run test:basic`: 快速启动基础示例
 
 ### 包级别脚本
 
-- `pnpm run build`: 构建当前包
-- `pnpm run dev`: 开发模式（包含热重载）
-- `pnpm run clean`: 清理构建产物
-- `pnpm run generate-routes`: 生成路由配置（仅示例项目）
+- `bun run build`: 构建当前包
+- `bun run dev`: 开发模式（包含热重载）
+- `bun run clean`: 清理构建产物
+- `bun run generate-routes`: 生成路由配置（仅示例项目）
 
 ## 技术栈
 
 - **[Hono](https://hono.dev/)**: 轻量级 Web 框架
-- **[pnpm](https://pnpm.sh/)**: 快速的 JavaScript 运行时
+- **[bun](https://bun.sh/)**: 快速的 JavaScript 运行时
 - **[Turborepo](https://turbo.build/)**: 高性能 monorepo 构建系统
 - **TypeScript**: 类型安全的 JavaScript
-- **Workspace**: pnpm 工作区管理
+- **Workspace**: bun 工作区管理
 
 ## 许可证
 

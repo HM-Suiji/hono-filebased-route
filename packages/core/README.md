@@ -5,7 +5,7 @@
 ## 特性
 
 - 🚀 **文件路由系统**: 基于文件结构自动生成路由
-- ⚡ **高效的 Hono 路由**: 快速的 hono 路由系统
+- ⚡ **Bun 运行时**: 快速的 JavaScript 运行时
 - 🔥 **热重载**: 开发时自动重新加载
 - 📁 **动态路由**: 支持动态参数和通配符路由
 - 🎯 **类型安全**: 完整的 TypeScript 支持
@@ -17,13 +17,13 @@
 
 ### 基本路由实例
 
-| 文件路径 | 路由路径 | 说明 |
-|---------|---------|------|
-| `src/routes/index.ts` | `/` | 根路由 |
-| `src/routes/about.ts` | `/about` | 静态路由 |
-| `src/routes/users/index.ts` | `/users` | 嵌套路由 |
-| `src/routes/users/[id].ts` | `/users/:id` | 动态参数路由 |
-| `src/routes/articles/[...slug].ts` | `/articles/*` | 通配符路由 |
+| 文件路径                           | 路由路径      | 说明         |
+| ---------------------------------- | ------------- | ------------ |
+| `src/routes/index.ts`              | `/`           | 根路由       |
+| `src/routes/about.ts`              | `/about`      | 静态路由     |
+| `src/routes/users/index.ts`        | `/users`      | 嵌套路由     |
+| `src/routes/users/[id].ts`         | `/users/:id`  | 动态参数路由 |
+| `src/routes/articles/[...slug].ts` | `/articles/*` | 通配符路由   |
 
 ## 安装
 
@@ -32,9 +32,9 @@
 ```bash
 npm install
 # or
-yarn add 
+yarn add
 # or
-pnpm add 
+pnpm add
 # or
 bun add
 ```
@@ -47,30 +47,30 @@ bun add
 
 ```bash
 # 构建所有包
-npm run build
+bun run build
 
 # 启动所有开发服务
-npm run dev
+bun run dev
 
 # 运行所有测试
-npm run test
+bun run test
 
 # 类型检查
-npm run type-check
+bun run type-check
 
 # 清理构建产物
-npm run clean
+bun run clean
 ```
 
 ### 开发模式
 
 ```bash
 # 使用 Turborepo 启动开发服务器
-npm run dev
+bun run dev
 
 # 或者直接启动示例项目
 cd examples/basic-example
-npm run dev
+bun run dev
 ```
 
 这将启动开发服务器，支持热重载，访问 <http://localhost:3000>
@@ -79,17 +79,17 @@ npm run dev
 
 ```bash
 # 先构建所有包
-npm run build
+bun run build
 
 # 启动示例应用
 cd examples/basic-example
-npm run start
+bun run start
 ```
 
 ### 手动生成路由
 
 ```bash
-npm run generate-routes
+bun run generate-routes
 ```
 
 ## 创建路由
@@ -101,12 +101,12 @@ import { Context } from 'hono'
 
 // GET 请求处理
 export function GET(c: Context) {
-  return c.json({ message: 'Hello from GET' })
+	return c.json({ message: 'Hello from GET' })
 }
 
 // POST 请求处理
 export function POST(c: Context) {
-  return c.json({ message: 'Hello from POST' })
+	return c.json({ message: 'Hello from POST' })
 }
 ```
 
@@ -118,8 +118,8 @@ export function POST(c: Context) {
 import { Context } from 'hono'
 
 export function GET(c: Context) {
-  const id = c.req.param('id')
-  return c.json({ userId: id })
+	const id = c.req.param('id')
+	return c.json({ userId: id })
 }
 ```
 
@@ -133,7 +133,7 @@ export function GET(c: Context) {
 import { Context } from 'hono'
 
 export function GET(c: Context, slug: string[]) {
-  return c.json({ slug })
+	return c.json({ slug })
 }
 ```
 
@@ -148,25 +148,25 @@ export function GET(c: Context, slug: string[]) {
 
 ### 根目录脚本（Turborepo）
 
-- `npm run build`: 构建所有包（支持缓存和并行构建）
-- `npm run dev`: 启动所有开发服务
-- `npm run test`: 运行所有测试
-- `npm run lint`: 代码检查
-- `npm run type-check`: TypeScript 类型检查
-- `npm run clean`: 清理所有构建产物
-- `npm run test:basic`: 快速启动基础示例
+- `bun run build`: 构建所有包（支持缓存和并行构建）
+- `bun run dev`: 启动所有开发服务
+- `bun run test`: 运行所有测试
+- `bun run lint`: 代码检查
+- `bun run type-check`: TypeScript 类型检查
+- `bun run clean`: 清理所有构建产物
+- `bun run test:basic`: 快速启动基础示例
 
 ### 包级别脚本
 
-- `npm run build`: 构建当前包
-- `npm run dev`: 开发模式（包含热重载）
-- `npm run clean`: 清理构建产物
-- `npm run generate-routes`: 生成路由配置（仅示例项目）
+- `bun run build`: 构建当前包
+- `bun run dev`: 开发模式（包含热重载）
+- `bun run clean`: 清理构建产物
+- `bun run generate-routes`: 生成路由配置（仅示例项目）
 
 ## 技术栈
 
 - **[Hono](https://hono.dev/)**: 轻量级 Web 框架
-- **[npm](https://npm.sh/)**: 快速的 JavaScript 运行时
+- **[bun](https://bun.sh/)**: 快速的 JavaScript 运行时
 - **[Turborepo](https://turbo.build/)**: 高性能 monorepo 构建系统
 - **TypeScript**: 类型安全的 JavaScript
 

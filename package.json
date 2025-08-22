@@ -2,6 +2,10 @@
   "name": "hono-filebased-route",
   "version": "0.2.0",
   "private": true,
+  "workspaces": [
+    "packages/*",
+    "examples/*"
+  ],
   "description": "A core utility for file-based routing in Hono applications.",
   "author": "HM Suiji <hmsuiji@gmail.com>",
   "keywords": [
@@ -17,7 +21,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/HM-Suiji/hono-filebased-routing.git"
+    "url": "https://github.com/HM-Suiji/hono-filebased-route.git"
   },
   "scripts": {
     "build": "turbo run build",
@@ -32,11 +36,12 @@
     "hono": "^4.9.2"
   },
   "devDependencies": {
+    "@types/bun": "^1.2.20",
     "turbo": "^2.5.6",
     "typescript": "^5.0.0"
   },
   "engines": {
     "node": ">=18"
   },
-  "packageManager": "pnpm@10.14.0"
+  "packageManager": "bun@1.1.34"
 }

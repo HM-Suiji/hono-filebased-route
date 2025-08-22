@@ -1,11 +1,12 @@
 ---
 # https://vitepress.dev/reference/default-theme-home-page
 layout: home
+lang: en
 
 hero:
-  name: "Hono Filebased Route"
-  text: "A core utility for file-based routing in Hono applications."
-  tagline: My great project tagline
+  name: 'Hono Filebased Route'
+  text: 'A core utility for file-based routing in Hono applications.'
+  tagline: No longer mechanical, just automatic.
   actions:
     - theme: brand
       text: Markdown Examples
@@ -22,4 +23,3 @@ features:
   - title: Feature C
     details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
 ---
-

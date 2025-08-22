@@ -69,7 +69,7 @@ bun run clean
 bun run dev
 
 # 或者直接启动示例项目
-cd examples/basic-example
+cd examples/bun
 bun run dev
 ```
 
@@ -82,7 +82,7 @@ bun run dev
 bun run build
 
 # 启动示例应用
-cd examples/basic-example
+cd examples/bun
 bun run start
 ```
 

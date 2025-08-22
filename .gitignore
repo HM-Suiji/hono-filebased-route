@@ -12,3 +12,7 @@ generated-routes.ts
 
 # build
 dist/
+
+# vitepress
+docs/.vitepress/dist/
+docs/.vitepress/cache/

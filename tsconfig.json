@@ -13,14 +13,24 @@
     "moduleDetection": "force",
     "baseUrl": ".",
     "paths": {
-      "@hono-filebased-route/core": ["./packages/core/src"],
-      "@hono-filebased-route/vite-plugin": ["./packages/vite-plugin/src"]
+      "@hono-filebased-route/core": [
+        "./packages/core/src"
+      ],
+      "@hono-filebased-route/vite-plugin": [
+        "./packages/vite-plugin/src"
+      ]
     }
   },
   "references": [
-    { "path": "./packages/core" },
-    { "path": "./packages/vite-plugin" },
-    { "path": "./examples/basic-example" }
+    {
+      "path": "./packages/core"
+    },
+    {
+      "path": "./packages/vite-plugin"
+    },
+    {
+      "path": "./examples/bun"
+    }
   ],
   "include": [],
   "exclude": [

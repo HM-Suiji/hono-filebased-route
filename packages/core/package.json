@@ -23,7 +23,6 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "bun run build.ts",
-    "dev": "bun build --watch",
     "clean": "rm -rf dist"
   },
   "dependencies": {

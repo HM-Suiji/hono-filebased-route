@@ -69,7 +69,7 @@ bun run clean
 bun run dev
 
 # 或者直接启动示例项目
-cd examples/basic-example
+cd examples/bun
 bun run dev
 ```
 
@@ -82,7 +82,7 @@ bun run dev
 bun run build
 
 # 启动示例应用
-cd examples/basic-example
+cd examples/bun
 bun run start
 ```
 
@@ -100,7 +100,7 @@ bun run build
 ### 手动生成路由
 
 ```bash
-cd examples/basic-example
+cd examples/bun
 bun run generate-routes
 ```
 
@@ -124,7 +124,7 @@ hono-filebased-route/
 │       ├── package.json             # @hono-filebased-route/vite-plugin
 │       └── tsconfig.json
 ├── examples/                        # 示例项目目录
-│   └── basic-example/               # 基础使用示例
+│   └── bun/               # 基础使用示例
 │       ├── src/
 │       │   ├── routes/              # 路由文件目录
 │       │   │   ├── index.ts         # 根路由 (/)
@@ -138,7 +138,7 @@ hono-filebased-route/
 │       │   └── generated-routes.ts  # 自动生成的路由配置
 │       ├── scripts/
 │       │   └── generate-routes.ts   # 路由生成脚本
-│       ├── package.json             # @hono-filebased-route/basic-example
+│       ├── package.json             # @hono-filebased-route/bun
 │       └── tsconfig.json
 ├── .trae/                           # 项目文档目录
 │   └── documents/                   # 设计和规划文档

@@ -4,7 +4,8 @@
   "private": true,
   "workspaces": [
     "packages/*",
-    "examples/*"
+    "examples/*",
+    "docs"
   ],
   "description": "A core utility for file-based routing in Hono applications.",
   "author": "HM Suiji <hmsuiji@gmail.com>",
@@ -30,15 +31,21 @@
     "lint": "turbo run lint",
     "type-check": "turbo run type-check",
     "clean": "turbo run clean",
-    "test:basic": "cd examples/basic-example && bun dev"
+    "test:bun": "cd examples/bun && bun dev",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs"
   },
   "dependencies": {
     "hono": "^4.9.2"
   },
   "devDependencies": {
+    "@tailwindcss/vite": "^4.1.12",
     "@types/bun": "^1.2.20",
+    "tailwindcss": "^4.1.12",
     "turbo": "^2.5.6",
-    "typescript": "^5.0.0"
+    "typescript": "^5.0.0",
+    "vitepress": "^2.0.0-alpha.12"
   },
   "engines": {
     "node": ">=18"

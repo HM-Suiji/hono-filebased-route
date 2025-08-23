@@ -3,7 +3,7 @@
   "version": "0.2.1",
   "private": true,
   "workspaces": [
-    "packages/*",
+    "packages/core",
     "examples/*"
   ],
   "description": "A core utility for file-based routing in Hono applications.",
@@ -33,11 +33,14 @@
     "test:bun": "cd examples/bun && bun dev",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
-    "docs:preview": "vitepress preview docs"
+    "docs:preview": "vitepress preview docs",
+    "publish-packages": "turbo run build lint test && changeset version && changeset publish"
   },
   "dependencies": {
+    "@changesets/cli": "^2.29.6",
     "dayjs": "^1.11.13",
     "hono": "^4.9.2",
+    "tsc": "^2.0.4",
     "vitepress-markdown-timeline": "^1.2.2"
   },
   "devDependencies": {
@@ -46,11 +49,11 @@
     "markdown-it-mathjax3": "^4.3.2",
     "tailwindcss": "^4.1.12",
     "turbo": "^2.5.6",
-    "typescript": "^5.0.0",
+    "typescript": "^5.9.2",
     "vitepress": "^2.0.0-alpha.12"
   },
   "engines": {
     "node": ">=18"
   },
-  "packageManager": "bun@1.1.34"
+  "packageManager": "bun@1.2.20"
 }

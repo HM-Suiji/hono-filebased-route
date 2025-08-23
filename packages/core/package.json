@@ -41,5 +41,8 @@
     "hono": {
       "optional": false
     }
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

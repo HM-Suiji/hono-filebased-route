@@ -4,6 +4,7 @@
   "private": true,
   "workspaces": [
     "packages/core",
+    "packages/runtime",
     "examples/*"
   ],
   "description": "A core utility for file-based routing in Hono applications.",

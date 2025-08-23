@@ -1,0 +1,46 @@
+{
+  "name": "@hono-filebased-route/runtime",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "A core utility for file-based routing in Hono applications.",
+  "author": "HM Suiji <hmsuiji@gmail.com>",
+  "keywords": [
+    "hono",
+    "router",
+    "file-based",
+    "routing",
+    "backend",
+    "framework",
+    "typescript",
+    "file-based-route"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/HM-Suiji/hono-filebased-route.git"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "bun run build.ts",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "hono": "^4.9.2",
+    "path": "^0.12.7",
+    "@hono-filebased-route/core": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "bun-plugin-dts": "^0.3.0",
+    "typescript": "^5.0.0"
+  },
+  "peerDependenciesMeta": {
+    "hono": {
+      "optional": false
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

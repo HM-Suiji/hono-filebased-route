@@ -1,15 +1,13 @@
 {
-  "name": "@hono-filebased-route/example-bun",
+  "name": "@hono-filebased-route/example-runtime",
   "version": "0.2.0",
   "private": true,
   "type": "module",
   "scripts": {
-    "generate-routes": "bun run scripts/generate-routes.ts",
-    "predev": "bun run generate-routes",
     "dev": "bun --hot --watch src/main.ts"
   },
   "dependencies": {
-    "@hono-filebased-route/core": "workspace:*",
+    "@hono-filebased-route/runtime": "workspace:*",
     "hono": "^4.9.2"
   },
   "devDependencies": {

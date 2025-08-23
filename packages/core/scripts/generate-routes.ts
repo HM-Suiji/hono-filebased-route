@@ -36,9 +36,10 @@ export async function generateRoutesFile(
 		const tempHonoVar = `honoApp${moduleName}`
 		routeDefinitions.push(`  const ${tempHonoVar} = new Hono();`)
 
-		for await (const method of methods) {
-			const fileUrl = pathToFileURL(file).href
-			const module = await import(fileUrl)
+		const fileUrl = pathToFileURL(file).href
+		const module = await import(fileUrl)
+
+		for (const method of methods) {
 			if (typeof module[method] === 'function') {
 				if (routePath.endsWith('/*')) {
 					const len = routePath.replace(/\/\*$/g, '').length + 1
@@ -52,11 +53,7 @@ export async function generateRoutesFile(
 			}
 		}
 
-		if (routePath === '/') {
-			routeDefinitions.push(`  mainApp.route('${routePath}', ${tempHonoVar});`)
-		} else {
-			routeDefinitions.push(`  mainApp.route('${routePath}', ${tempHonoVar});`)
-		}
+		routeDefinitions.push(`  mainApp.route('${routePath}', ${tempHonoVar});`)
 	}
 
 	const fileContent = `

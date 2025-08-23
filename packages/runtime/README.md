@@ -1,6 +1,6 @@
-# Hono File-Based Routing Core
+# Hono File-Based Routing Runtime
 
-一个基于 Hono 框架的文件路由系统，使用 Turborepo 管理的 monorepo 项目，支持类似 Next.js 的文件路由模式。
+一个基于 Hono 框架的文件路由系统运行时，使用 Turborepo 管理的 monorepo 项目，支持类似 Next.js 的文件路由模式。
 
 ## 特性
 
@@ -101,12 +101,12 @@ import { Context } from 'hono'
 
 // GET 请求处理
 export function GET(c: Context) {
-	return c.json({ message: 'Hello from GET' })
+ return c.json({ message: 'Hello from GET' })
 }
 
 // POST 请求处理
 export function POST(c: Context) {
-	return c.json({ message: 'Hello from POST' })
+ return c.json({ message: 'Hello from POST' })
 }
 ```
 
@@ -118,8 +118,8 @@ export function POST(c: Context) {
 import { Context } from 'hono'
 
 export function GET(c: Context) {
-	const id = c.req.param('id')
-	return c.json({ userId: id })
+ const id = c.req.param('id')
+ return c.json({ userId: id })
 }
 ```
 
@@ -133,7 +133,7 @@ export function GET(c: Context) {
 import { Context } from 'hono'
 
 export function GET(c: Context, slug: string[]) {
-	return c.json({ slug })
+ return c.json({ slug })
 }
 ```
 

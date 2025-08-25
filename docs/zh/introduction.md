@@ -128,7 +128,7 @@ hono-filebased-route 非常适合：
 
 ## 社区和支持
 
-- **GitHub**：[仓库](https://github.com/your-repo/hono-filebased-route)
+- **GitHub**：[仓库](https://github.com/HM-Suiji/hono-filebased-route)
 - **问题**：报告错误和请求功能
 - **讨论**：社区讨论和问题
 - **文档**：这个综合指南

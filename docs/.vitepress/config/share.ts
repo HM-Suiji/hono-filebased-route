@@ -90,6 +90,10 @@ export const sharedConfig = defineConfig({
 		logo: '/logo.svg',
 		socialLinks: [
 			{
+				icon: 'npm',
+				link: 'https://www.npmjs.com/package/@hono-filebased-route/core',
+			},
+			{
 				icon: 'github',
 				link: 'https://github.com/HM-Suiji/hono-filebased-route',
 			},

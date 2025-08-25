@@ -198,6 +198,6 @@ my-hono-app/
 
 1. 查看[故障排除指南](/zh/guides/advanced-features#故障排除)
 2. 查阅[示例](/zh/examples/basic)
-3. 在 [GitHub](https://github.com/your-repo/hono-filebased-route) 上提交问题
+3. 在 [GitHub](https://github.com/HM-Suiji/hono-filebased-route) 上提交问题
 
 开始编码吧！🚀

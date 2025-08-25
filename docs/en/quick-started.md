@@ -198,6 +198,6 @@ If you encounter any issues:
 
 1. Check the [troubleshooting guide](/guides/advanced-features#troubleshooting)
 2. Review the [examples](/examples/basic)
-3. Open an issue on [GitHub](https://github.com/your-repo/hono-filebased-route)
+3. Open an issue on [GitHub](https://github.com/HM-Suiji/hono-filebased-route)
 
 Happy coding! 🚀

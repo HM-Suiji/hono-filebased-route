@@ -1,7 +1,8 @@
 import { writeFile } from 'fs/promises'
-import { getFiles, getRoutePath } from '../utils/load-routes-utils'
+import { getExportedHttpMethods, getFiles, getRoutePath } from '../utils/load-routes-utils'
 import path from 'path'
 import { pathToFileURL } from 'url'
+import { METHODS } from '../types'
 
 const ROUTES_DIR = './src/routes'
 const OUTPUT_FILE = './src/generated-routes.ts'
@@ -17,7 +18,6 @@ export async function generateRoutesFile(
 
 	const importStatements: string[] = []
 	const routeDefinitions: string[] = []
-	const methods = ['GET', 'POST']
 
 	importStatements.push(`import { Hono } from 'hono';`)
 
@@ -37,11 +37,10 @@ export async function generateRoutesFile(
 		const tempHonoVar = `honoApp${moduleName}`
 		routeDefinitions.push(`  const ${tempHonoVar} = new Hono();`)
 
-		const fileUrl = pathToFileURL(file).href
-		const module = await import(fileUrl)
+		const exportedMethods = getExportedHttpMethods(file);
 
-		for (const method of methods) {
-			if (typeof module[method] === 'function') {
+		for (const method of METHODS) {
+			if (exportedMethods[method]) {
 				if (routePath.endsWith('/*')) {
 					const len = routePath.replace(/\/\*$/g, '').length + 1
 					routeDefinitions.push(

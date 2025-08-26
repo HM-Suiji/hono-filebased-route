@@ -8,6 +8,7 @@
   "include": [
     "utils/**/*.ts",
     "scripts/**/*.ts",
+    "types/**/*.ts",
     "index.ts"
   ],
   "exclude": [

@@ -3,8 +3,7 @@
   "version": "0.2.1",
   "private": true,
   "workspaces": [
-    "packages/core",
-    "packages/runtime",
+    "packages/*",
     "examples/*"
   ],
   "description": "A core utility for file-based routing in Hono applications.",

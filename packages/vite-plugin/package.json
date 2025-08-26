@@ -1,21 +1,50 @@
 {
   "name": "@hono-filebased-route/vite-plugin",
-  "version": "0.2.0",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "A Vite plugin for file-based routing in Hono applications.",
+  "author": "HM Suiji <hmsuiji@gmail.com>",
+  "keywords": [
+    "hono",
+    "router",
+    "file-based",
+    "routing",
+    "backend",
+    "framework",
+    "typescript",
+    "file-based-route",
+    "vite-plugin"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/HM-Suiji/hono-filebased-route.git"
+  },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc",
-    "dev": "tsc --watch",
+    "build": "bun run build.ts",
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@hono-filebased-route/core": "workspace:*"
+    "@hono-filebased-route/core": "workspace:*",
+    "chokidar": "^4.0.3",
+    "hono": "^4.9.2",
+    "path": "^0.12.7"
   },
   "devDependencies": {
-    "vite": "^4.0.0",
-    "typescript": "^5.0.0"
+    "@types/bun": "latest",
+    "bun-plugin-dts": "^0.3.0",
+    "terser": "^5.43.1",
+    "typescript": "^5.0.0",
+    "vite": "^7.1.3"
   },
-  "peerDependencies": {
-    "vite": "^4.0.0"
+  "peerDependenciesMeta": {
+    "hono": {
+      "optional": false
+    }
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

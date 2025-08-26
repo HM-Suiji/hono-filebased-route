@@ -1,5 +1,8 @@
 import path from 'path'
 import fg from 'fast-glob'
+import { readFileSync } from 'fs'
+import { ExportedMethods, Method, METHODS } from '../types'
+import { createSourceFile, ScriptTarget, isVariableStatement, isFunctionDeclaration, SyntaxKind, isIdentifier } from 'typescript'
 
 /**
  * 遍历指定目录并获取所有文件路径
@@ -38,4 +41,35 @@ export function getRoutePath(filePath: string, baseDir: string): string {
 	}
 
 	return `/${routeName}`
+}
+
+/**
+ * 从文件中提取导出的 HTTP 方法
+ * @param filePath 文件的绝对路径
+ * @returns 导出的 HTTP 方法对象
+ */
+export function getExportedHttpMethods(filePath: string): ExportedMethods {
+	const fileContent = readFileSync(filePath, 'utf8');
+	const sourceFile = createSourceFile(
+		filePath,
+		fileContent,
+		ScriptTarget.ESNext,
+		true
+	);
+	const methods: ExportedMethods = {} as ExportedMethods
+	sourceFile.forEachChild(node => {
+		// 寻找 export const GET = ... 或 export function POST() { ... } 形式
+		if (isVariableStatement(node) && node.modifiers && node.modifiers.some(m => m.kind === SyntaxKind.ExportKeyword)) {
+			for (const declaration of node.declarationList.declarations) {
+				if (isIdentifier(declaration.name) && METHODS.includes(declaration.name.text as Method)) {
+					methods[declaration.name.text as Method] = true;
+				}
+			}
+		} else if (isFunctionDeclaration(node) && node.modifiers && node.modifiers.some(m => m.kind === SyntaxKind.ExportKeyword)) {
+			if (node.name && METHODS.includes(node.name.text as Method)) {
+				methods[node.name.text as Method] = true;
+			}
+		}
+	});
+	return methods;
 }

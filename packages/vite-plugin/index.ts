@@ -1,4 +1,4 @@
-import type { Plugin, ViteDevServer } from 'vite'
+import type { Plugin } from 'vite'
 import { createPluginName } from './shared/create'
 import { generateRoutesFile } from '@hono-filebased-route/core'
 
@@ -6,6 +6,7 @@ interface Options {
   routesDir: string
   virtualRoute: boolean
   outputFile: string
+  callback: (router: string) => void
 }
 
 const useName = createPluginName(true)
@@ -14,10 +15,11 @@ const usePlugin = (options?: Partial<Options>): Plugin => {
   const {
     routesDir = './src/routes',
     virtualRoute = true,
-    outputFile = './src/generated-routes.ts'
+    outputFile = './src/generated-routes.ts',
+    callback
   } = options || {}
   const virtualFileId = 'generated-routes'
-  let generated_route: string
+  let generated_route: string = ''
 
   const generateRoutes = async () => {
     if (virtualRoute) {
@@ -26,12 +28,16 @@ const usePlugin = (options?: Partial<Options>): Plugin => {
     } else {
       generateRoutesFile(routesDir, outputFile)
     }
+    callback?.(generated_route)
   }
 
   return {
     name: useName('hono-router'),
-    configureServer(server) {
+    enforce: 'pre',
+    async configureServer(server) {
       const events = ['add', 'change', 'unlink']
+      await generateRoutes()
+
       server.watcher.on('all', async (event, file) => {
         if (events.includes(event)) {
           await generateRoutes()

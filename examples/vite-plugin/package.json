@@ -12,6 +12,7 @@
   "devDependencies": {
     "@hono/vite-build": "^1.2.0",
     "@hono/vite-dev-server": "^0.20.1",
-    "vite": "^6.3.5"
+    "vite": "^6.3.5",
+    "typescript": "^5.9.2"
   }
 }

@@ -8,7 +8,8 @@ const OUTPUT_FILE = './src/generated-routes.ts'
 
 export async function generateRoutesFile(
 	dir: string = ROUTES_DIR,
-	output: string = OUTPUT_FILE
+	output: string = OUTPUT_FILE,
+	write: boolean = true
 ) {
 	console.log('Generating routes file...', dir, output)
 	const absoluteRoutesDir = path.resolve(dir)
@@ -70,7 +71,11 @@ ${routeDefinitions.join('\n')}
 }
 `
 
-	await writeFile(output, fileContent.trimStart())
+	if (write) {
+		await writeFile(output, fileContent.trimStart())
+	}
 
 	console.log(`Generated routes file: ${output} with ${files.length} routes.`)
+
+	return fileContent.trimStart()
 }

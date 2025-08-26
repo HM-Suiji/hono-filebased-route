@@ -15,45 +15,67 @@ Before installing hono-filebased-route, ensure you have:
 ### Using Bun (Recommended)
 
 ```bash
-bun add hono-filebased-route
+bun add @hono-filebased-route/core
 ```
 
 ### Using npm
 
 ```bash
-npm install hono-filebased-route
+npm install @hono-filebased-route/core
 ```
 
 ### Using yarn
 
 ```bash
-yarn add hono-filebased-route
+yarn add @hono-filebased-route/core
 ```
 
 ### Using pnpm
 
 ```bash
-pnpm add hono-filebased-route
+pnpm add @hono-filebased-route/core
 ```
 
 ## Basic Setup
 
 ### 1. Import and Initialize
 
-In your main application file (e.g., `index.ts` or `app.ts`):
+In your project's `scripts` folder, add a file, such as `generate-routes.ts`:
+```typescript
+import { generateRoutesFile } from '@hono-filebased-route/core'
 
+generateRoutesFile()
+```
+
+In your main application file (e.g., `index.ts` or `app.ts`):
 ```typescript
 import { Hono } from 'hono'
-import { fileBasedRouting } from 'hono-filebased-route'
+import { registerGeneratedRoutes } from './generated-routes'
 
 const app = new Hono()
 
-// Apply file-based routing
-fileBasedRouting(app, {
-	dir: './routes', // Path to your routes directory
+// Call the generated function to register all routes
+registerGeneratedRoutes(app)
+
+// Handle unmatched routes
+app.notFound((c) => {
+	return c.text('404 Not Found!', 404)
 })
 
-export default app
+// Handle errors
+app.onError((err, c) => {
+	console.error(`Route error: ${err}`)
+	return c.text('Internal Server Error', 500)
+})
+
+// Start the server
+const port = 3000
+console.log(`Server is running on http://localhost:${port}`)
+
+export default {
+	port: port,
+	fetch: app.fetch,
+}
 ```
 
 ### 2. Create Routes Directory

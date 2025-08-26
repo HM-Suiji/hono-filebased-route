@@ -34,6 +34,7 @@
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs",
+    "docs:deploy": "bun run scripts/vercel-deploy.ts",
     "publish-packages": "turbo run build lint test && changeset version && changeset publish"
   },
   "dependencies": {
@@ -44,12 +45,17 @@
     "vitepress-markdown-timeline": "^1.2.2"
   },
   "devDependencies": {
+    "@eslint/js": "^9.34.0",
     "@tailwindcss/vite": "^4.1.12",
     "@types/bun": "^1.2.20",
+    "eslint": "^9.34.0",
+    "globals": "^16.3.0",
+    "jiti": "^2.5.1",
     "markdown-it-mathjax3": "^4.3.2",
     "tailwindcss": "^4.1.12",
     "turbo": "^2.5.6",
     "typescript": "^5.9.2",
+    "typescript-eslint": "^8.41.0",
     "vitepress": "^2.0.0-alpha.12"
   },
   "engines": {

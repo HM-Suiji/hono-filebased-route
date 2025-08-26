@@ -15,50 +15,73 @@
 ### 使用 Bun（推荐）
 
 ```bash
-bun add hono-filebased-route
+bun add @hono-filebased-route/core
 ```
 
 ### 使用 npm
 
 ```bash
-npm install hono-filebased-route
+npm install @hono-filebased-route/core
 ```
 
 ### 使用 yarn
 
 ```bash
-yarn add hono-filebased-route
+yarn add @hono-filebased-route/core
 ```
 
 ### 使用 pnpm
 
 ```bash
-pnpm add hono-filebased-route
+pnpm add @hono-filebased-route/core
 ```
 
 ## 基础设置
 
 ### 1. 导入和初始化
 
+在你项目的scripts文件夹中添加文件，例如 `generate-routes.ts`：
+```typescript
+import { generateRoutesFile } from '@hono-filebased-route/core'
+
+generateRoutesFile()
+```
+
 在你的主应用文件中（例如 `index.ts` 或 `app.ts`）：
 
 ```typescript
 import { Hono } from 'hono'
-import { fileBasedRouting } from 'hono-filebased-route'
+import { registerGeneratedRoutes } from './generated-routes'
 
 const app = new Hono()
 
-// 应用文件路由
-fileBasedRouting(app, {
-	dir: './routes', // 路由目录路径
+// 调用生成的函数来注册所有路由
+registerGeneratedRoutes(app)
+
+// 处理未匹配的路由
+app.notFound((c) => {
+	return c.text('404 Not Found!', 404)
 })
 
-export default app
+// 处理错误
+app.onError((err, c) => {
+	console.error(`Route error: ${err}`)
+	return c.text('Internal Server Error', 500)
+})
+
+// 启动服务器
+const port = 3000
+console.log(`Server is running on http://localhost:${port}`)
+
+export default {
+	port: port,
+	fetch: app.fetch,
+}
 ```
 
 ### 2. 创建路由目录
 
-在项目根目录创建 `routes` 目录：
+在项目src目录创建 `routes` 目录：
 
 ```bash
 mkdir routes
@@ -66,7 +89,7 @@ mkdir routes
 
 ### 3. 创建第一个路由
 
-创建 `routes/index.ts`：
+创建 `src/routes/index.ts`：
 
 ```typescript
 import type { Context } from 'hono'
@@ -78,16 +101,14 @@ export const GET = (c: Context) => {
 
 ## 配置选项
 
-`fileBasedRouting` 函数接受一个配置对象，包含以下选项：
+`generateRoutesFile` 函数接受一个配置对象，包含以下选项：
 
 ### 基础配置
 
 ```typescript
-fileBasedRouting(app, {
-	dir: './routes', // 必需：路由目录路径
-	verbose: false, // 可选：启用详细日志
-	prefix: '/api', // 可选：为所有路由添加前缀
-	exclude: ['_helpers'], // 可选：排除某些目录/文件
+generateRoutesFile({
+	dir: './src/routes', // 可选：路由目录路径，默认为 './src/routes'
+	output: './src/generated-routes.ts', // 可选：输出文件路径，默认为 './src/generated-routes.ts' !建议为此文件添加git ignore
 })
 ```
 

@@ -1,18 +1,18 @@
-# Installation & Configuration
+# Installation and Configuration
 
-This guide will walk you through installing and configuring hono-filebased-route in your project.
+This guide will walk you through installing and configuring `@hono-filebased-route/core` in your project.
 
 ## Prerequisites
 
-Before installing hono-filebased-route, ensure you have:
+Before installing `@hono-filebased-route/core`, please ensure you have:
 
 - **Bun** (recommended) or **Node.js 18+**
-- **Hono** framework installed in your project
-- Basic understanding of TypeScript
+- **Hono** framework already installed in your project
+- A basic understanding of TypeScript
 
 ## Installation
 
-### Using Bun (Recommended)
+### Using Bun (recommended)
 
 ```bash
 bun add @hono-filebased-route/core
@@ -41,6 +41,7 @@ pnpm add @hono-filebased-route/core
 ### 1. Import and Initialize
 
 In your project's `scripts` folder, add a file, such as `generate-routes.ts`:
+
 ```typescript
 import { generateRoutesFile } from '@hono-filebased-route/core'
 
@@ -48,6 +49,7 @@ generateRoutesFile()
 ```
 
 In your main application file (e.g., `index.ts` or `app.ts`):
+
 ```typescript
 import { Hono } from 'hono'
 import { registerGeneratedRoutes } from './generated-routes'
@@ -58,14 +60,14 @@ const app = new Hono()
 registerGeneratedRoutes(app)
 
 // Handle unmatched routes
-app.notFound((c) => {
-	return c.text('404 Not Found!', 404)
+app.notFound(c => {
+  return c.text('404 Not Found!', 404)
 })
 
 // Handle errors
 app.onError((err, c) => {
-	console.error(`Route error: ${err}`)
-	return c.text('Internal Server Error', 500)
+  console.error(`Route error: ${err}`)
+  return c.text('Internal Server Error', 500)
 })
 
 // Start the server
@@ -73,192 +75,85 @@ const port = 3000
 console.log(`Server is running on http://localhost:${port}`)
 
 export default {
-	port: port,
-	fetch: app.fetch,
+  port: port,
+  fetch: app.fetch,
 }
 ```
 
-### 2. Create Routes Directory
+### 2. Create the Routes Directory
 
-Create a `routes` directory in your project root:
+Create a `routes` directory in your project's `src` folder:
 
 ```bash
-mkdir routes
+mkdir src/routes
 ```
 
 ### 3. Create Your First Route
 
-Create `routes/index.ts`:
+Create `src/routes/index.ts`:
 
 ```typescript
 import type { Context } from 'hono'
 
 export const GET = (c: Context) => {
-	return c.json({ message: 'Hello World!' })
+  return c.json({ message: 'Hello World!' })
 }
 ```
 
 ## Configuration Options
 
-The `fileBasedRouting` function accepts a configuration object with the following options:
+The `generateRoutesFile` function accepts a configuration object with the following options:
 
 ### Basic Configuration
 
 ```typescript
-fileBasedRouting(app, {
-	dir: './routes', // Required: Routes directory path
-	verbose: false, // Optional: Enable verbose logging
-	prefix: '/api', // Optional: Add prefix to all routes
-	exclude: ['_helpers'], // Optional: Exclude certain directories/files
+generateRoutesFile({
+  dir: './src/routes', // Optional: Path to the routes directory, defaults to './src/routes'
+  output: './src/generated-routes.ts', // Optional: Output file path, defaults to './src/generated-routes.ts' !It is recommended to add this file to .gitignore
 })
 ```
 
-### Advanced Configuration
-
-```typescript
-interface FileBasedRoutingOptions {
-	/** Path to the routes directory */
-	dir: string
-
-	/** Enable verbose logging during route registration */
-	verbose?: boolean
-
-	/** Prefix to add to all routes */
-	prefix?: string
-
-	/** Array of file/directory names to exclude */
-	exclude?: string[]
-
-	/** Custom file extensions to process (default: ['.ts', '.js']) */
-	extensions?: string[]
-
-	/** Custom route transformation function */
-	transform?: (path: string) => string
-}
-```
-
-## Configuration Examples
-
-### With API Prefix
-
-```typescript
-fileBasedRouting(app, {
-	dir: './routes',
-	prefix: '/api/v1',
-})
-
-// routes/users.ts becomes /api/v1/users
-```
-
-### Excluding Files
-
-```typescript
-fileBasedRouting(app, {
-	dir: './routes',
-	exclude: ['_helpers', '_utils', 'test'],
-})
-
-// Files in _helpers/, _utils/, and test/ directories will be ignored
-```
-
-### Custom Extensions
-
-```typescript
-fileBasedRouting(app, {
-	dir: './routes',
-	extensions: ['.ts', '.js', '.mjs'],
-})
-```
-
-### Custom Path Transformation
-
-```typescript
-fileBasedRouting(app, {
-	dir: './routes',
-	transform: (path: string) => {
-		// Convert kebab-case to camelCase in URLs
-		return path.replace(/-([a-z])/g, (_, letter) => letter.toUpperCase())
-	},
-})
-```
-
-### Verbose Logging
-
-```typescript
-fileBasedRouting(app, {
-	dir: './routes',
-	verbose: true,
-})
-
-// Output:
-// [hono-filebased-route] Registered: GET /
-// [hono-filebased-route] Registered: GET /users
-// [hono-filebased-route] Registered: GET /users/:id
-```
-
-## Project Structure Examples
+## Project Structure Example
 
 ### Simple API Structure
 
-```
+```txt
 project/
-├── index.ts              # Main app file
+├── index.ts                # Main application file
 ├── routes/
-│   ├── index.ts          # GET /
-│   ├── health.ts         # GET /health
-│   └── users.ts          # GET,POST /users
-└── package.json
-```
-
-### Complex API Structure
-
-```
-project/
-├── src/
-│   ├── index.ts          # Main app file
-│   ├── routes/
-│   │   ├── index.ts      # GET /
-│   │   ├── auth/
-│   │   │   ├── login.ts  # POST /auth/login
-│   │   │   └── logout.ts # POST /auth/logout
-│   │   ├── api/
-│   │   │   ├── users/
-│   │   │   │   ├── index.ts    # GET,POST /api/users
-│   │   │   │   └── [id].ts     # GET,PUT,DELETE /api/users/:id
-│   │   │   └── posts/
-│   │   │       ├── index.ts    # GET,POST /api/posts
-│   │   │       └── [...slug].ts # GET /api/posts/*
-│   │   └── _helpers/     # Excluded directory
-│   │       └── utils.ts
-│   └── middleware/
+│   ├── index.ts            # GET /
+│   ├── health.ts           # GET /health
+│   └── users.ts            # GET,POST /users
+├── scripts/
+│   └── generate-routes.ts  # Route generation script
 └── package.json
 ```
 
 ## Environment-Specific Configuration
 
-### Development Configuration
+### Development Environment Configuration
 
 ```typescript
 // dev.ts
 import { fileBasedRouting } from 'hono-filebased-route'
 
 fileBasedRouting(app, {
-	dir: './routes',
-	verbose: true, // Enable logging in development
-	exclude: ['test', '_dev'],
+  dir: './routes',
+  verbose: true, // Enable logging in development
+  exclude: ['test', '_dev'],
 })
 ```
 
-### Production Configuration
+### Production Environment Configuration
 
 ```typescript
 // prod.ts
 import { fileBasedRouting } from 'hono-filebased-route'
 
 fileBasedRouting(app, {
-	dir: './dist/routes', // Use compiled routes
-	verbose: false, // Disable logging in production
-	exclude: ['test', '_dev', '_internal'],
+  dir: './dist/routes', // Use compiled routes
+  verbose: false, // Disable logging in production
+  exclude: ['test', '_dev', '_internal'],
 })
 ```
 
@@ -266,18 +161,19 @@ fileBasedRouting(app, {
 
 ### Vite Configuration
 
-If you're using Vite, you might need to configure it to handle dynamic imports:
+If you are using Vite, use `@hono-filebased-route/vite-plugin`:
+
+```bash
+bun add @hono-filebased-route/vite-plugin
+```
 
 ```typescript
 // vite.config.ts
 import { defineConfig } from 'vite'
+import honoFilebasedRoute from '@hono-filebased-route/vite-plugin'
 
 export default defineConfig({
-	build: {
-		rollupOptions: {
-			external: ['hono-filebased-route'],
-		},
-	},
+  plugins: [honoFilebasedRoute()],
 })
 ```
 
@@ -287,16 +183,16 @@ Ensure your `tsconfig.json` includes the routes directory:
 
 ```json
 {
-	"compilerOptions": {
-		"target": "ES2022",
-		"module": "ESNext",
-		"moduleResolution": "bundler",
-		"strict": true,
-		"esModuleInterop": true,
-		"skipLibCheck": true,
-		"forceConsistentCasingInFileNames": true
-	},
-	"include": ["src/**/*", "routes/**/*"]
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["src/**/*", "routes/**/*"]
 }
 ```
 
@@ -306,39 +202,27 @@ Ensure your `tsconfig.json` includes the routes directory:
 
 #### Routes Not Loading
 
-1. **Check file extensions**: Ensure your route files have `.ts` or `.js` extensions
-2. **Verify directory path**: Make sure the `dir` option points to the correct directory
-3. **Enable verbose logging**: Set `verbose: true` to see which routes are being registered
+1. **Check file extensions**: Ensure route files have `.ts` or `.js` extensions.
+2. **Verify directory path**: Make sure the `dir` option points to the correct directory.
 
 #### TypeScript Errors
 
 1. **Install type definitions**: `bun add -d @types/node`
-2. **Check imports**: Ensure you're importing `Context` from 'hono'
-3. **Verify export syntax**: Use `export const GET = ...` not `export default`
+2. **Check imports**: Ensure `Context` is imported from 'hono'.
+3. **Verify export syntax**: Use `export const GET = ...` instead of `export default`.
 
 #### Build Issues
 
-1. **Check build configuration**: Ensure your build tool includes the routes directory
-2. **Verify output paths**: Make sure the built routes are in the expected location
-
-### Debug Mode
-
-Enable debug mode to troubleshoot routing issues:
-
-```typescript
-fileBasedRouting(app, {
-	dir: './routes',
-	verbose: true,
-})
-```
+1. **Check build configuration**: Ensure your build tool includes the routes directory.
+2. **Verify output path**: Make sure compiled routes are in the expected location.
 
 ## Next Steps
 
-Now that you have hono-filebased-route installed and configured:
+Now that you've installed and configured hono-filebased-route:
 
-1. Learn about [Basic Usage](/guides/basic-usage)
-2. Explore [Routing Patterns](/guides/routing-patterns)
-3. Understand [Dynamic Routes](/guides/dynamic-routes)
-4. Check out [Advanced Features](/guides/advanced-features)
+1. [Learn Basic Usage](/zh/guides/basic-usage)
+2. [Explore Routing Patterns](/zh/guides/routing-patterns)
+3. [Understand Dynamic Routes](/zh/guides/dynamic-routes)
+4. [Discover Advanced Features](/zh/guides/advanced-features)
 
 Ready to start building? Let's create some routes! 🚀

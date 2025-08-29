@@ -40,11 +40,11 @@ Create `routes/index.ts`:
 import type { Context } from 'hono'
 
 export const GET = (c: Context) => {
-	return c.json({ message: 'Hello from hono-filebased-route!' })
+  return c.json({ message: 'Hello from hono-filebased-route!' })
 }
 
 export const POST = (c: Context) => {
-	return c.json({ message: 'POST request received!' })
+  return c.json({ message: 'POST request received!' })
 }
 ```
 
@@ -61,15 +61,15 @@ const app = new Hono()
 
 // Apply file-based routing
 fileBasedRouting(app, {
-	dir: './routes',
+  dir: './routes',
 })
 
 const port = 3000
 console.log(`Server is running on port ${port}`)
 
 serve({
-	fetch: app.fetch,
-	port,
+  fetch: app.fetch,
+  port,
 })
 ```
 
@@ -79,11 +79,11 @@ Update your `package.json` to include these scripts:
 
 ```json
 {
-	"scripts": {
-		"dev": "bun run --watch index.ts",
-		"start": "bun run index.ts",
-		"build": "bun build index.ts --outdir ./dist"
-	}
+  "scripts": {
+    "dev": "bun run --watch index.ts",
+    "start": "bun run index.ts",
+    "build": "bun build index.ts --outdir ./dist"
+  }
 }
 ```
 
@@ -121,10 +121,10 @@ Create `routes/about.ts`:
 import type { Context } from 'hono'
 
 export const GET = (c: Context) => {
-	return c.json({
-		page: 'About',
-		description: 'This is the about page',
-	})
+  return c.json({
+    page: 'About',
+    description: 'This is the about page',
+  })
 }
 ```
 
@@ -137,12 +137,11 @@ Create `routes/users/[id].ts`:
 ```typescript
 import type { Context } from 'hono'
 
-export const GET = (c: Context) => {
-	const id = c.req.param('id')
-	return c.json({
-		userId: id,
-		message: `User profile for ID: ${id}`,
-	})
+export const GET = (c: Context, slug: string[]) => {
+  return c.json({
+    slug: slug,
+    message: `User profile for ID: ${slug}`,
+  })
 }
 ```
 
@@ -156,11 +155,11 @@ Create `routes/blog/[...slug].ts`:
 import type { Context } from 'hono'
 
 export const GET = (c: Context) => {
-	const slug = c.req.param('slug')
-	return c.json({
-		slug: slug,
-		message: `Blog post: ${slug}`,
-	})
+  const slug = c.req.param('slug')
+  return c.json({
+    slug: slug,
+    message: `Blog post: ${slug}`,
+  })
 }
 ```
 

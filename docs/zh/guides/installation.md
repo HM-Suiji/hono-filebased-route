@@ -113,124 +113,19 @@ generateRoutesFile({
 })
 ```
 
-### 高级配置
-
-```typescript
-interface FileBasedRoutingOptions {
-  /** 路由目录路径 */
-  dir: string
-
-  /** 在路由注册期间启用详细日志 */
-  verbose?: boolean
-
-  /** 为所有路由添加的前缀 */
-  prefix?: string
-
-  /** 要排除的文件/目录名称数组 */
-  exclude?: string[]
-
-  /** 要处理的自定义文件扩展名（默认：['.ts', '.js']） */
-  extensions?: string[]
-
-  /** 自定义路由转换函数 */
-  transform?: (path: string) => string
-}
-```
-
-## 配置示例
-
-### 带 API 前缀
-
-```typescript
-fileBasedRouting(app, {
-  dir: './routes',
-  prefix: '/api/v1',
-})
-
-// routes/users.ts 变成 /api/v1/users
-```
-
-### 排除文件
-
-```typescript
-fileBasedRouting(app, {
-  dir: './routes',
-  exclude: ['_helpers', '_utils', 'test'],
-})
-
-// _helpers/、_utils/ 和 test/ 目录中的文件将被忽略
-```
-
-### 自定义扩展名
-
-```typescript
-fileBasedRouting(app, {
-  dir: './routes',
-  extensions: ['.ts', '.js', '.mjs'],
-})
-```
-
-### 自定义路径转换
-
-```typescript
-fileBasedRouting(app, {
-  dir: './routes',
-  transform: (path: string) => {
-    // 将 URL 中的 kebab-case 转换为 camelCase
-    return path.replace(/-([a-z])/g, (_, letter) => letter.toUpperCase())
-  },
-})
-```
-
-### 详细日志
-
-```typescript
-fileBasedRouting(app, {
-  dir: './routes',
-  verbose: true,
-})
-
-// 输出：
-// [hono-filebased-route] Registered: GET /
-// [hono-filebased-route] Registered: GET /users
-// [hono-filebased-route] Registered: GET /users/:id
-```
-
 ## 项目结构示例
 
 ### 简单 API 结构
 
 ```txt
 project/
-├── index.ts              # 主应用文件
+├── index.ts                # 主应用文件
 ├── routes/
-│   ├── index.ts          # GET /
-│   ├── health.ts         # GET /health
-│   └── users.ts          # GET,POST /users
-└── package.json
-```
-
-### 复杂 API 结构
-
-```
-project/
-├── src/
-│   ├── index.ts          # 主应用文件
-│   ├── routes/
-│   │   ├── index.ts      # GET /
-│   │   ├── auth/
-│   │   │   ├── login.ts  # POST /auth/login
-│   │   │   └── logout.ts # POST /auth/logout
-│   │   ├── api/
-│   │   │   ├── users/
-│   │   │   │   ├── index.ts    # GET,POST /api/users
-│   │   │   │   └── [id].ts     # GET,PUT,DELETE /api/users/:id
-│   │   │   └── posts/
-│   │   │       ├── index.ts    # GET,POST /api/posts
-│   │   │       └── [...slug].ts # GET /api/posts/*
-│   │   └── _helpers/     # 排除的目录
-│   │       └── utils.ts
-│   └── middleware/
+│   ├── index.ts            # GET /
+│   ├── health.ts           # GET /health
+│   └── users.ts            # GET,POST /users
+├── scripts/
+│   └── generate-routes.ts  # 路由生成脚本
 └── package.json
 ```
 
@@ -266,18 +161,19 @@ fileBasedRouting(app, {
 
 ### Vite 配置
 
-如果你使用 Vite，可能需要配置它来处理动态导入：
+如果你使用 Vite，请使用 `@hono-filebased-route/vite-plugin`：
+
+```bash
+bun add @hono-filebased-route/vite-plugin
+```
 
 ```typescript
 // vite.config.ts
 import { defineConfig } from 'vite'
+import honoFilebasedRoute from '@hono-filebased-route/vite-plugin'
 
 export default defineConfig({
-  build: {
-    rollupOptions: {
-      external: ['hono-filebased-route'],
-    },
-  },
+  plugins: [honoFilebasedRoute()],
 })
 ```
 
@@ -308,7 +204,6 @@ export default defineConfig({
 
 1. **检查文件扩展名**：确保路由文件具有 `.ts` 或 `.js` 扩展名
 2. **验证目录路径**：确保 `dir` 选项指向正确的目录
-3. **启用详细日志**：设置 `verbose: true` 查看正在注册的路由
 
 #### TypeScript 错误
 
@@ -320,17 +215,6 @@ export default defineConfig({
 
 1. **检查构建配置**：确保构建工具包含路由目录
 2. **验证输出路径**：确保构建的路由在预期位置
-
-### 调试模式
-
-启用调试模式来排查路由问题：
-
-```typescript
-fileBasedRouting(app, {
-  dir: './routes',
-  verbose: true,
-})
-```
 
 ## 下一步
 

@@ -2,6 +2,10 @@
 
 欢迎使用 hono-filebased-route，这是一个基于 [Hono](https://hono.dev/) Web 框架构建的强大文件路由系统。
 
+::: danger 注意
+该文档由 AI 生成，可能包含错误，请以源代码中的 [`examples`](https://github.com/HM-Suiji/hono-filebased-route/tree/main/examples) 为准。
+:::
+
 ## 什么是 hono-filebased-route？
 
 hono-filebased-route 为 Hono 应用程序带来了文件路由的简洁性和约定。受 Next.js 和 Nuxt.js 等框架启发，它允许你通过简单地在特定目录结构中组织文件来创建 API 路由。

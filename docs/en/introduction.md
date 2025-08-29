@@ -2,6 +2,10 @@
 
 Welcome to hono-filebased-route, a powerful file-based routing system built on top of the [Hono](https://hono.dev/) web framework.
 
+::: danger Caution
+This documentation is AI-generated and may contain errors. Please refer to the source code [`examples`](https://github.com/HM-Suiji/hono-filebased-route/tree/main/examples) for accuracy.
+:::
+
 ## What is hono-filebased-route?
 
 hono-filebased-route brings the simplicity and convention of file-based routing to Hono applications. Inspired by frameworks like Next.js and Nuxt.js, it allows you to create API routes by simply organizing your files in a specific directory structure.

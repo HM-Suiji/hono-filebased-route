@@ -40,11 +40,11 @@ mkdir routes
 import type { Context } from 'hono'
 
 export const GET = (c: Context) => {
-	return c.json({ message: '来自 hono-filebased-route 的问候！' })
+  return c.json({ message: '来自 hono-filebased-route 的问候！' })
 }
 
 export const POST = (c: Context) => {
-	return c.json({ message: '收到 POST 请求！' })
+  return c.json({ message: '收到 POST 请求！' })
 }
 ```
 
@@ -61,15 +61,15 @@ const app = new Hono()
 
 // 应用文件路由
 fileBasedRouting(app, {
-	dir: './routes',
+  dir: './routes',
 })
 
 const port = 3000
 console.log(`服务器运行在端口 ${port}`)
 
 serve({
-	fetch: app.fetch,
-	port,
+  fetch: app.fetch,
+  port,
 })
 ```
 
@@ -79,11 +79,11 @@ serve({
 
 ```json
 {
-	"scripts": {
-		"dev": "bun run --watch index.ts",
-		"start": "bun run index.ts",
-		"build": "bun build index.ts --outdir ./dist"
-	}
+  "scripts": {
+    "dev": "bun run --watch index.ts",
+    "start": "bun run index.ts",
+    "build": "bun build index.ts --outdir ./dist"
+  }
 }
 ```
 
@@ -121,10 +121,10 @@ curl -X POST http://localhost:3000
 import type { Context } from 'hono'
 
 export const GET = (c: Context) => {
-	return c.json({
-		page: '关于',
-		description: '这是关于页面',
-	})
+  return c.json({
+    page: '关于',
+    description: '这是关于页面',
+  })
 }
 ```
 
@@ -138,11 +138,11 @@ export const GET = (c: Context) => {
 import type { Context } from 'hono'
 
 export const GET = (c: Context) => {
-	const id = c.req.param('id')
-	return c.json({
-		userId: id,
-		message: `用户资料，ID: ${id}`,
-	})
+  const id = c.req.param('id')
+  return c.json({
+    userId: id,
+    message: `用户资料，ID: ${id}`,
+  })
 }
 ```
 
@@ -155,12 +155,11 @@ export const GET = (c: Context) => {
 ```typescript
 import type { Context } from 'hono'
 
-export const GET = (c: Context) => {
-	const slug = c.req.param('slug')
-	return c.json({
-		slug: slug,
-		message: `博客文章: ${slug}`,
-	})
+export const GET = (c: Context, slug: string[]) => {
+  return c.json({
+    slug: slug,
+    message: `博客文章: ${slug}`,
+  })
 }
 ```
 

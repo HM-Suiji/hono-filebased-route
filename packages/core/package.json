@@ -40,6 +40,9 @@
   "peerDependenciesMeta": {
     "hono": {
       "optional": false
+    },
+    "typescript": {
+      "optional": false
     }
   },
   "publishConfig": {

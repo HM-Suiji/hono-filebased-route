@@ -3,19 +3,21 @@ import { createPluginName } from './shared/create'
 import { generateRoutesFile } from '@hono-filebased-route/core'
 
 interface Options {
-  routesDir: string
+  dir: string
+  output: string
+  verbose: boolean
   virtualRoute: boolean
-  outputFile: string
-  callback: (router: string) => void
+  callback?: (router: string) => void
 }
 
 const useName = createPluginName(true)
 
 const usePlugin = (options?: Partial<Options>): Plugin => {
   const {
-    routesDir = './src/routes',
+    dir = './src/routes',
     virtualRoute = true,
-    outputFile = './src/generated-routes.ts',
+    output = './src/generated-routes.ts',
+    verbose = false,
     callback,
   } = options || {}
   const virtualFileId = 'generated-routes'
@@ -23,10 +25,20 @@ const usePlugin = (options?: Partial<Options>): Plugin => {
 
   const generateRoutes = async () => {
     if (virtualRoute) {
-      const router = await generateRoutesFile(routesDir, '', false)
+      const router = await generateRoutesFile({
+        dir,
+        output: '',
+        write: false,
+        verbose,
+      })
       generated_route = router
     } else {
-      generateRoutesFile(routesDir, outputFile)
+      generateRoutesFile({
+        dir,
+        output,
+        write: true,
+        verbose,
+      })
     }
     callback?.(generated_route)
   }

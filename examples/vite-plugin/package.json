@@ -2,8 +2,7 @@
   "name": "@hono-filebased-route/vite-plugin-example",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build"
+    "dev": "vite"
   },
   "dependencies": {
     "hono": "^4.9.4",

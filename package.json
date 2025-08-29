@@ -41,6 +41,8 @@
     "@changesets/cli": "^2.29.6",
     "dayjs": "^1.11.13",
     "hono": "^4.9.2",
+    "pino": "^9.9.0",
+    "pino-pretty": "^13.1.1",
     "tsc": "^2.0.4",
     "vitepress-markdown-timeline": "^1.2.2"
   },
@@ -48,6 +50,7 @@
     "@eslint/js": "^9.34.0",
     "@tailwindcss/vite": "^4.1.12",
     "@types/bun": "^1.2.20",
+    "@types/pino": "^7.0.5",
     "eslint": "^9.34.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",
@@ -60,9 +63,6 @@
     "typescript": "^5.9.2",
     "typescript-eslint": "^8.41.0",
     "vitepress": "^2.0.0-alpha.12"
-  },
-  "engines": {
-    "node": ">=18"
   },
   "packageManager": "bun@1.2.20"
 }

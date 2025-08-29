@@ -4,3 +4,12 @@ export type Method = (typeof METHODS)[number]
 export type ExportedMethods = {
   [key in Method]: boolean
 }
+
+export type Config = {
+  dir: string
+  output: string
+  write: boolean
+  verbose: boolean
+  base?: string
+  transform?: (path: string) => string
+}

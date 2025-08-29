@@ -1,17 +1,20 @@
 import { writeFile } from 'fs/promises'
 import { getExportedHttpMethods, getFiles, getRoutePath } from '../utils/load-routes-utils'
 import path from 'path'
-import { METHODS } from '../types'
+import { Config, METHODS } from '../types'
+import { createLogger } from '../utils/logger'
 
-const ROUTES_DIR = './src/routes'
-const OUTPUT_FILE = './src/generated-routes.ts'
+const defaultConfig: Config = {
+  dir: './src/routes',
+  output: './src/generated-routes.ts',
+  write: true,
+  verbose: false,
+} as const
 
-export async function generateRoutesFile(
-  dir: string = ROUTES_DIR,
-  output: string = OUTPUT_FILE,
-  write: boolean = true
-) {
-  console.log('Generating routes file...', dir, output)
+export async function generateRoutesFile(config?: Partial<Config>) {
+  const { dir, output, write } = { ...defaultConfig, ...config }
+  const logger = createLogger(config?.verbose)
+  logger.info(`Generating routes file..., ${dir}, ${output}`)
   const absoluteRoutesDir = path.resolve(dir)
   const files = await getFiles(absoluteRoutesDir)
 
@@ -46,6 +49,7 @@ export async function generateRoutesFile(
             `  ${tempHonoVar}.${method.toLowerCase()}('/', async (c) => ${moduleName}.${method}(c, c.req.path.substring(${len}).split('/')));`
           )
         } else routeDefinitions.push(`  ${tempHonoVar}.${method.toLowerCase()}('/', ${moduleName}.${method});`)
+        logger.info(`Generated route: ${method} ${routePath}`)
       }
     }
 
@@ -68,9 +72,8 @@ ${routeDefinitions.join('\n')}
 
   if (write) {
     await writeFile(output, fileContent.trimStart())
+    logger.info(`Generated routes file: ${output} with ${files.length} routes.`)
   }
-
-  console.log(`Generated routes file: ${output} with ${files.length} routes.`)
 
   return fileContent.trimStart()
 }

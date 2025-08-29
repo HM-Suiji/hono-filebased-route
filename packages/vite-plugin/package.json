@@ -1,6 +1,6 @@
 {
   "name": "@hono-filebased-route/vite-plugin",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "type": "module",
   "description": "A Vite plugin for file-based routing in Hono applications.",
   "author": "HM Suiji <hmsuiji@gmail.com>",

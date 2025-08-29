@@ -16,13 +16,14 @@ import {
  * @param dir 要遍历的目录
  * @returns 目录内所有文件绝对路径的数组
  */
-export async function getFiles(dir: string): Promise<string[]> {
+export async function getFiles(dir: string, externals?: string[]): Promise<string[]> {
   const absoluteDir = path.resolve(dir)
   const pattern = path.join(absoluteDir, '**', '*.{ts,js}').replace(/\\/g, '/')
 
   const files = await fg(pattern, {
     absolute: true,
     onlyFiles: true,
+    ignore: externals,
   })
 
   return files

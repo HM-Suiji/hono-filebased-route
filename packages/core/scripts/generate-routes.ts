@@ -9,14 +9,15 @@ const defaultConfig: Config = {
   output: './src/generated-routes.ts',
   write: true,
   verbose: false,
+  externals: [],
 } as const
 
 export async function generateRoutesFile(config?: Partial<Config>) {
-  const { dir, output, write } = { ...defaultConfig, ...config }
-  const logger = createLogger(config?.verbose)
+  const { dir, output, write, verbose, externals } = { ...defaultConfig, ...config }
+  const logger = createLogger(verbose)
   logger.info(`Generating routes file..., ${dir}, ${output}`)
   const absoluteRoutesDir = path.resolve(dir)
-  const files = await getFiles(absoluteRoutesDir)
+  const files = await getFiles(absoluteRoutesDir, externals)
 
   const importStatements: string[] = []
   const routeDefinitions: string[] = []

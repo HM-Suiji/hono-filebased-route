@@ -10,6 +10,5 @@ export type Config = {
   output: string
   write: boolean
   verbose: boolean
-  base?: string
-  transform?: (path: string) => string
+  externals: string[]
 }

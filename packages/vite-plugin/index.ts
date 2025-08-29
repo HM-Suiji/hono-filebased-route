@@ -16,7 +16,7 @@ const usePlugin = (options?: Partial<Options>): Plugin => {
     routesDir = './src/routes',
     virtualRoute = true,
     outputFile = './src/generated-routes.ts',
-    callback
+    callback,
   } = options || {}
   const virtualFileId = 'generated-routes'
   let generated_route: string = ''
@@ -46,19 +46,19 @@ const usePlugin = (options?: Partial<Options>): Plugin => {
       })
     },
     resolveId: virtualRoute
-      ? (id) => {
-        if (id === virtualFileId) {
-          return virtualFileId
+      ? id => {
+          if (id === virtualFileId) {
+            return virtualFileId
+          }
         }
-      }
       : undefined,
     load: virtualRoute
-      ? (id) => {
-        if (id === virtualFileId) {
-          return generated_route
+      ? id => {
+          if (id === virtualFileId) {
+            return generated_route
+          }
         }
-      }
-      : undefined
+      : undefined,
   }
 }
 

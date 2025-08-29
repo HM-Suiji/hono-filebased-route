@@ -5,10 +5,7 @@ import { Hono } from 'hono'
 
 const ROUTES_DIR = './src/routes'
 
-export async function registerRoutes(
-  mainApp: Hono,
-  dir: string = ROUTES_DIR
-) {
+export async function registerRoutes(mainApp: Hono, dir: string = ROUTES_DIR) {
   const absoluteRoutesDir = path.resolve(dir)
   const files = await getFiles(absoluteRoutesDir)
   const methods = ['GET', 'POST'] as const
@@ -27,9 +24,10 @@ export async function registerRoutes(
       if (typeof module[method] === 'function') {
         if (routePath.endsWith('/*')) {
           const len = routePath.replace(/\/\*$/g, '').length + 1
-          tempHono[method.toLowerCase() as Method]('/', async (c) => module[method](c, c.req.path.substring(len).split('/')))
-        } else
-          tempHono[method.toLowerCase() as Method]('/', async (c) => module[method](c))
+          tempHono[method.toLowerCase() as Method]('/', async c =>
+            module[method](c, c.req.path.substring(len).split('/'))
+          )
+        } else tempHono[method.toLowerCase() as Method]('/', async c => module[method](c))
       }
     }
 

@@ -1,10 +1,10 @@
 # 安装与配置
 
-本指南将引导你在项目中安装和配置 hono-filebased-route。
+本指南将引导你在项目中安装和配置 @hono-filebased-route/core。
 
 ## 前置要求
 
-在安装 hono-filebased-route 之前，请确保你有：
+在安装 @hono-filebased-route/core 之前，请确保你有：
 
 - **Bun**（推荐）或 **Node.js 18+**
 - 项目中已安装 **Hono** 框架
@@ -41,6 +41,7 @@ pnpm add @hono-filebased-route/core
 ### 1. 导入和初始化
 
 在你项目的scripts文件夹中添加文件，例如 `generate-routes.ts`：
+
 ```typescript
 import { generateRoutesFile } from '@hono-filebased-route/core'
 
@@ -59,14 +60,14 @@ const app = new Hono()
 registerGeneratedRoutes(app)
 
 // 处理未匹配的路由
-app.notFound((c) => {
-	return c.text('404 Not Found!', 404)
+app.notFound(c => {
+  return c.text('404 Not Found!', 404)
 })
 
 // 处理错误
 app.onError((err, c) => {
-	console.error(`Route error: ${err}`)
-	return c.text('Internal Server Error', 500)
+  console.error(`Route error: ${err}`)
+  return c.text('Internal Server Error', 500)
 })
 
 // 启动服务器
@@ -74,8 +75,8 @@ const port = 3000
 console.log(`Server is running on http://localhost:${port}`)
 
 export default {
-	port: port,
-	fetch: app.fetch,
+  port: port,
+  fetch: app.fetch,
 }
 ```
 
@@ -95,7 +96,7 @@ mkdir routes
 import type { Context } from 'hono'
 
 export const GET = (c: Context) => {
-	return c.json({ message: 'Hello World!' })
+  return c.json({ message: 'Hello World!' })
 }
 ```
 
@@ -107,8 +108,8 @@ export const GET = (c: Context) => {
 
 ```typescript
 generateRoutesFile({
-	dir: './src/routes', // 可选：路由目录路径，默认为 './src/routes'
-	output: './src/generated-routes.ts', // 可选：输出文件路径，默认为 './src/generated-routes.ts' !建议为此文件添加git ignore
+  dir: './src/routes', // 可选：路由目录路径，默认为 './src/routes'
+  output: './src/generated-routes.ts', // 可选：输出文件路径，默认为 './src/generated-routes.ts' !建议为此文件添加git ignore
 })
 ```
 
@@ -116,23 +117,23 @@ generateRoutesFile({
 
 ```typescript
 interface FileBasedRoutingOptions {
-	/** 路由目录路径 */
-	dir: string
+  /** 路由目录路径 */
+  dir: string
 
-	/** 在路由注册期间启用详细日志 */
-	verbose?: boolean
+  /** 在路由注册期间启用详细日志 */
+  verbose?: boolean
 
-	/** 为所有路由添加的前缀 */
-	prefix?: string
+  /** 为所有路由添加的前缀 */
+  prefix?: string
 
-	/** 要排除的文件/目录名称数组 */
-	exclude?: string[]
+  /** 要排除的文件/目录名称数组 */
+  exclude?: string[]
 
-	/** 要处理的自定义文件扩展名（默认：['.ts', '.js']） */
-	extensions?: string[]
+  /** 要处理的自定义文件扩展名（默认：['.ts', '.js']） */
+  extensions?: string[]
 
-	/** 自定义路由转换函数 */
-	transform?: (path: string) => string
+  /** 自定义路由转换函数 */
+  transform?: (path: string) => string
 }
 ```
 
@@ -142,8 +143,8 @@ interface FileBasedRoutingOptions {
 
 ```typescript
 fileBasedRouting(app, {
-	dir: './routes',
-	prefix: '/api/v1',
+  dir: './routes',
+  prefix: '/api/v1',
 })
 
 // routes/users.ts 变成 /api/v1/users
@@ -153,8 +154,8 @@ fileBasedRouting(app, {
 
 ```typescript
 fileBasedRouting(app, {
-	dir: './routes',
-	exclude: ['_helpers', '_utils', 'test'],
+  dir: './routes',
+  exclude: ['_helpers', '_utils', 'test'],
 })
 
 // _helpers/、_utils/ 和 test/ 目录中的文件将被忽略
@@ -164,8 +165,8 @@ fileBasedRouting(app, {
 
 ```typescript
 fileBasedRouting(app, {
-	dir: './routes',
-	extensions: ['.ts', '.js', '.mjs'],
+  dir: './routes',
+  extensions: ['.ts', '.js', '.mjs'],
 })
 ```
 
@@ -173,11 +174,11 @@ fileBasedRouting(app, {
 
 ```typescript
 fileBasedRouting(app, {
-	dir: './routes',
-	transform: (path: string) => {
-		// 将 URL 中的 kebab-case 转换为 camelCase
-		return path.replace(/-([a-z])/g, (_, letter) => letter.toUpperCase())
-	},
+  dir: './routes',
+  transform: (path: string) => {
+    // 将 URL 中的 kebab-case 转换为 camelCase
+    return path.replace(/-([a-z])/g, (_, letter) => letter.toUpperCase())
+  },
 })
 ```
 
@@ -185,8 +186,8 @@ fileBasedRouting(app, {
 
 ```typescript
 fileBasedRouting(app, {
-	dir: './routes',
-	verbose: true,
+  dir: './routes',
+  verbose: true,
 })
 
 // 输出：
@@ -199,7 +200,7 @@ fileBasedRouting(app, {
 
 ### 简单 API 结构
 
-```
+```txt
 project/
 ├── index.ts              # 主应用文件
 ├── routes/
@@ -242,9 +243,9 @@ project/
 import { fileBasedRouting } from 'hono-filebased-route'
 
 fileBasedRouting(app, {
-	dir: './routes',
-	verbose: true, // 在开发环境启用日志
-	exclude: ['test', '_dev'],
+  dir: './routes',
+  verbose: true, // 在开发环境启用日志
+  exclude: ['test', '_dev'],
 })
 ```
 
@@ -255,9 +256,9 @@ fileBasedRouting(app, {
 import { fileBasedRouting } from 'hono-filebased-route'
 
 fileBasedRouting(app, {
-	dir: './dist/routes', // 使用编译后的路由
-	verbose: false, // 在生产环境禁用日志
-	exclude: ['test', '_dev', '_internal'],
+  dir: './dist/routes', // 使用编译后的路由
+  verbose: false, // 在生产环境禁用日志
+  exclude: ['test', '_dev', '_internal'],
 })
 ```
 
@@ -272,11 +273,11 @@ fileBasedRouting(app, {
 import { defineConfig } from 'vite'
 
 export default defineConfig({
-	build: {
-		rollupOptions: {
-			external: ['hono-filebased-route'],
-		},
-	},
+  build: {
+    rollupOptions: {
+      external: ['hono-filebased-route'],
+    },
+  },
 })
 ```
 
@@ -286,16 +287,16 @@ export default defineConfig({
 
 ```json
 {
-	"compilerOptions": {
-		"target": "ES2022",
-		"module": "ESNext",
-		"moduleResolution": "bundler",
-		"strict": true,
-		"esModuleInterop": true,
-		"skipLibCheck": true,
-		"forceConsistentCasingInFileNames": true
-	},
-	"include": ["src/**/*", "routes/**/*"]
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["src/**/*", "routes/**/*"]
 }
 ```
 
@@ -326,8 +327,8 @@ export default defineConfig({
 
 ```typescript
 fileBasedRouting(app, {
-	dir: './routes',
-	verbose: true,
+  dir: './routes',
+  verbose: true,
 })
 ```
 

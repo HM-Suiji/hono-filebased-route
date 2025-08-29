@@ -1,6 +1,4 @@
-export const createPluginName = (
-  reusable: boolean = false
-) => {
+export const createPluginName = (reusable: boolean = false) => {
   let i = 0
   return (name: string) => {
     const base = `vite-plugin-${name}`
@@ -13,6 +11,6 @@ export const createVirtualModuleID = (name: string) => {
   const resolvedVirtualModuleId = '\0' + virtualModuleId
   return {
     virtualModuleId,
-    resolvedVirtualModuleId
+    resolvedVirtualModuleId,
   }
 }

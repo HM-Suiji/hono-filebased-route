@@ -6,11 +6,12 @@ import honoRouter from '@hono-filebased-route/vite-plugin'
 export default defineConfig({
   plugins: [
     honoRouter({
-      virtualRoute: false
+      virtualRoute: false,
+      verbose: true,
     }),
     build(),
     devServer({
-      entry: 'src/index.ts'
-    })
-  ]
+      entry: 'src/index.ts',
+    }),
+  ],
 })

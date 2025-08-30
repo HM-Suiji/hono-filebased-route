@@ -10,10 +10,11 @@ const defaultConfig: Config = {
   write: true,
   verbose: false,
   externals: [],
+  typescript: true,
 } as const
 
 export async function generateRoutesFile(config?: Partial<Config>) {
-  const { dir, output, write, verbose, externals } = { ...defaultConfig, ...config }
+  const { dir, output, write, verbose, externals, typescript } = { ...defaultConfig, ...config }
   const logger = createLogger(verbose)
   logger.info(`Generating routes file..., ${dir}, ${output}`)
   const absoluteRoutesDir = path.resolve(dir)
@@ -66,7 +67,7 @@ ${importStatements.join('\n')}
  * Registers all generated file-based routes to the main Hono application.
  * @param mainApp The main Hono application instance.
  */
-export function registerGeneratedRoutes(mainApp: Hono) {
+export function registerGeneratedRoutes(mainApp${typescript ? ': Hono' : ''}) {
 ${routeDefinitions.join('\n')}
 }
 `

@@ -1,6 +1,6 @@
 {
   "name": "@hono-filebased-route/core",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "type": "module",
   "description": "A core utility for file-based routing in Hono applications.",
   "author": "HM Suiji <hmsuiji@gmail.com>",
@@ -29,11 +29,13 @@
     "fast-glob": "^3.3.3",
     "fs": "0.0.1-security",
     "hono": "^4.9.2",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "pino": "^9.9.0"
   },
   "devDependencies": {
     "@types/bun": "^1.2.20",
     "@types/node": "^24.3.0",
+    "pino-pretty": "^13.1.1",
     "bun-plugin-dts": "^0.3.0",
     "typescript": "^5.0.0"
   },

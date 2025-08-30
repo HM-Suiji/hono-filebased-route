@@ -11,4 +11,5 @@ export type Config = {
   write: boolean
   verbose: boolean
   externals: string[]
+  typescript: boolean
 }

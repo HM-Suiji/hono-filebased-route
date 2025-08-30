@@ -1,6 +1,7 @@
 {
   "name": "@hono-filebased-route/vite-plugin-example",
   "type": "module",
+  "private": true,
   "scripts": {
     "dev": "vite"
   },

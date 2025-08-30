@@ -41,8 +41,6 @@
     "@changesets/cli": "^2.29.6",
     "dayjs": "^1.11.13",
     "hono": "^4.9.2",
-    "pino": "^9.9.0",
-    "pino-pretty": "^13.1.1",
     "tsc": "^2.0.4",
     "vitepress-markdown-timeline": "^1.2.2"
   },

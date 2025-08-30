@@ -1,6 +1,8 @@
 import type { Plugin } from 'vite'
 import { createPluginName } from './shared/create'
-import { generateRoutesFile } from '@hono-filebased-route/core'
+import { generateRoutesFile, createLogger } from '@hono-filebased-route/core'
+import path from 'path'
+import { writeFile, readFile } from 'fs/promises'
 
 interface Options {
   dir: string
@@ -11,6 +13,15 @@ interface Options {
 }
 
 const useName = createPluginName(true)
+const virtualFileId = 'virtual:generated-routes'
+
+const newFileContent = `
+import { Context } from 'hono'
+
+export function GET(c: Context) {
+	return c.text('')
+}
+`
 
 const usePlugin = (options?: Partial<Options>): Plugin => {
   const {
@@ -20,8 +31,8 @@ const usePlugin = (options?: Partial<Options>): Plugin => {
     verbose = false,
     callback,
   } = options || {}
-  const virtualFileId = 'generated-routes'
   let generated_route: string = ''
+  const logger = createLogger(verbose)
 
   const generateRoutes = async () => {
     if (virtualRoute) {
@@ -30,6 +41,7 @@ const usePlugin = (options?: Partial<Options>): Plugin => {
         output: '',
         write: false,
         verbose,
+        typescript: false,
       })
       generated_route = router
     } else {
@@ -51,6 +63,12 @@ const usePlugin = (options?: Partial<Options>): Plugin => {
       await generateRoutes()
 
       server.watcher.on('all', async (event, file) => {
+        if (!file.startsWith(path.resolve(dir))) return
+        logger.info(`${event}, ${file}`)
+        if (event === 'add') {
+          const fileContent = (await readFile(file, 'utf-8')).trim()
+          if (fileContent === '') return await writeFile(file, newFileContent.trimStart())
+        }
         if (events.includes(event)) {
           await generateRoutes()
           server.restart()

@@ -13,6 +13,20 @@
 - 📦 **Monorepo**: 使用 Turborepo 管理多包项目
 - ⚡ **构建缓存**: 智能缓存和并行构建优化
 
+## 项目模块(三者选择之一即可)
+
+| 模块              | 核心模块 (@hono-filebased-route/core)                                                                                                                              | 运行时模块 (@hono-filebased-route/runtime)                   | Vite插件模块 (@hono-filebased-route/vite-plugin)                                                             |
+| :---------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------- | :----------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------- |
+| **描述**          | 一个适用于 Node/Bun 环境的路由注册库，使用 `predev` 运行 `scripts/generate-routes.ts` 扫描路由目录 (默认为 `./src/routes`)，并自动根据文件路径生成对应的路由配置。 | 该模块提供了运行时的路由注册功能，用于在运行时动态注册路由。 | 该插件用于 Vite 项目，自动注册路由。                                                                         |
+| **工作方式**      | 扫描指定目录（默认为 `./src/routes`）下的文件，根据其路径生成路由配置（如创建路由文件）。                                                                          | 在运行时动态注册路由，不依赖预先生成的文件。                 | 与 Vite 构建工具集成，自动注册路由，可选择生成路由文件或利用 Vite 的虚拟文件系统。                           |
+| **优点**          | 核心库体积最小                                                                                                                                                     | 不会生成额外的路由文件<br />支持热更新 (需视构建工具而定)    | 可自由选择生成路由文件或者使用 Vite 的虚拟文件系统<br>支持热更新<br>开发友好，新建文件会自动生成默认模板代码 |
+| **缺点**          | 不支持热更新：创建新路由文件后需要手动运行 `bun run generate-routes` 或 `bun dev` 来生成路由配置。                                                                 |                                                              | 需要依赖 Vite                                                                                                |
+| **目标环境/用途** | Node/Bun 环境，用于在构建时生成路由配置。                                                                                                                          | 运行时动态注册路由。                                         | Vite 项目，用于自动化路由注册。                                                                              |
+| **热更新支持**    | **不支持**                                                                                                                                                         | **支持 (需视构建工具而定)**                                  | **支持**                                                                                                     |
+| **文件生成**      | **主要功能：生成路由文件/配置**                                                                                                                                    | **不生成**                                                   | **可选：生成路由文件或使用虚拟文件系统**                                                                     |
+| **开发便捷性**    | 新增路由后需要额外步骤。                                                                                                                                           | 直接在运行时注册。                                           | **高度友好：** 新建文件自动生成默认模板。                                                                    |
+| **集成需求**      | 需配合 `predev` 或手动执行路由生成脚本。                                                                                                                           |                                                              | **原生支持 Vite 项目**                                                                                       |
+
 ## 路由规则
 
 ### 基本路由实例
@@ -25,128 +39,144 @@
 | `src/routes/users/[id].ts`         | `/users/:id`  | 动态参数路由 |
 | `src/routes/articles/[...slug].ts` | `/articles/*` | 通配符路由   |
 
-## 安装
+## 快速开始
 
-安装项目依赖:
+### 使用核心模块
 
-```bash
-npm install
-# or
-yarn install
-# or
-pnpm install
-# or
-bun install # 建议
-```
+1. 安装核心模块：
 
-## 使用方法
+   ```bash
+   bun add hono @hono-filebased-route/core
+   ```
 
-### Turborepo 命令
+2. 添加 `scripts/generate-routes.ts`
 
-本项目使用 Turborepo 进行 monorepo 管理，支持以下命令：
+   ```typescript
+   import { generateRoutesFile } from '@hono-filebased-route/core'
+   generateRoutesFile()
+   ```
 
-```bash
-# 构建所有包
-bun run build
+3. 配置package.json
 
-# 启动所有开发服务
-bun run dev
+   ```json
+   {
+     "scripts": {
+       "predev": "bun generate-routes",
+       "generate-routes": "bun run scripts/generate-routes.ts"
+     }
+   }
+   ```
 
-# 运行所有测试
-bun run test
+4. 配置 `src/index.ts`：
 
-# 类型检查
-bun run type-check
+   ```typescript
+   import { Hono } from 'hono'
+   import { registerGeneratedRoutes } from './generated-routes'
 
-# 清理构建产物
-bun run clean
-```
+   const app = new Hono()
 
-### 开发模式
+   // 调用生成的函数来注册所有路由
+   registerGeneratedRoutes(app)
 
-```bash
-# 使用 Turborepo 启动开发服务器
-bun run dev
+   // 启动服务器
+   const port = 3000
+   console.log(`Server is running on http://localhost:${port}`)
 
-# 或者直接启动示例项目
-cd examples/bun
-bun run dev
-```
+   export default {
+     port: port,
+     fetch: app.fetch,
+   }
+   ```
 
-这将启动开发服务器，支持热重载，访问 <http://localhost:3000>
+5. 生成路由配置：
 
-### 生产模式
+   ```bash
+   bun run generate-routes
+   # 或者
+   bun dev
+   ```
 
-```bash
-# 先构建所有包
-bun run build
+### 使用运行时模块
 
-# 启动示例应用
-cd examples/bun
-bun run start
-```
+1. 安装运行时模块：
 
-### 构建项目
+   ```bash
+   bun add hono @hono-filebased-route/runtime
+   ```
 
-```bash
-# 构建所有包（使用 Turborepo 缓存和并行构建）
-bun run build
+2. 配置 `src/index.ts`：
 
-# 或者构建单个包
-cd packages/core
-bun run build
-```
+   ```typescript
+   import { Hono } from 'hono'
+   import { registerRoutes } from '@hono-filebased-route/runtime'
+   
+   const app = new Hono()
+   
+   // 调用生成的函数来注册所有路由
+   registerRoutes(app)
+   
+   // 启动服务器
+   const port = 3000
+   console.log(`Server is running on http://localhost:${port}`)
+   
+   export default {
+     port: port,
+     fetch: app.fetch,
+   }
+   ```
 
-### 手动生成路由
+### Vite 插件
 
-```bash
-cd examples/bun
-bun run generate-routes
-```
+1. 安装插件：
 
-## 项目结构
+   ```bash
+   bun add hono @hono-filebased-route/vite-plugin
+   bun add -D @hono/vite-dev-server @hono/vite-build/node
+   ```
 
-```txt
-hono-filebased-route/
-├── packages/                        # 核心包目录
-│   ├── core/                        # 核心路由功能包
-│   │   ├── src/                     # 源代码目录
-│   │   ├── dist/                    # 构建输出目录
-│   │   ├── scripts/
-│   │   │   └── generate-routes.ts   # 路由生成脚本
-│   │   ├── utils/
-│   │   │   └── load-routes-utils.ts # 路由工具脚本
-│   │   ├── package.json             # @hono-filebased-route/core
-│   │   └── tsconfig.json
-│   └── vite-plugin/                 # Vite 插件包
-│       ├── src/                     # 源代码目录
-│       ├── dist/                    # 构建输出目录
-│       ├── package.json             # @hono-filebased-route/vite-plugin
-│       └── tsconfig.json
-├── examples/                        # 示例项目目录
-│   └── bun/               # 基础使用示例
-│       ├── src/
-│       │   ├── routes/              # 路由文件目录
-│       │   │   ├── index.ts         # 根路由 (/)
-│       │   │   ├── about.ts         # 关于页面 (/about)
-│       │   │   ├── users/
-│       │   │   │   ├── index.ts     # 用户列表 (/users)
-│       │   │   │   └── [id].ts      # 用户详情 (/users/:id)
-│       │   │   └── articles/
-│       │   │       └── [...slug].ts # 文章页面 (/articles/*)
-│       │   ├── main.ts              # 应用入口
-│       │   └── generated-routes.ts  # 自动生成的路由配置
-│       ├── scripts/
-│       │   └── generate-routes.ts   # 路由生成脚本
-│       ├── package.json             # @hono-filebased-route/bun
-│       └── tsconfig.json
-├── .trae/                           # 项目文档目录
-│   └── documents/                   # 设计和规划文档
-├── turborepo.json                   # Turborepo 配置文件
-├── package.json                     # 根工作区配置
-├── tsconfig.json                    # TypeScript 基础配置
-└── bun.lockb                        # bun 锁定文件
-```
+2. 配置 `vite.config.ts`：
+
+   ```typescript
+   import devServer from '@hono/vite-dev-server'
+   import { defineConfig } from 'vite'
+   import build from '@hono/vite-build/node'
+   import honoRouter from '@hono-filebased-route/vite-plugin'
+
+   export default defineConfig({
+     plugins: [
+       honoRouter({
+         virtualRoute: false,
+         verbose: true,
+       }),
+       build(),
+       devServer({
+         entry: 'src/index.ts',
+       }),
+     ],
+   })
+   ```
+
+3. 配置 `src/index.ts`：
+
+   ```typescript
+   import { Hono } from 'hono'
+   import { registerGeneratedRoutes } from './generated-routes' // 不使用虚拟文件
+   // import { registerGeneratedRoutes } from 'virtual:generated-routes' // 使用虚拟文件
+
+   const app = new Hono()
+
+   // 调用生成的函数来注册所有路由
+   registerGeneratedRoutes(app)
+
+   export default app
+   ```
+
+4. 创建 `index.d.ts` (若使用虚拟文件)
+   ```typescript
+   declare module 'virtual:generated-routes' {
+     function registerGeneratedRoutes(app: Hono): void
+   }
+   ```
 
 ## 创建路由
 
@@ -157,12 +187,12 @@ import { Context } from 'hono'
 
 // GET 请求处理
 export function GET(c: Context) {
-	return c.json({ message: 'Hello from GET' })
+  return c.json({ message: 'Hello from GET' })
 }
 
 // POST 请求处理
 export function POST(c: Context) {
-	return c.json({ message: 'Hello from POST' })
+  return c.json({ message: 'Hello from POST' })
 }
 ```
 
@@ -174,8 +204,8 @@ export function POST(c: Context) {
 import { Context } from 'hono'
 
 export function GET(c: Context) {
-	const id = c.req.param('id')
-	return c.json({ userId: id })
+  const id = c.req.param('id')
+  return c.json({ userId: id })
 }
 ```
 
@@ -189,16 +219,9 @@ export function GET(c: Context) {
 import { Context } from 'hono'
 
 export function GET(c: Context, slug: string[]) {
-	return c.json({ slug })
+  return c.json({ slug })
 }
 ```
-
-## 工作原理
-
-1. **路由扫描**: `scripts/generate-routes.ts` 扫描 `src/routes` 目录
-2. **路径转换**: 将文件路径转换为 Hono 路由路径
-3. **代码生成**: 生成 `src/generated-routes.ts` 文件
-4. **自动注册**: 主应用自动注册所有生成的路由
 
 ## 开发脚本
 

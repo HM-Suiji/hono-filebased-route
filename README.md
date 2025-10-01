@@ -1,6 +1,18 @@
+# Hono File-Based Routing
+
 <p align="center">English | <a href="./README.zh.md">中文</a></p>
 
-# Hono File-Based Routing
+<hr/>
+
+[![GitHub](https://img.shields.io/github/license/HM-Suiji/hono-filebased-route)](https://github.com/HM-Suiji/hono-filebased-route/blob/main/LICENSE)
+[![npm](https://img.shields.io/npm/v/%40hono-filebased-route%2Fcore)](https://www.npmjs.com/package/%40hono-filebased-route%2Fcore)
+![NPM Downloads](https://img.shields.io/npm/dm/%40hono-filebased-route%2Fcore)
+[![Bundle Size](https://img.shields.io/bundlephobia/min/%40hono-filebased-route%2Fcore)](https://bundlephobia.com/result?p=%40hono-filebased-route%2Fcore)
+[![Bundle Size](https://img.shields.io/bundlephobia/minzip/%40hono-filebased-route%2Fcore)](https://bundlephobia.com/result?p=%40hono-filebased-route%2Fcore)
+[![GitHub last commit](https://img.shields.io/github/last-commit/HM-Suiji/hono-filebased-route)](https://github.com/HM-Suiji/hono-filebased-route/commits/main)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/HM-Suiji/hono-filebased-route)
+
+## Intro
 
 A file-based routing system for the Hono framework, utilizing a monorepo managed by Turborepo, supporting a file-routing pattern similar to Next.js.
 

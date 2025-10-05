@@ -1,5 +1,10 @@
 import { writeFile } from 'fs/promises'
-import { getExportedHttpMethods, getFiles, getRoutePath } from '../utils/load-routes-utils'
+import {
+  getExportedHttpMethods,
+  getExportedMiddlewareHandler,
+  getFiles,
+  getRoutePath,
+} from '../utils/load-routes-utils'
 import path from 'path'
 import { Config, METHODS } from '../types'
 import { createLogger } from '../utils/logger'
@@ -36,21 +41,36 @@ export async function generateRoutesFile(config?: Partial<Config>) {
       .replace(/\\/g, '/')
     const moduleName = `routeModule${counter++}`
 
+    const exportedMethods = getExportedHttpMethods(file)
+    const middlewareHandler = getExportedMiddlewareHandler(file)
+
+    if (!exportedMethods.GET && !exportedMethods.POST) continue
+
     importStatements.push(`import * as ${moduleName} from './${relativePath}';`)
 
     const tempHonoVar = `honoApp${moduleName}`
     routeDefinitions.push(`  const ${tempHonoVar} = new Hono();`)
 
-    const exportedMethods = getExportedHttpMethods(file)
-
     for (const method of METHODS) {
       if (exportedMethods[method]) {
         if (routePath.endsWith('/*')) {
           const len = routePath.replace(/\/\*$/g, '').length + 1
-          routeDefinitions.push(
-            `  ${tempHonoVar}.${method.toLowerCase()}('/', async (c) => ${moduleName}.${method}(c, c.req.path.substring(${len}).split('/')));`
-          )
-        } else routeDefinitions.push(`  ${tempHonoVar}.${method.toLowerCase()}('/', ${moduleName}.${method});`)
+          if (!middlewareHandler[method])
+            routeDefinitions.push(
+              `  ${tempHonoVar}.${method.toLowerCase()}('/', async (c) => ${moduleName}.${method}(c, c.req.path.substring(${len}).split('/')));`
+            )
+          else
+            routeDefinitions.push(
+              `  ${tempHonoVar}.${method.toLowerCase()}('/', ${moduleName}.config${method}, async (c) => ${moduleName}.${method}(c, c.req.path.substring(${len}).split('/')));`
+            )
+        } else {
+          if (!middlewareHandler[method])
+            routeDefinitions.push(`  ${tempHonoVar}.${method.toLowerCase()}('/', ${moduleName}.${method});`)
+          else
+            routeDefinitions.push(
+              `  ${tempHonoVar}.${method.toLowerCase()}('/', ${moduleName}.config${method}, ${moduleName}.${method});`
+            )
+        }
         logger.info(`Generated route: ${method} ${routePath}`)
       }
     }

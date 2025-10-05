@@ -80,3 +80,31 @@ export function getExportedHttpMethods(filePath: string): ExportedMethods {
   })
   return methods
 }
+
+/**
+ * 从文件中提取导出的 MiddlewareHandler config
+ * @param filePath 文件的绝对路径
+ * @returns 是否导出 MiddlewareHandler
+ */
+export function getExportedMiddlewareHandler(filePath: string): ExportedMethods {
+  const fileContent = readFileSync(filePath, 'utf8')
+  const sourceFile = createSourceFile(filePath, fileContent, ScriptTarget.ESNext, true)
+  const methodConfigs: ExportedMethods = {} as ExportedMethods
+  sourceFile.forEachChild(node => {
+    // 寻找 export const configGET = ...
+    if (isVariableStatement(node) && node.modifiers && node.modifiers.some(m => m.kind === SyntaxKind.ExportKeyword)) {
+      for (const declaration of node.declarationList.declarations) {
+        if (
+          isIdentifier(declaration.name) &&
+          declaration.name.text.startsWith('config') &&
+          METHODS.includes(declaration.name.text.replace('config', '') as Method)
+        ) {
+          methodConfigs[declaration.name.text.replace('config', '') as Method] = true
+        }
+      }
+    }
+  })
+  console.log('file', filePath)
+  console.log('methodConfigs', methodConfigs)
+  return methodConfigs
+}

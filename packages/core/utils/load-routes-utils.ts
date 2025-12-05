@@ -104,7 +104,5 @@ export function getExportedMiddlewareHandler(filePath: string): ExportedMethods 
       }
     }
   })
-  console.log('file', filePath)
-  console.log('methodConfigs', methodConfigs)
   return methodConfigs
 }

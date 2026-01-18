@@ -1,140 +1,44 @@
 # Introduction
 
-Welcome to hono-filebased-route, a powerful file-based routing system built on top of the [Hono](https://hono.dev/) web framework.
+hono-filebased-route is a small set of utilities that turn a folder of route files into registered Hono routes.
+It does not run a server or provide a CLI. You keep full control of your Hono app and choose one of the three
+integration modes below.
 
-::: danger Caution
-This documentation is AI-generated and may contain errors. Please refer to the source code [`examples`](https://github.com/HM-Suiji/hono-filebased-route/tree/main/examples) for accuracy.
-:::
+## Packages
 
-## What is hono-filebased-route?
+### @hono-filebased-route/core
 
-hono-filebased-route brings the simplicity and convention of file-based routing to Hono applications. Inspired by frameworks like Next.js and Nuxt.js, it allows you to create API routes by simply organizing your files in a specific directory structure.
+- Scans a routes directory and generates `generated-routes.ts`.
+- The generated file exports `registerGeneratedRoutes(app)`.
+- Supports per-method middleware via an exported `config` object in route files.
 
-## Key Features
+### @hono-filebased-route/runtime
 
-### 🚀 **Automatic Route Generation**
+- Registers routes at runtime with dynamic imports.
+- Only supports `GET` and `POST` handlers.
+- Does not read the `config` middleware object.
 
-No need to manually define routes. Just create files in your routes directory, and they automatically become accessible endpoints.
+### @hono-filebased-route/vite-plugin
 
-### 📁 **Intuitive File Structure**
+- Generates routes during dev server startup and on file changes.
+- Can emit a real file or expose a virtual module `virtual:generated-routes`.
+- Writes a template when a new route file is created and empty.
 
-Your file system becomes your routing system. The directory structure directly maps to your URL structure.
+## Routing Rules
 
-### 🔄 **Dynamic Routes**
+Route paths are derived from file paths under your routes directory:
 
-Support for dynamic parameters using bracket notation (`[id].ts`) and wildcard routes (`[...slug].ts`).
+- `index.ts` -> `/`
+- `users/index.ts` -> `/users`
+- `[id].ts` -> `/:id`
+- `[...slug].ts` -> `/*`
 
-### 🛡️ **TypeScript First**
+Only named exports like `export function GET()` or `export const POST = ...` are detected.
 
-Built with TypeScript from the ground up, providing excellent type safety and developer experience.
+## What It Is Not
 
-### ⚡ **Bun Optimized**
+- Not a web server or framework (Hono provides that).
+- No CLI or scaffold generator.
+- No automatic OpenAPI or schema generation (examples may integrate third-party tools).
 
-Optimized for Bun runtime while maintaining compatibility with Node.js.
-
-### 🔧 **Flexible Configuration**
-
-Customizable routing behavior with various configuration options.
-
-## How It Works
-
-The magic happens through a simple process:
-
-1. **File Scanning**: The system scans your routes directory
-2. **Path Conversion**: File paths are converted to URL patterns
-3. **Route Registration**: Routes are automatically registered with your Hono app
-4. **HTTP Method Mapping**: Exported functions (`GET`, `POST`, etc.) become route handlers
-
-```mermaid
-graph LR
-    A[File System] --> B[Route Scanner]
-    B --> C[Path Converter]
-    C --> D[Route Generator]
-    D --> E[Hono App]
-
-    F[routes/users/[id].ts] --> G[/users/:id]
-    H[routes/blog/[...slug].ts] --> I[/blog/*]
-```
-
-## Routing Patterns
-
-### Static Routes
-
-```
-routes/about.ts → /about
-routes/contact.ts → /contact
-```
-
-### Dynamic Routes
-
-```
-routes/users/[id].ts → /users/:id
-routes/posts/[slug].ts → /posts/:slug
-```
-
-### Nested Routes
-
-```
-routes/api/users/index.ts → /api/users
-routes/api/users/[id].ts → /api/users/:id
-```
-
-### Wildcard Routes
-
-```
-routes/blog/[...slug].ts → /blog/*
-routes/docs/[...path].ts → /docs/*
-```
-
-## Why Choose hono-filebased-route?
-
-### **Developer Experience**
-
-- **Intuitive**: If you've used Next.js or similar frameworks, you'll feel right at home
-- **Less Boilerplate**: No need to manually define and maintain route configurations
-- **Organized**: Natural organization of your API endpoints
-
-### **Performance**
-
-- **Fast Routing**: Built on Hono's high-performance routing engine
-- **Minimal Overhead**: Lightweight abstraction that doesn't compromise speed
-- **Bun Compatible**: Takes advantage of Bun's superior performance
-
-### **Flexibility**
-
-- **Framework Agnostic**: Works with any Hono application
-- **Gradual Adoption**: Can be integrated into existing projects incrementally
-- **Customizable**: Various configuration options to fit your needs
-
-## Comparison with Other Solutions
-
-| Feature              | hono-filebased-route | Manual Routing | Express Router |
-| -------------------- | -------------------- | -------------- | -------------- |
-| Setup Complexity     | ⭐⭐⭐⭐⭐           | ⭐⭐           | ⭐⭐⭐         |
-| Type Safety          | ⭐⭐⭐⭐⭐           | ⭐⭐⭐         | ⭐⭐           |
-| Performance          | ⭐⭐⭐⭐⭐           | ⭐⭐⭐⭐⭐     | ⭐⭐⭐         |
-| Developer Experience | ⭐⭐⭐⭐⭐           | ⭐⭐           | ⭐⭐⭐         |
-| File Organization    | ⭐⭐⭐⭐⭐           | ⭐⭐           | ⭐⭐⭐         |
-
-## Use Cases
-
-hono-filebased-route is perfect for:
-
-- **API Development**: Building RESTful APIs with clean organization
-- **Microservices**: Creating focused, well-structured service endpoints
-- **Rapid Prototyping**: Quickly spinning up API endpoints for testing
-- **Full-Stack Applications**: Backend APIs for web and mobile applications
-- **Serverless Functions**: Organizing serverless function endpoints
-
-## Getting Started
-
-Ready to dive in? Check out our [Quick Start Guide](/quick-started) to get up and running in minutes, or explore the [Installation Guide](/guides/installation) for more detailed setup instructions.
-
-## Community and Support
-
-- **GitHub**: [Repository](https://github.com/HM-Suiji/hono-filebased-route)
-- **Issues**: Report bugs and request features
-- **Discussions**: Community discussions and questions
-- **Documentation**: This comprehensive guide
-
-Let's build something amazing together! 🚀
+If you want a guided setup, start with the Quick Start page and pick the module that matches your workflow.

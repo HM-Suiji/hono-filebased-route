@@ -1,202 +1,133 @@
-# 快速开始
+# Quick Started
 
-几分钟内快速上手 hono-filebased-route。
+Pick one of the three modules below. All examples assume `src/routes` as the routes directory.
 
-## 前置要求
+## Core (generate routes ahead of time)
 
-开始之前，请确保已安装以下工具：
-
-- [Bun](https://bun.sh/)（推荐）或 Node.js 18+
-- 文本编辑器或 IDE
-
-## 安装
-
-### 1. 创建新项目
+Install:
 
 ```bash
-mkdir my-hono-app
-cd my-hono-app
-bun init -y
+bun add hono @hono-filebased-route/core
 ```
 
-### 2. 安装 hono-filebased-route
+Add a generator script (for example `scripts/generate-routes.ts`):
 
-```bash
-bun add hono-filebased-route
-bun add -d @types/bun
+```ts
+import { generateRoutesFile } from '@hono-filebased-route/core'
+
+generateRoutesFile()
 ```
 
-### 3. 创建第一个路由
-
-创建 `routes` 目录并添加第一个路由文件：
-
-```bash
-mkdir routes
-```
-
-创建 `routes/index.ts`：
-
-```typescript
-import type { Context } from 'hono'
-
-export const GET = (c: Context) => {
-  return c.json({ message: '来自 hono-filebased-route 的问候！' })
-}
-
-export const POST = (c: Context) => {
-  return c.json({ message: '收到 POST 请求！' })
-}
-```
-
-### 4. 设置主应用程序
-
-在项目根目录创建 `index.ts`：
-
-```typescript
-import { Hono } from 'hono'
-import { serve } from '@hono/node-server'
-import { fileBasedRouting } from 'hono-filebased-route'
-
-const app = new Hono()
-
-// 应用文件路由
-fileBasedRouting(app, {
-  dir: './routes',
-})
-
-const port = 3000
-console.log(`服务器运行在端口 ${port}`)
-
-serve({
-  fetch: app.fetch,
-  port,
-})
-```
-
-### 5. 添加脚本到 package.json
-
-更新 `package.json` 添加以下脚本：
+Wire scripts in `package.json`:
 
 ```json
 {
   "scripts": {
-    "dev": "bun run --watch index.ts",
-    "start": "bun run index.ts",
-    "build": "bun build index.ts --outdir ./dist"
+    "generate-routes": "bun run scripts/generate-routes.ts",
+    "predev": "bun run generate-routes",
+    "dev": "bun --hot src/main.ts"
   }
 }
 ```
 
-### 6. 启动开发服务器
+Use the generated registrar in your app:
+
+```ts
+import { Hono } from 'hono'
+import { registerGeneratedRoutes } from './generated-routes'
+
+const app = new Hono()
+registerGeneratedRoutes(app)
+
+export default app
+```
+
+## Runtime (register on startup)
+
+Install:
 
 ```bash
-bun run dev
+bun add hono @hono-filebased-route/runtime
 ```
 
-现在你的服务器应该运行在 `http://localhost:3000`！
+Register routes at runtime:
 
-## 测试路由
+```ts
+import { Hono } from 'hono'
+import { registerRoutes } from '@hono-filebased-route/runtime'
 
-打开浏览器或使用 curl 测试路由：
+const app = new Hono()
+await registerRoutes(app)
+
+export default app
+```
+
+## Vite Plugin (dev-time regeneration)
+
+Install:
 
 ```bash
-# 测试 GET 请求
-curl http://localhost:3000
-# 响应: {"message":"来自 hono-filebased-route 的问候！"}
-
-# 测试 POST 请求
-curl -X POST http://localhost:3000
-# 响应: {"message":"收到 POST 请求！"}
+bun add hono @hono-filebased-route/vite-plugin
+bun add -D @hono/vite-dev-server @hono/vite-build/node
 ```
 
-## 添加更多路由
+Configure Vite (matches `examples/vite-plugin`):
 
-让我们添加更多路由来体验文件路由的强大功能：
+```ts
+import devServer from '@hono/vite-dev-server'
+import { defineConfig } from 'vite'
+import build from '@hono/vite-build/node'
+import honoRouter from '@hono-filebased-route/vite-plugin'
 
-### 静态路由
+export default defineConfig({
+  plugins: [
+    honoRouter({
+      virtualRoute: false,
+      verbose: true,
+    }),
+    build(),
+    devServer({
+      entry: 'src/index.ts',
+    }),
+  ],
+})
+```
 
-创建 `routes/about.ts`：
+In your app, import the generated registrar:
 
-```typescript
-import type { Context } from 'hono'
+```ts
+import { Hono } from 'hono'
+import { registerGeneratedRoutes } from './generated-routes'
 
-export const GET = (c: Context) => {
-  return c.json({
-    page: '关于',
-    description: '这是关于页面',
-  })
+const app = new Hono()
+registerGeneratedRoutes(app)
+
+export default app
+```
+
+If you set `virtualRoute: true`, import from the virtual module and add a type stub:
+
+```ts
+// src/index.ts
+import { registerGeneratedRoutes } from 'virtual:generated-routes'
+```
+
+```ts
+// index.d.ts
+declare module 'virtual:generated-routes' {
+  export function registerGeneratedRoutes(app: import('hono').Hono): void
 }
 ```
 
-访问地址：`http://localhost:3000/about`
+## Create Your First Route
 
-### 动态路由
+```ts
+// src/routes/index.ts
+import { Context } from 'hono'
 
-创建 `routes/users/[id].ts`：
-
-```typescript
-import type { Context } from 'hono'
-
-export const GET = (c: Context) => {
-  const id = c.req.param('id')
-  return c.json({
-    userId: id,
-    message: `用户资料，ID: ${id}`,
-  })
+export function GET(c: Context) {
+  return c.text('Hello from file-based routing')
 }
 ```
 
-访问地址：`http://localhost:3000/users/123`
-
-### 通配符路由
-
-创建 `routes/blog/[...slug].ts`：
-
-```typescript
-import type { Context } from 'hono'
-
-export const GET = (c: Context, slug: string[]) => {
-  return c.json({
-    slug: slug,
-    message: `博客文章: ${slug}`,
-  })
-}
-```
-
-访问地址：`http://localhost:3000/blog/2024/my-first-post`
-
-## 项目结构
-
-现在你的项目结构应该是这样的：
-
-```
-my-hono-app/
-├── routes/
-│   ├── index.ts          # GET/POST /
-│   ├── about.ts          # GET /about
-│   ├── users/
-│   │   └── [id].ts       # GET /users/:id
-│   └── blog/
-│       └── [...slug].ts  # GET /blog/*
-├── index.ts              # 主应用程序
-└── package.json
-```
-
-## 下一步
-
-恭喜！你已经成功设置了 hono-filebased-route。接下来可以探索：
-
-- [基础用法指南](/zh/guides/basic-usage) - 了解更多路由创建方法
-- [路由模式](/zh/guides/routing-patterns) - 理解不同的路由模式
-- [动态路由](/zh/guides/dynamic-routes) - 掌握动态和通配符路由
-- [API 参考](/zh/reference/api) - 探索所有可用的 API
-
-## 需要帮助？
-
-如果遇到任何问题：
-
-1. 查看[故障排除指南](/zh/guides/advanced-features#故障排除)
-2. 查阅[示例](/zh/examples/basic)
-3. 在 [GitHub](https://github.com/HM-Suiji/hono-filebased-route) 上提交问题
-
-开始编码吧！🚀
+For dynamic or catch-all routes, see the Routing Patterns guide.

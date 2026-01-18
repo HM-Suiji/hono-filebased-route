@@ -1,202 +1,133 @@
 # Quick Started
 
-Get up and running with hono-filebased-route in just a few minutes.
+Pick one of the three modules below. All examples assume `src/routes` as the routes directory.
 
-## Prerequisites
+## Core (generate routes ahead of time)
 
-Before you begin, make sure you have the following installed:
-
-- [Bun](https://bun.sh/) (recommended) or Node.js 18+
-- A text editor or IDE
-
-## Installation
-
-### 1. Create a new project
+Install:
 
 ```bash
-mkdir my-hono-app
-cd my-hono-app
-bun init -y
+bun add hono @hono-filebased-route/core
 ```
 
-### 2. Install hono-filebased-route
+Add a generator script (for example `scripts/generate-routes.ts`):
 
-```bash
-bun add hono-filebased-route
-bun add -d @types/bun
+```ts
+import { generateRoutesFile } from '@hono-filebased-route/core'
+
+generateRoutesFile()
 ```
 
-### 3. Create your first route
-
-Create a `routes` directory and add your first route file:
-
-```bash
-mkdir routes
-```
-
-Create `routes/index.ts`:
-
-```typescript
-import type { Context } from 'hono'
-
-export const GET = (c: Context) => {
-  return c.json({ message: 'Hello from hono-filebased-route!' })
-}
-
-export const POST = (c: Context) => {
-  return c.json({ message: 'POST request received!' })
-}
-```
-
-### 4. Set up your main application
-
-Create `index.ts` in your project root:
-
-```typescript
-import { Hono } from 'hono'
-import { serve } from '@hono/node-server'
-import { fileBasedRouting } from 'hono-filebased-route'
-
-const app = new Hono()
-
-// Apply file-based routing
-fileBasedRouting(app, {
-  dir: './routes',
-})
-
-const port = 3000
-console.log(`Server is running on port ${port}`)
-
-serve({
-  fetch: app.fetch,
-  port,
-})
-```
-
-### 5. Add scripts to package.json
-
-Update your `package.json` to include these scripts:
+Wire scripts in `package.json`:
 
 ```json
 {
   "scripts": {
-    "dev": "bun run --watch index.ts",
-    "start": "bun run index.ts",
-    "build": "bun build index.ts --outdir ./dist"
+    "generate-routes": "bun run scripts/generate-routes.ts",
+    "predev": "bun run generate-routes",
+    "dev": "bun --hot src/main.ts"
   }
 }
 ```
 
-### 6. Start the development server
+Use the generated registrar in your app:
+
+```ts
+import { Hono } from 'hono'
+import { registerGeneratedRoutes } from './generated-routes'
+
+const app = new Hono()
+registerGeneratedRoutes(app)
+
+export default app
+```
+
+## Runtime (register on startup)
+
+Install:
 
 ```bash
-bun run dev
+bun add hono @hono-filebased-route/runtime
 ```
 
-Your server should now be running at `http://localhost:3000`!
+Register routes at runtime:
 
-## Test your routes
+```ts
+import { Hono } from 'hono'
+import { registerRoutes } from '@hono-filebased-route/runtime'
 
-Open your browser or use curl to test your routes:
+const app = new Hono()
+await registerRoutes(app)
+
+export default app
+```
+
+## Vite Plugin (dev-time regeneration)
+
+Install:
 
 ```bash
-# Test GET request
-curl http://localhost:3000
-# Response: {"message":"Hello from hono-filebased-route!"}
-
-# Test POST request
-curl -X POST http://localhost:3000
-# Response: {"message":"POST request received!"}
+bun add hono @hono-filebased-route/vite-plugin
+bun add -D @hono/vite-dev-server @hono/vite-build/node
 ```
 
-## Add more routes
+Configure Vite (matches `examples/vite-plugin`):
 
-Let's add a few more routes to see the power of file-based routing:
+```ts
+import devServer from '@hono/vite-dev-server'
+import { defineConfig } from 'vite'
+import build from '@hono/vite-build/node'
+import honoRouter from '@hono-filebased-route/vite-plugin'
 
-### Static route
+export default defineConfig({
+  plugins: [
+    honoRouter({
+      virtualRoute: false,
+      verbose: true,
+    }),
+    build(),
+    devServer({
+      entry: 'src/index.ts',
+    }),
+  ],
+})
+```
 
-Create `routes/about.ts`:
+In your app, import the generated registrar:
 
-```typescript
-import type { Context } from 'hono'
+```ts
+import { Hono } from 'hono'
+import { registerGeneratedRoutes } from './generated-routes'
 
-export const GET = (c: Context) => {
-  return c.json({
-    page: 'About',
-    description: 'This is the about page',
-  })
+const app = new Hono()
+registerGeneratedRoutes(app)
+
+export default app
+```
+
+If you set `virtualRoute: true`, import from the virtual module and add a type stub:
+
+```ts
+// src/index.ts
+import { registerGeneratedRoutes } from 'virtual:generated-routes'
+```
+
+```ts
+// index.d.ts
+declare module 'virtual:generated-routes' {
+  export function registerGeneratedRoutes(app: import('hono').Hono): void
 }
 ```
 
-Access at: `http://localhost:3000/about`
+## Create Your First Route
 
-### Dynamic route
+```ts
+// src/routes/index.ts
+import { Context } from 'hono'
 
-Create `routes/users/[id].ts`:
-
-```typescript
-import type { Context } from 'hono'
-
-export const GET = (c: Context, slug: string[]) => {
-  return c.json({
-    slug: slug,
-    message: `User profile for ID: ${slug}`,
-  })
+export function GET(c: Context) {
+  return c.text('Hello from file-based routing')
 }
 ```
 
-Access at: `http://localhost:3000/users/123`
-
-### Wildcard route
-
-Create `routes/blog/[...slug].ts`:
-
-```typescript
-import type { Context } from 'hono'
-
-export const GET = (c: Context) => {
-  const slug = c.req.param('slug')
-  return c.json({
-    slug: slug,
-    message: `Blog post: ${slug}`,
-  })
-}
-```
-
-Access at: `http://localhost:3000/blog/2024/my-first-post`
-
-## Project structure
-
-Your project should now look like this:
-
-```
-my-hono-app/
-├── routes/
-│   ├── index.ts          # GET/POST /
-│   ├── about.ts          # GET /about
-│   ├── users/
-│   │   └── [id].ts       # GET /users/:id
-│   └── blog/
-│       └── [...slug].ts  # GET /blog/*
-├── index.ts              # Main application
-└── package.json
-```
-
-## Next steps
-
-Congratulations! You've successfully set up hono-filebased-route. Here's what you can explore next:
-
-- [Basic Usage Guide](/guides/basic-usage) - Learn more about creating routes
-- [Routing Patterns](/guides/routing-patterns) - Understand different routing patterns
-- [Dynamic Routes](/guides/dynamic-routes) - Master dynamic and wildcard routes
-- [API Reference](/reference/api) - Explore all available APIs
-
-## Need help?
-
-If you encounter any issues:
-
-1. Check the [troubleshooting guide](/guides/advanced-features#troubleshooting)
-2. Review the [examples](/examples/basic)
-3. Open an issue on [GitHub](https://github.com/HM-Suiji/hono-filebased-route)
-
-Happy coding! 🚀
+For dynamic or catch-all routes, see the Routing Patterns guide.

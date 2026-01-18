@@ -1,10 +1,25 @@
 import { Hono } from 'hono'
 import { registerGeneratedRoutes } from './generated-routes'
+import { openAPIRouteHandler } from 'hono-openapi'
 
 const app = new Hono()
 
 // 调用生成的函数来注册所有路由
 registerGeneratedRoutes(app)
+
+app.get(
+  '/openapi',
+  openAPIRouteHandler(app, {
+    documentation: {
+      info: {
+        title: 'Hono API',
+        version: '1.0.0',
+        description: 'Greeting API',
+      },
+      servers: [{ url: process.env.HOST || 'http://localhost:3000', description: 'Local Server' }],
+    },
+  })
+)
 
 // 处理未匹配的路由
 app.notFound(c => {

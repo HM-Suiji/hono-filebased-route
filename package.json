@@ -39,8 +39,10 @@
   },
   "dependencies": {
     "@changesets/cli": "^2.29.6",
+    "@hono/standard-validator": "^0.2.2",
     "dayjs": "^1.11.13",
     "hono": "^4.9.2",
+    "hono-openapi": "^1.1.2",
     "tsc": "^2.0.4",
     "vitepress-markdown-timeline": "^1.2.2"
   },
@@ -49,6 +51,9 @@
     "@tailwindcss/vite": "^4.1.12",
     "@types/bun": "^1.2.20",
     "@types/pino": "^7.0.5",
+    "bun-plugin-dts": "^0.3.0",
+    "dts-bundle-generator": "^9.5.1",
+    "esbuild": "^0.27.2",
     "eslint": "^9.34.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",

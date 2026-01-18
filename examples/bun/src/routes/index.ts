@@ -1,4 +1,5 @@
 import { Context } from 'hono'
+import { describeRoute } from 'hono-openapi'
 
 export function GET(c: Context) {
   return c.html(`
@@ -15,4 +16,12 @@ export function GET(c: Context) {
 
 export function POST(c: Context) {
   return c.text('POST request to root received!')
+}
+
+export const config = {
+  GET: describeRoute({
+    summary: 'Hello World',
+    description: 'Hello World',
+    tags: ['hello'],
+  }),
 }

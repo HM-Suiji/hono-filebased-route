@@ -1,10 +1,8 @@
-import dts from 'bun-plugin-dts'
+import { buildPackage } from '../../build'
 
-await Bun.build({
-  minify: true,
-  target: 'node',
-  outdir: './dist',
-  plugins: [dts()],
-  entrypoints: ['./index.ts'],
-  external: ['typescript'],
+await buildPackage({
+  name: '@hono-filebased-route/vite-plugin',
+  entry: './index.ts',
+  outDir: './dist',
+  external: ['typescript', 'pino', 'pino-pretty'],
 })

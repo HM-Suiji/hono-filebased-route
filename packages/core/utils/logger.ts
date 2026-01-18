@@ -1,15 +1,13 @@
 import pino, { Logger } from 'pino'
+import pinoPretty from 'pino-pretty'
 
 export const createLogger = (verbose: boolean = false) =>
   verbose
-    ? pino({
-        transport: {
-          target: 'pino-pretty',
-          options: {
-            colorize: true,
-          },
-        },
-      })
+    ? pino(
+        pinoPretty({
+          colorize: true,
+        })
+      )
     : ({
       info: () => { },
       debug: () => { },

@@ -9,6 +9,10 @@ import {
   isFunctionDeclaration,
   SyntaxKind,
   isIdentifier,
+  isObjectLiteralExpression,
+  isPropertyAssignment,
+  isShorthandPropertyAssignment,
+  isStringLiteral,
 } from 'typescript'
 
 /**
@@ -91,15 +95,27 @@ export function getExportedMiddlewareHandler(filePath: string): ExportedMethods 
   const sourceFile = createSourceFile(filePath, fileContent, ScriptTarget.ESNext, true)
   const methodConfigs: ExportedMethods = {} as ExportedMethods
   sourceFile.forEachChild(node => {
-    // 寻找 export const configGET = ...
+    // 寻找 export const config = { GET: ..., POST: ... }
     if (isVariableStatement(node) && node.modifiers && node.modifiers.some(m => m.kind === SyntaxKind.ExportKeyword)) {
       for (const declaration of node.declarationList.declarations) {
         if (
           isIdentifier(declaration.name) &&
-          declaration.name.text.startsWith('config') &&
-          METHODS.includes(declaration.name.text.replace('config', '') as Method)
+          declaration.name.text === 'config' &&
+          declaration.initializer &&
+          isObjectLiteralExpression(declaration.initializer)
         ) {
-          methodConfigs[declaration.name.text.replace('config', '') as Method] = true
+          for (const prop of declaration.initializer.properties) {
+            let key: string | undefined
+            if (isPropertyAssignment(prop)) {
+              if (isIdentifier(prop.name)) key = prop.name.text
+              else if (isStringLiteral(prop.name)) key = prop.name.text
+            } else if (isShorthandPropertyAssignment(prop)) {
+              key = prop.name.text
+            }
+            if (key && METHODS.includes(key as Method)) {
+              methodConfigs[key as Method] = true
+            }
+          }
         }
       }
     }

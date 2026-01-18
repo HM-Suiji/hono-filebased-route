@@ -43,6 +43,8 @@ export async function generateRoutesFile(config?: Partial<Config>) {
 
     const exportedMethods = getExportedHttpMethods(file)
     const middlewareHandler = getExportedMiddlewareHandler(file)
+    logger.info(`Exported methods: ${JSON.stringify(exportedMethods)}`)
+    logger.info(`Middleware handler: ${JSON.stringify(middlewareHandler)}`)
 
     if (!exportedMethods.GET && !exportedMethods.POST) continue
 
@@ -61,14 +63,14 @@ export async function generateRoutesFile(config?: Partial<Config>) {
             )
           else
             routeDefinitions.push(
-              `  ${tempHonoVar}.${method.toLowerCase()}('/', ${moduleName}.config${method}, async (c) => ${moduleName}.${method}(c, c.req.path.substring(${len}).split('/')));`
+              `  ${tempHonoVar}.${method.toLowerCase()}('/', ${moduleName}.config.${method}, async (c) => ${moduleName}.${method}(c, c.req.path.substring(${len}).split('/')));`
             )
         } else {
           if (!middlewareHandler[method])
             routeDefinitions.push(`  ${tempHonoVar}.${method.toLowerCase()}('/', ${moduleName}.${method});`)
           else
             routeDefinitions.push(
-              `  ${tempHonoVar}.${method.toLowerCase()}('/', ${moduleName}.config${method}, ${moduleName}.${method});`
+              `  ${tempHonoVar}.${method.toLowerCase()}('/', ${moduleName}.config.${method}, ${moduleName}.${method});`
             )
         }
         logger.info(`Generated route: ${method} ${routePath}`)

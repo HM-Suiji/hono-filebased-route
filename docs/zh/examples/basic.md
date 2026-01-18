@@ -1,8 +1,8 @@
-# Basic Example
+# 基础示例
 
-This example mirrors `examples/bun`.
+此示例对应 `examples/bun`。
 
-## Route files
+## 路由文件
 
 ```
 src/routes/
@@ -13,7 +13,7 @@ src/routes/
     └── [id].ts
 ```
 
-`src/routes/index.ts`:
+`src/routes/index.ts`：
 
 ```ts
 import { Context } from 'hono'
@@ -23,7 +23,7 @@ export function GET(c: Context) {
 }
 ```
 
-`src/routes/users/[id].ts`:
+`src/routes/users/[id].ts`：
 
 ```ts
 import { Context } from 'hono'

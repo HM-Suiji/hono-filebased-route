@@ -1,14 +1,14 @@
-# Troubleshooting
+# 故障排除
 
-## Route file not registered
+## 路由文件未注册
 
-- The core generator skips files that do not export `GET` or `POST`.
-- Ensure your file exports named handlers (`export function GET()` or `export const GET = ...`).
-- Verify the routes directory passed to `generateRoutesFile` or `registerRoutes`.
+- core 会跳过未导出 `GET` 或 `POST` 的文件。
+- 确保使用命名导出（`export function GET()` 或 `export const GET = ...`）。
+- 检查 `generateRoutesFile` 或 `registerRoutes` 的目录参数。
 
-## Catch-all handler not receiving segments
+## 通配符没有收到分段
 
-Catch-all routes receive the segments as the second argument of the handler:
+通配符路由会将段列表作为第二个参数传入：
 
 ```ts
 export function GET(c, slug: string[]) {
@@ -16,14 +16,14 @@ export function GET(c, slug: string[]) {
 }
 ```
 
-## Virtual routes missing in build
+## 构建时缺少虚拟路由
 
-The Vite plugin generates routes in dev server mode. For production builds,
-use `virtualRoute: false` and ensure `generated-routes.ts` exists.
+Vite 插件只在 dev server 中生成路由。
+生产构建请使用 `virtualRoute: false` 并确保 `generated-routes.ts` 存在。
 
-## TypeScript cannot find virtual module
+## TypeScript 找不到虚拟模块
 
-Add a module declaration when using `virtual:generated-routes`:
+使用 `virtual:generated-routes` 时加上类型声明：
 
 ```ts
 declare module 'virtual:generated-routes' {
@@ -31,6 +31,6 @@ declare module 'virtual:generated-routes' {
 }
 ```
 
-## Generated file edited manually
+## 生成文件被手动编辑
 
-`src/generated-routes.ts` is auto-generated. Edit files under `src/routes` instead.
+`src/generated-routes.ts` 是自动生成的，请修改 `src/routes` 下的文件。

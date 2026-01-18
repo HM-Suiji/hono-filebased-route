@@ -1,6 +1,6 @@
-# Dynamic Routes
+# 动态路由
 
-## Single Parameter
+## 单参数
 
 ```ts
 // src/routes/users/[id].ts
@@ -12,9 +12,9 @@ export function GET(c: Context) {
 }
 ```
 
-## Catch-All
+## 通配符
 
-Catch-all routes receive the remaining path segments as the second argument:
+通配符路由会将剩余路径段作为第二个参数传入：
 
 ```ts
 // src/routes/articles/[...slug].ts
@@ -25,4 +25,4 @@ export function GET(c: Context, slug: string[]) {
 }
 ```
 
-The array is derived from `c.req.path` inside the generated handler.
+这个数组是在生成的处理器中通过 `c.req.path` 拆分得到的。

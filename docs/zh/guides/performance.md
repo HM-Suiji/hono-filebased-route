@@ -1,18 +1,18 @@
-# Performance
+# 性能
 
-This project keeps runtime overhead low by doing most work at startup or build time.
+本项目将成本放在启动或构建阶段，尽量降低运行时开销。
 
 ## Core
 
-- Scans the file system once and writes a static `generated-routes.ts` file.
-- Uses static imports in the generated file.
+- 扫描一次文件系统，生成静态 `generated-routes.ts`。
+- 生成文件使用静态 import。
 
 ## Runtime
 
-- Dynamically imports each route file during startup.
-- Only registers `GET` and `POST` handlers.
+- 启动时动态 import 每个路由文件。
+- 只注册 `GET` 和 `POST`。
 
-## Vite Plugin
+## Vite 插件
 
-- Regenerates routes on file changes during dev server runs.
-- In build workflows, prefer a generated file (disable `virtualRoute`).
+- dev server 模式下监听变更并重新生成。
+- 构建流程建议使用生成文件（关闭 `virtualRoute`）。

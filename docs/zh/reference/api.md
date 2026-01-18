@@ -1,6 +1,6 @@
-# API Reference
+# API 参考
 
-This page documents public functions exported by the packages in this repo.
+这个页面记录仓库公开函数。
 
 ## @hono-filebased-route/core
 
@@ -10,8 +10,8 @@ This page documents public functions exported by the packages in this repo.
 getFiles(dir: string, externals?: string[]): Promise<string[]>
 ```
 
-- Scans for `**/*.{ts,js}` under `dir` and returns absolute paths.
-- `externals` is passed to fast-glob `ignore`.
+- 扫描 `**/*.{ts,js}`，返回绝对路径。
+- `externals` 传给 fast-glob 的 `ignore`。
 
 ### getRoutePath
 
@@ -19,7 +19,7 @@ getFiles(dir: string, externals?: string[]): Promise<string[]>
 getRoutePath(filePath: string, baseDir: string): string
 ```
 
-Converts a file path to a Hono route path. Handles `index`, `[id]`, and `[...slug]`.
+将文件路径转换为 Hono 路由，支持 `index`、`[id]`、`[...slug]`。
 
 ### getExportedHttpMethods
 
@@ -27,7 +27,7 @@ Converts a file path to a Hono route path. Handles `index`, `[id]`, and `[...slu
 getExportedHttpMethods(filePath: string): ExportedMethods
 ```
 
-Parses the file and marks which HTTP methods are exported as named exports.
+解析文件并返回导出的方法。
 
 ### getExportedMiddlewareHandler
 
@@ -35,7 +35,7 @@ Parses the file and marks which HTTP methods are exported as named exports.
 getExportedMiddlewareHandler(filePath: string): ExportedMethods
 ```
 
-Reads `export const config = { GET: ..., POST: ... }` and marks method keys present.
+读取 `export const config = { GET: ..., POST: ... }` 中的方法键。
 
 ### generateRoutesFile
 
@@ -43,8 +43,8 @@ Reads `export const config = { GET: ..., POST: ... }` and marks method keys pres
 generateRoutesFile(config?: Partial<Config>): Promise<string>
 ```
 
-Generates the `registerGeneratedRoutes` function and returns the file content.
-If `config.write` is true, it also writes to `config.output`.
+生成 `registerGeneratedRoutes` 函数并返回文件内容。
+`config.write` 为 true 时会写入到 `config.output`。
 
 ### createLogger
 
@@ -52,7 +52,7 @@ If `config.write` is true, it also writes to `config.output`.
 createLogger(verbose?: boolean): Logger
 ```
 
-Returns a no-op logger when `verbose` is false, otherwise a pretty Pino logger.
+`verbose` 为 false 时返回空调用日志，true 时使用 pino-pretty。
 
 ## @hono-filebased-route/runtime
 
@@ -62,4 +62,4 @@ Returns a no-op logger when `verbose` is false, otherwise a pretty Pino logger.
 registerRoutes(mainApp: Hono, dir?: string): Promise<Hono>
 ```
 
-Scans route files under `dir`, dynamically imports them, and registers `GET`/`POST` handlers.
+扫描 `dir` 下的文件并动态 import，注册 `GET`/`POST`。

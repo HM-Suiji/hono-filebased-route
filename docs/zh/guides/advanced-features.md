@@ -1,8 +1,8 @@
-# Advanced Features
+# 高级特性
 
-This page focuses on behavior that is specific to each package.
+本页聚焦不同包的特有行为。
 
-## Core: generateRoutesFile options
+## Core：generateRoutesFile 配置
 
 ```ts
 import { generateRoutesFile } from '@hono-filebased-route/core'
@@ -17,12 +17,11 @@ generateRoutesFile({
 })
 ```
 
-## Runtime: GET and POST only
+## Runtime：仅 GET 与 POST
 
-`@hono-filebased-route/runtime` dynamically imports route modules and only
-registers `GET` and `POST` handlers.
+`@hono-filebased-route/runtime` 会动态 import 路由模块，只注册 `GET` 和 `POST`。
 
-## Vite Plugin options
+## Vite 插件配置
 
 ```ts
 import honoRouter from '@hono-filebased-route/vite-plugin'
@@ -33,13 +32,13 @@ honoRouter({
   virtualRoute: false,
   verbose: false,
   callback: (router) => {
-    // string content of generated routes when virtualRoute is true
+    // virtualRoute = true æ¶è¿åçæåå®¹
   },
 })
 ```
 
-### Notes
+### 备注
 
-- `virtualRoute: true` exposes `virtual:generated-routes` and does not write a file.
-- The plugin generates routes in dev server mode via `configureServer`.
-  For production builds, prefer `virtualRoute: false` and generate the file ahead of time.
+- `virtualRoute: true` 会暴露 `virtual:generated-routes`，不写入文件。
+- 插件只在 dev server 模式下生成路由。
+  生产构建推荐 `virtualRoute: false` 并提前生成。

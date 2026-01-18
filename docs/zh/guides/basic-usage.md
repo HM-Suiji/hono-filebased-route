@@ -1,10 +1,10 @@
-# Basic Usage
+# 基础用法
 
-This project maps files under `src/routes` to Hono routes.
+本项目会把 `src/routes` 下的文件映射为 Hono 路由。
 
-## Route Files
+## 路由文件
 
-Create files and export HTTP method handlers as named exports:
+创建文件并用命名导出定义 HTTP 方法：
 
 ```ts
 // src/routes/about.ts
@@ -15,11 +15,9 @@ export function GET(c: Context) {
 }
 ```
 
-## Route Registration
+## 路由注册
 
-### Core (generated file)
-
-Generate once, then register:
+### Core（生成文件）
 
 ```ts
 import { Hono } from 'hono'
@@ -29,7 +27,7 @@ const app = new Hono()
 registerGeneratedRoutes(app)
 ```
 
-### Runtime (dynamic import)
+### Runtime（动态 import）
 
 ```ts
 import { Hono } from 'hono'
@@ -39,9 +37,9 @@ const app = new Hono()
 await registerRoutes(app)
 ```
 
-## Per-Method Middleware (core only)
+## 方法级中间件（仅 core）
 
-If you export a `config` object, the generator attaches middleware before the handler:
+导出 `config` 对象，生成器会将中间件绑定到对应方法：
 
 ```ts
 // src/routes/index.ts
@@ -57,8 +55,8 @@ export const config = {
 }
 ```
 
-## Important Rules
+## 重要规则
 
-- A file is included by the generator only if it exports `GET` or `POST`.
-- When included, any exported method in `GET|POST|PUT|DELETE|PATCH|HEAD|OPTIONS` is registered.
-- `registerRoutes` (runtime package) only supports `GET` and `POST`.
+- core 只在文件导出 `GET` 或 `POST` 时才会纳入生成。
+- 被纳入的文件中，`GET|POST|PUT|DELETE|PATCH|HEAD|OPTIONS` 都会注册。
+- `registerRoutes`（runtime）仅支持 `GET` 和 `POST`。

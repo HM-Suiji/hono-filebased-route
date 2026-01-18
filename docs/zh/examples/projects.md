@@ -1,9 +1,9 @@
-# Projects
+# 项目示例
 
-This repository ships three runnable examples:
+仓库中提供三个可运行示例：
 
-- `examples/bun` - core generator flow with `generated-routes.ts`.
-- `examples/runtime` - runtime registration using `@hono-filebased-route/runtime`.
-- `examples/vite-plugin` - Vite plugin workflow with dev server integration.
+- `examples/bun` - core 生成模式，使用 `generated-routes.ts`。
+- `examples/runtime` - 使用 `@hono-filebased-route/runtime` 进行运行时注册。
+- `examples/vite-plugin` - Vite 插件模式，连接 dev server。
 
-Each example keeps route files under `src/routes`.
+每个示例的路由都位于 `src/routes`。

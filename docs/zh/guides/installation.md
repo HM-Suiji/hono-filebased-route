@@ -1,27 +1,27 @@
-# Installation
+# 安装
 
-Choose the package that matches your workflow. All packages require `hono`.
+选择适合的包，所有包都需要 `hono`。
 
-## Core (generate routes file)
+## Core（生成路由文件）
 
 ```bash
 bun add hono @hono-filebased-route/core
 ```
 
-## Runtime (register at startup)
+## Runtime（启动时注册）
 
 ```bash
 bun add hono @hono-filebased-route/runtime
 ```
 
-## Vite Plugin (dev-time regeneration)
+## Vite 插件（开发期自动生成）
 
 ```bash
 bun add hono @hono-filebased-route/vite-plugin
 bun add -D @hono/vite-dev-server @hono/vite-build/node
 ```
 
-## Notes
+## 备注
 
-- Examples in this repo use Bun, but any runtime that can run TypeScript and ESM should work.
-- Route files live under `src/routes` by default.
+- 本仓库示例使用 Bun，但只要能运行 TypeScript/ESM 即可。
+- 默认路由目录为 `src/routes`。

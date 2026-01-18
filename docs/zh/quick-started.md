@@ -1,16 +1,16 @@
-# Quick Started
+# 快速开始
 
-Pick one of the three modules below. All examples assume `src/routes` as the routes directory.
+请选择一个模块。下面示例默认 routes 目录为 `src/routes`。
 
-## Core (generate routes ahead of time)
+## Core（预生成路由文件）
 
-Install:
+安装：
 
 ```bash
 bun add hono @hono-filebased-route/core
 ```
 
-Add a generator script (for example `scripts/generate-routes.ts`):
+添加生成脚本（例如 `scripts/generate-routes.ts`）：
 
 ```ts
 import { generateRoutesFile } from '@hono-filebased-route/core'
@@ -18,7 +18,7 @@ import { generateRoutesFile } from '@hono-filebased-route/core'
 generateRoutesFile()
 ```
 
-Wire scripts in `package.json`:
+配置脚本：
 
 ```json
 {
@@ -30,7 +30,7 @@ Wire scripts in `package.json`:
 }
 ```
 
-Use the generated registrar in your app:
+在应用中注册：
 
 ```ts
 import { Hono } from 'hono'
@@ -42,15 +42,15 @@ registerGeneratedRoutes(app)
 export default app
 ```
 
-## Runtime (register on startup)
+## Runtime（启动时注册）
 
-Install:
+安装：
 
 ```bash
 bun add hono @hono-filebased-route/runtime
 ```
 
-Register routes at runtime:
+注册路由：
 
 ```ts
 import { Hono } from 'hono'
@@ -62,16 +62,16 @@ await registerRoutes(app)
 export default app
 ```
 
-## Vite Plugin (dev-time regeneration)
+## Vite 插件（开发期自动生成）
 
-Install:
+安装：
 
 ```bash
 bun add hono @hono-filebased-route/vite-plugin
 bun add -D @hono/vite-dev-server @hono/vite-build/node
 ```
 
-Configure Vite (matches `examples/vite-plugin`):
+Vite 配置（与 `examples/vite-plugin` 一致）：
 
 ```ts
 import devServer from '@hono/vite-dev-server'
@@ -93,7 +93,7 @@ export default defineConfig({
 })
 ```
 
-In your app, import the generated registrar:
+在应用中导入：
 
 ```ts
 import { Hono } from 'hono'
@@ -105,7 +105,7 @@ registerGeneratedRoutes(app)
 export default app
 ```
 
-If you set `virtualRoute: true`, import from the virtual module and add a type stub:
+如果设置 `virtualRoute: true`，请使用虚拟模块并添加声明：
 
 ```ts
 // src/index.ts
@@ -119,7 +119,7 @@ declare module 'virtual:generated-routes' {
 }
 ```
 
-## Create Your First Route
+## 创建第一个路由
 
 ```ts
 // src/routes/index.ts
@@ -129,5 +129,3 @@ export function GET(c: Context) {
   return c.text('Hello from file-based routing')
 }
 ```
-
-For dynamic or catch-all routes, see the Routing Patterns guide.

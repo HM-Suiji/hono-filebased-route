@@ -1,7 +1,7 @@
-# Best Practices
+# 最佳实践
 
-- Keep route files focused on a single path; move shared logic to helpers.
-- Use `index.ts` for collection roots (`/users`, `/posts`).
-- In core generation, remember that files without `GET` or `POST` are skipped.
-- Ignore non-route files by passing `externals` to `generateRoutesFile`.
-- Keep catch-all handlers explicit about the second `slug` argument.
+- 路由文件保持一个路径一个文件，共用逻辑抽到工具函数。
+- 使用 `index.ts` 表示集合根路径（`/users`，`/posts`）。
+- core 生成时，没有 `GET`/`POST` 的文件会被跳过。
+- 可以通过 `externals` 忽略非路由文件。
+- 通配符处理器记得接收第二个 `slug` 参数。

@@ -1,8 +1,8 @@
-# Configuration Reference
+# 配置参考
 
-## Core: generateRoutesFile
+## Core：generateRoutesFile
 
-`generateRoutesFile` accepts a partial config object:
+`generateRoutesFile` 接受部分配置：
 
 ```ts
 import { generateRoutesFile } from '@hono-filebased-route/core'
@@ -17,7 +17,7 @@ generateRoutesFile({
 })
 ```
 
-### Defaults
+### 默认值
 
 ```ts
 {
@@ -30,14 +30,14 @@ generateRoutesFile({
 }
 ```
 
-- `dir`: routes directory to scan.
-- `output`: output file path for generated routes.
-- `write`: whether to write to disk.
-- `verbose`: enables logging.
-- `externals`: ignore patterns passed to fast-glob.
-- `typescript`: adds a `: Hono` type annotation to `registerGeneratedRoutes`.
+- `dir`：路由目录。
+- `output`：生成文件输出路径。
+- `write`：是否写入磁盘。
+- `verbose`：打开日志。
+- `externals`：忽略规则（fast-glob ignore）。
+- `typescript`：给 `registerGeneratedRoutes` 添加 `: Hono` 类型注解。
 
-## Vite Plugin
+## Vite 插件
 
 ```ts
 import honoRouter from '@hono-filebased-route/vite-plugin'
@@ -51,7 +51,7 @@ honoRouter({
 })
 ```
 
-### Defaults
+### 默认值
 
 ```ts
 {
@@ -62,5 +62,5 @@ honoRouter({
 }
 ```
 
-- `virtualRoute`: when true, exposes `virtual:generated-routes`.
-- `callback`: receives the generated content string (only when `virtualRoute` is true).
+- `virtualRoute`：true 时暴露 `virtual:generated-routes`。
+- `callback`：返回生成内容（仅 virtualRoute=true）。

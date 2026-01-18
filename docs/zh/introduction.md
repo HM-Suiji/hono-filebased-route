@@ -1,44 +1,42 @@
-# Introduction
+# 介绍
 
-hono-filebased-route is a small set of utilities that turn a folder of route files into registered Hono routes.
-It does not run a server or provide a CLI. You keep full control of your Hono app and choose one of the three
-integration modes below.
+hono-filebased-route 是一组把路由文件夹转换为 Hono 路由的工具。
+它不负责启动服务器，也没有 CLI。你仍然保持对 Hono 应用的完全控制，
+并可选择下面三种接入方式。
 
-## Packages
+## 包
 
 ### @hono-filebased-route/core
 
-- Scans a routes directory and generates `generated-routes.ts`.
-- The generated file exports `registerGeneratedRoutes(app)`.
-- Supports per-method middleware via an exported `config` object in route files.
+- 扫描 routes 并生成 `generated-routes.ts`
+- 输出 `registerGeneratedRoutes(app)`
+- 支持在 route 文件中导出 `config` 对象来绑定方法级中间件
 
 ### @hono-filebased-route/runtime
 
-- Registers routes at runtime with dynamic imports.
-- Only supports `GET` and `POST` handlers.
-- Does not read the `config` middleware object.
+- 运行时动态 import
+- 仅支持 `GET` 和 `POST`
+- 不读取 `config` 中间件
 
 ### @hono-filebased-route/vite-plugin
 
-- Generates routes during dev server startup and on file changes.
-- Can emit a real file or expose a virtual module `virtual:generated-routes`.
-- Writes a template when a new route file is created and empty.
+- 在 dev server 启动和变更时生成路由
+- 可生成真实文件或 `virtual:generated-routes`
+- 新增空文件时写入模板
 
-## Routing Rules
-
-Route paths are derived from file paths under your routes directory:
+## 路由规则
 
 - `index.ts` -> `/`
 - `users/index.ts` -> `/users`
 - `[id].ts` -> `/:id`
 - `[...slug].ts` -> `/*`
 
-Only named exports like `export function GET()` or `export const POST = ...` are detected.
+只识别 `export function GET()` 或 `export const POST = ...` 这类命名导出。
 
-## What It Is Not
+## 不是这些
 
-- Not a web server or framework (Hono provides that).
-- No CLI or scaffold generator.
-- No automatic OpenAPI or schema generation (examples may integrate third-party tools).
+- 不是 Web 服务器或框架
+- 没有脚手架或 CLI
+- 不做 OpenAPI 或类型生成（示例里可能使用第三方工具）
 
-If you want a guided setup, start with the Quick Start page and pick the module that matches your workflow.
+想快速上手请查看快速开始，并选择适合的模块。

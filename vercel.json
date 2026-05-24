@@ -1,5 +1,4 @@
 {
-  "source": "/(.*)",
-  "destination": "/index.html",
-  "trailingSlash": true
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }],
+  "trailingSlash": true,
 }
